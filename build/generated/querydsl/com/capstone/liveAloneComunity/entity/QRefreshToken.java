@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QRefreshToken extends EntityPathBase<RefreshToken> {
 
-    private static final long serialVersionUID = 653198639L;
+    private static final long serialVersionUID = 36749424L;
 
     public static final QRefreshToken refreshToken = new QRefreshToken("refreshToken");
 
