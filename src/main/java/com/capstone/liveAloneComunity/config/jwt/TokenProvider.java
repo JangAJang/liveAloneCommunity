@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 
 import static com.capstone.liveAloneComunity.dto.token.TokenGeneratingComponent.AUTHORITIES_KEY;
 
-
 @Slf4j
 @Component
 public class TokenProvider {
