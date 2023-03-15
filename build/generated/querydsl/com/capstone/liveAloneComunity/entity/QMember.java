@@ -1,4 +1,4 @@
-package com.capstone.liveAloneComunity.domain;
+package com.capstone.liveAloneComunity.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
