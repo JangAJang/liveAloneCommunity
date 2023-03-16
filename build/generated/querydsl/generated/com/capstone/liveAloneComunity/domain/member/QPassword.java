@@ -1,8 +1,7 @@
-package com.capstone.liveAloneComunity.domain;
+package com.capstone.liveAloneComunity.domain.member;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.capstone.liveAloneComunity.domain.member.Password;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
@@ -16,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEmbeddableSerializer")
 public class QPassword extends BeanPath<Password> {
 
-    private static final long serialVersionUID = -1587263380L;
+    private static final long serialVersionUID = 1144426686L;
 
     public static final QPassword password1 = new QPassword("password1");
 
