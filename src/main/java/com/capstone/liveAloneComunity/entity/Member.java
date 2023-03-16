@@ -1,6 +1,7 @@
 package com.capstone.liveAloneComunity.entity;
 
 import com.capstone.liveAloneComunity.domain.member.*;
+import com.capstone.liveAloneComunity.dto.member.RegisterRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +27,13 @@ public class Member{
     @Column(name = "MEMBER_ROLE")
     @Enumerated(value = EnumType.STRING)
     private Role role;
+
+    public Member(RegisterRequestDto registerRequestDto, PasswordEncoder passwordEncoder){
+        this.username = new Username(registerRequestDto.getUsername());
+        this.memberInfo = new MemberInfo(registerRequestDto.getNickname(), registerRequestDto.getEmail());
+        this.password = new Password(passwordEncoder.encode(registerRequestDto.getPassword()));
+        this.role = Role.USER;
+    }
 
     @Builder
     public Member(Username username, MemberInfo memberInfo, Password password, Role role) {
