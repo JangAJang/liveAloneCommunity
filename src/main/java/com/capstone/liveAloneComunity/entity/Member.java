@@ -1,5 +1,6 @@
 package com.capstone.liveAloneComunity.entity;
 
+import com.capstone.liveAloneComunity.domain.MemberInfo;
 import com.capstone.liveAloneComunity.domain.Password;
 import com.capstone.liveAloneComunity.domain.Username;
 import jakarta.persistence.*;
@@ -19,11 +20,8 @@ public class Member{
     @Embedded
     private Username username;
 
-    @Column(name = "MEMBER_NICKNAME")
-    private String nickname;
-
-    @Column(name = "MEMBER_EMAIL")
-    private String email;
+    @Embedded
+    private MemberInfo memberInfo;
 
     @Embedded
     private Password password;

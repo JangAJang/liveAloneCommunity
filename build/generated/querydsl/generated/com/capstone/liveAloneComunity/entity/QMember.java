@@ -22,11 +22,9 @@ public class QMember extends EntityPathBase<Member> {
 
     public static final QMember member = new QMember("member1");
 
-    public final StringPath email = createString("email");
-
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath nickname = createString("nickname");
+    public final com.capstone.liveAloneComunity.domain.QMemberInfo memberInfo;
 
     public final com.capstone.liveAloneComunity.domain.QPassword password;
 
@@ -52,6 +50,7 @@ public class QMember extends EntityPathBase<Member> {
 
     public QMember(Class<? extends Member> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.memberInfo = inits.isInitialized("memberInfo") ? new com.capstone.liveAloneComunity.domain.QMemberInfo(forProperty("memberInfo")) : null;
         this.password = inits.isInitialized("password") ? new com.capstone.liveAloneComunity.domain.QPassword(forProperty("password")) : null;
         this.username = inits.isInitialized("username") ? new com.capstone.liveAloneComunity.domain.QUsername(forProperty("username")) : null;
     }
