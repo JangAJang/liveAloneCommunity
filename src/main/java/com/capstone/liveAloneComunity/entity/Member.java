@@ -1,5 +1,6 @@
 package com.capstone.liveAloneComunity.entity;
 
+import com.capstone.liveAloneComunity.domain.Username;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,8 +15,8 @@ public class Member{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "MEMBER_USERNAME")
-    private String username;
+    @Embedded
+    private Username username;
 
     @Column(name = "MEMBER_NICKNAME")
     private String nickname;
@@ -29,4 +30,8 @@ public class Member{
     @Column(name = "MEMBER_ROLE")
     @Enumerated(value = EnumType.STRING)
     private Role role;
+
+    public String getUsername(){
+        return this.username.getUsername();
+    }
 }
