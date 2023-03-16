@@ -1,8 +1,7 @@
-package com.capstone.liveAloneComunity.domain;
+package com.capstone.liveAloneComunity.domain.member;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.capstone.liveAloneComunity.domain.member.Username;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
@@ -16,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEmbeddableSerializer")
 public class QUsername extends BeanPath<Username> {
 
-    private static final long serialVersionUID = 1225004711L;
+    private static final long serialVersionUID = -338272519L;
 
     public static final QUsername username1 = new QUsername("username1");
 

@@ -3,11 +3,10 @@ package com.capstone.liveAloneComunity.entity;
 import com.capstone.liveAloneComunity.domain.member.*;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Member{
 
@@ -28,12 +27,20 @@ public class Member{
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
+    @Builder
+    public Member(Username username, MemberInfo memberInfo, Password password, Role role) {
+        this.username = username;
+        this.memberInfo = memberInfo;
+        this.password = password;
+        this.role = role;
+    }
+
     public String getUsername(){
         return this.username.getUsername();
     }
 
-    public boolean isRightPassword(String password){
-        return this.password.equals(password);
+    public boolean isRightPassword(String password, PasswordEncoder passwordEncoder){
+        return this.password.equals(password, passwordEncoder);
     }
 
     public String getPassword(){

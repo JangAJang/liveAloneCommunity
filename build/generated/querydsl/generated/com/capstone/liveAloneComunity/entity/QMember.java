@@ -24,13 +24,13 @@ public class QMember extends EntityPathBase<Member> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final com.capstone.liveAloneComunity.domain.QMemberInfo memberInfo;
+    public final com.capstone.liveAloneComunity.domain.member.QMemberInfo memberInfo;
 
-    public final com.capstone.liveAloneComunity.domain.QPassword password;
+    public final com.capstone.liveAloneComunity.domain.member.QPassword password;
 
     public final EnumPath<Role> role = createEnum("role", Role.class);
 
-    public final com.capstone.liveAloneComunity.domain.QUsername username;
+    public final com.capstone.liveAloneComunity.domain.member.QUsername username;
 
     public QMember(String variable) {
         this(Member.class, forVariable(variable), INITS);
@@ -50,9 +50,9 @@ public class QMember extends EntityPathBase<Member> {
 
     public QMember(Class<? extends Member> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.memberInfo = inits.isInitialized("memberInfo") ? new com.capstone.liveAloneComunity.domain.QMemberInfo(forProperty("memberInfo")) : null;
-        this.password = inits.isInitialized("password") ? new com.capstone.liveAloneComunity.domain.QPassword(forProperty("password")) : null;
-        this.username = inits.isInitialized("username") ? new com.capstone.liveAloneComunity.domain.QUsername(forProperty("username")) : null;
+        this.memberInfo = inits.isInitialized("memberInfo") ? new com.capstone.liveAloneComunity.domain.member.QMemberInfo(forProperty("memberInfo")) : null;
+        this.password = inits.isInitialized("password") ? new com.capstone.liveAloneComunity.domain.member.QPassword(forProperty("password")) : null;
+        this.username = inits.isInitialized("username") ? new com.capstone.liveAloneComunity.domain.member.QUsername(forProperty("username")) : null;
     }
 
 }
