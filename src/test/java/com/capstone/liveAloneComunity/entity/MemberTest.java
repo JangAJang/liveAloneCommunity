@@ -6,8 +6,15 @@ import com.capstone.liveAloneComunity.domain.member.Username;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+@SpringBootTest
 public class MemberTest {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Test
     @DisplayName("회원을 생성했을 때, 입력 파라미터를 그대로 받아 인스턴스를 초기화시킨다. 이후 getter를 통해 해당 값을 조회할 수 있다.")
@@ -30,12 +37,12 @@ public class MemberTest {
     public void isRightPasswordTest() throws Exception{
         //given
         Username username = new Username("username");
-        Password password = new Password("password");
+        Password password = new Password(passwordEncoder.encode("password"));
         MemberInfo memberInfo = new MemberInfo("nickname", "email");
         //when
         Member member = new Member(username, memberInfo, password, Role.USER);
         //then
-        Assertions.assertThat(member.isRightPassword(password.getPassword())).isTrue();
+        Assertions.assertThat(member.isRightPassword("password", passwordEncoder)).isTrue();
     }
 
     @Test
@@ -43,11 +50,11 @@ public class MemberTest {
     public void isRightPasswordTest_FAIL() throws Exception{
         //given
         Username username = new Username("username");
-        Password password = new Password("password");
+        Password password = new Password(passwordEncoder.encode("password"));
         MemberInfo memberInfo = new MemberInfo("nickname", "email");
         //when
         Member member = new Member(username, memberInfo, password, Role.USER);
         //then
-        Assertions.assertThat(member.isRightPassword(password.getPassword()+"1")).isFalse();
+        Assertions.assertThat(member.isRightPassword("password1", passwordEncoder)).isFalse();
     }
 }

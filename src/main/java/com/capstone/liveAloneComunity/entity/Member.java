@@ -3,6 +3,7 @@ package com.capstone.liveAloneComunity.entity;
 import com.capstone.liveAloneComunity.domain.member.*;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -38,8 +39,8 @@ public class Member{
         return this.username.getUsername();
     }
 
-    public boolean isRightPassword(String password){
-        return this.password.equals(password);
+    public boolean isRightPassword(String password, PasswordEncoder passwordEncoder){
+        return this.password.equals(password, passwordEncoder);
     }
 
     public String getPassword(){
