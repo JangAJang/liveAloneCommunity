@@ -1,14 +1,15 @@
 package com.capstone.liveAloneComunity.entity;
 
+import com.capstone.liveAloneComunity.domain.Password;
 import com.capstone.liveAloneComunity.domain.Username;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Getter
 public class Member{
 
     @Id
@@ -24,8 +25,8 @@ public class Member{
     @Column(name = "MEMBER_EMAIL")
     private String email;
 
-    @Column(name = "MEMBER_PASSWORD")
-    private String password;
+    @Embedded
+    private Password password;
 
     @Column(name = "MEMBER_ROLE")
     @Enumerated(value = EnumType.STRING)
@@ -33,5 +34,13 @@ public class Member{
 
     public String getUsername(){
         return this.username.getUsername();
+    }
+
+    public boolean isRightPassword(String password){
+        return this.password.equals(password);
+    }
+
+    public String getPassword(){
+        return this.password.getPassword();
     }
 }
