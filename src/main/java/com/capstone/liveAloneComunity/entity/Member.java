@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
 @Getter
 public class Member{
 
@@ -27,6 +25,14 @@ public class Member{
     @Column(name = "MEMBER_ROLE")
     @Enumerated(value = EnumType.STRING)
     private Role role;
+
+    @Builder
+    public Member(Username username, MemberInfo memberInfo, Password password, Role role) {
+        this.username = username;
+        this.memberInfo = memberInfo;
+        this.password = password;
+        this.role = role;
+    }
 
     public String getUsername(){
         return this.username.getUsername();
