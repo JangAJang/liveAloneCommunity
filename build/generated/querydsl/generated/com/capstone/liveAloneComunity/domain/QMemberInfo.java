@@ -2,6 +2,7 @@ package com.capstone.liveAloneComunity.domain;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
+import com.capstone.liveAloneComunity.domain.member.MemberInfo;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;

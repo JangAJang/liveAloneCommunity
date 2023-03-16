@@ -1,4 +1,4 @@
-package com.capstone.liveAloneComunity.domain;
+package com.capstone.liveAloneComunity.domain.member;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

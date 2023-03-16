@@ -1,8 +1,6 @@
 package com.capstone.liveAloneComunity.entity;
 
-import com.capstone.liveAloneComunity.domain.MemberInfo;
-import com.capstone.liveAloneComunity.domain.Password;
-import com.capstone.liveAloneComunity.domain.Username;
+import com.capstone.liveAloneComunity.domain.member.*;
 import jakarta.persistence.*;
 import lombok.*;
 
