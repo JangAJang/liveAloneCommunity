@@ -1,32 +1,42 @@
 package com.capstone.liveAloneComunity.entity;
 
+import com.capstone.liveAloneComunity.domain.member.*;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Getter
 public class Member{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "MEMBER_USERNAME")
-    private String username;
+    @Embedded
+    private Username username;
 
-    @Column(name = "MEMBER_NICKNAME")
-    private String nickname;
+    @Embedded
+    private MemberInfo memberInfo;
 
-    @Column(name = "MEMBER_EMAIL")
-    private String email;
-
-    @Column(name = "MEMBER_PASSWORD")
-    private String password;
+    @Embedded
+    private Password password;
 
     @Column(name = "MEMBER_ROLE")
     @Enumerated(value = EnumType.STRING)
     private Role role;
+
+    public String getUsername(){
+        return this.username.getUsername();
+    }
+
+    public boolean isRightPassword(String password){
+        return this.password.equals(password);
+    }
+
+    public String getPassword(){
+        return this.password.getPassword();
+    }
 }
