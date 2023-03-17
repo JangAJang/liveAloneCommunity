@@ -4,6 +4,7 @@ import com.capstone.liveAloneComunity.dto.auth.*;
 import com.capstone.liveAloneComunity.dto.token.*;
 import com.capstone.liveAloneComunity.entity.Member;
 import com.capstone.liveAloneComunity.entity.RefreshToken;
+import com.capstone.liveAloneComunity.exception.authentication.LogInAgainException;
 import com.capstone.liveAloneComunity.repository.MemberRepository;
 import com.capstone.liveAloneComunity.repository.RefreshTokenRepository;
 import jakarta.annotation.PostConstruct;
@@ -25,6 +26,7 @@ public class AuthService {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final TokenValidator tokenValidator;
     private MemberValidator memberValidator;
 
     @PostConstruct
@@ -40,6 +42,17 @@ public class AuthService {
     public TokenResponseDto logIn(LogInRequestDto logInRequestDto){
         memberValidator.validateLogIn(logInRequestDto);
         return createTokenDtoByAuthentication(getAuthenticationToLogIn(logInRequestDto));
+    }
+
+    public TokenResponseDto reissue(ReissueRequestDto reissueRequestDto){
+        tokenValidator.validateRefreshToken(reissueRequestDto);
+        Authentication tokenAuthentication = tokenValidator.getAuthentication(reissueRequestDto);
+        RefreshToken refreshToken = refreshTokenRepository.findByKey(tokenAuthentication.getName())
+                .orElseThrow(LogInAgainException::new);
+        tokenValidator.validateTokenInfo(refreshToken, reissueRequestDto);
+        TokenDto tokenDto = tokenProvider.generateTokenDto(tokenAuthentication);
+        refreshToken.updateValue(tokenDto.getRefreshToken());
+        return new TokenResponseDto(tokenDto);
     }
 
     private Authentication getAuthenticationToLogIn(LogInRequestDto logInRequestDto){
