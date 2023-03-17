@@ -1,7 +1,7 @@
 package com.capstone.liveAloneComunity.entity;
 
 import com.capstone.liveAloneComunity.domain.member.*;
-import com.capstone.liveAloneComunity.dto.member.RegisterRequestDto;
+import com.capstone.liveAloneComunity.dto.auth.RegisterRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
