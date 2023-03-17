@@ -149,6 +149,36 @@ public class AuthServiceTest {
         Assertions.assertThat(StringUtils.hasText(tokenResponseDto.getRefreshToken())).isTrue();
     }
 
+    @Test
+    @DisplayName("로그인을 시도할 떄, 아이디와 비밀번호를 정상적으로 입력하면 로그인 토큰을 반환한다.")
+    public void logInFail_NoMember() throws Exception{
+        //given
+        createDummyMember();
+        LogInRequestDto logInRequestDto = LogInRequestDto.builder()
+                .username("username1")
+                .password("password").build();
+        //when
+
+        //then
+        Assertions.assertThatThrownBy(() -> authService.logIn(logInRequestDto))
+                .isInstanceOf(MemberNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("로그인을 시도할 떄, 아이디와 비밀번호를 정상적으로 입력하면 로그인 토큰을 반환한다.")
+    public void logInFail_PasswordUnMatch() throws Exception{
+        //given
+        createDummyMember();
+        LogInRequestDto logInRequestDto = LogInRequestDto.builder()
+                .username("username")
+                .password("password1").build();
+        //when
+
+        //then
+        Assertions.assertThatThrownBy(() -> authService.logIn(logInRequestDto))
+                .isInstanceOf(PasswordNotMatchingException.class);
+    }
+
     private void createDummyMember(){
         RegisterRequestDto registerRequestDto = RegisterRequestDto.builder()
                 .username("username")
