@@ -1,6 +1,8 @@
 package com.capstone.liveAloneComunity.service;
 
+import com.capstone.liveAloneComunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneComunity.dto.auth.RegisterRequestDto;
+import com.capstone.liveAloneComunity.dto.token.TokenResponseDto;
 import com.capstone.liveAloneComunity.exception.member.*;
 import com.capstone.liveAloneComunity.repository.MemberRepository;
 import com.capstone.liveAloneComunity.repository.RefreshTokenRepository;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @SpringBootTest
 @Transactional
@@ -129,6 +132,51 @@ public class AuthServiceTest {
         //then
         Assertions.assertThatThrownBy(() -> authService.register(registerRequestDto))
                 .isInstanceOf(EmailAlreadyInUseException.class);
+    }
+
+    @Test
+    @DisplayName("로그인을 시도할 떄, 아이디와 비밀번호를 정상적으로 입력하면 로그인 토큰을 반환한다.")
+    public void logInTest() throws Exception{
+        //given
+        createDummyMember();
+        LogInRequestDto logInRequestDto = LogInRequestDto.builder()
+                .username("username")
+                .password("password").build();
+        //when
+        TokenResponseDto tokenResponseDto = authService.logIn(logInRequestDto);
+        //then
+        Assertions.assertThat(StringUtils.hasText(tokenResponseDto.getAccessToken())).isTrue();
+        Assertions.assertThat(StringUtils.hasText(tokenResponseDto.getRefreshToken())).isTrue();
+    }
+
+    @Test
+    @DisplayName("로그인을 시도할 떄, 아이디와 비밀번호를 정상적으로 입력하면 로그인 토큰을 반환한다.")
+    public void logInFail_NoMember() throws Exception{
+        //given
+        createDummyMember();
+        LogInRequestDto logInRequestDto = LogInRequestDto.builder()
+                .username("username1")
+                .password("password").build();
+        //when
+
+        //then
+        Assertions.assertThatThrownBy(() -> authService.logIn(logInRequestDto))
+                .isInstanceOf(MemberNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("로그인을 시도할 떄, 아이디와 비밀번호를 정상적으로 입력하면 로그인 토큰을 반환한다.")
+    public void logInFail_PasswordUnMatch() throws Exception{
+        //given
+        createDummyMember();
+        LogInRequestDto logInRequestDto = LogInRequestDto.builder()
+                .username("username")
+                .password("password1").build();
+        //when
+
+        //then
+        Assertions.assertThatThrownBy(() -> authService.logIn(logInRequestDto))
+                .isInstanceOf(PasswordNotMatchingException.class);
     }
 
     private void createDummyMember(){
