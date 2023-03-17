@@ -1,6 +1,6 @@
 package com.capstone.liveAloneComunity.exception.token;
 
-import com.board.Board_Upgraded.response.Response;
+import com.capstone.liveAloneComunity.response.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
