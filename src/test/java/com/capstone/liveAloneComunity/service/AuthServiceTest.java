@@ -39,7 +39,7 @@ public class AuthServiceTest {
                 .nickname("nickname")
                 .email("email@email.com")
                 .password("password")
-                .password("password").build();
+                .passwordCheck("password").build();
         //when
         authService.register(registerRequestDto);
         //then
@@ -55,7 +55,7 @@ public class AuthServiceTest {
                 .nickname("nickname")
                 .email("email.com")
                 .password("password")
-                .password("password").build();
+                .passwordCheck("password").build();
         //when
 
         //then
@@ -72,7 +72,7 @@ public class AuthServiceTest {
                 .nickname("nickname")
                 .email("email@email.com")
                 .password("password")
-                .password("password1").build();
+                .passwordCheck("password1").build();
         //when
 
         //then
@@ -91,7 +91,7 @@ public class AuthServiceTest {
                 .nickname("nickname1")
                 .email("email1@email.com")
                 .password("password1")
-                .password("password1").build();
+                .passwordCheck("password1").build();
         //then
         Assertions.assertThatThrownBy(() -> authService.register(registerRequestDto))
                 .isInstanceOf(UsernameAlreadyInUseException.class);
@@ -108,7 +108,7 @@ public class AuthServiceTest {
                 .nickname("nickname")
                 .email("email1@email.com")
                 .password("password1")
-                .password("password1").build();
+                .passwordCheck("password1").build();
         //then
         Assertions.assertThatThrownBy(() -> authService.register(registerRequestDto))
                 .isInstanceOf(NicknameAlreadyInUseException.class);
@@ -125,7 +125,7 @@ public class AuthServiceTest {
                 .nickname("nickname1")
                 .email("email@email.com")
                 .password("password1")
-                .password("password1").build();
+                .passwordCheck("password1").build();
         //then
         Assertions.assertThatThrownBy(() -> authService.register(registerRequestDto))
                 .isInstanceOf(EmailAlreadyInUseException.class);
@@ -137,7 +137,7 @@ public class AuthServiceTest {
                 .nickname("nickname")
                 .email("email@email.com")
                 .password("password")
-                .password("password1").build();
+                .passwordCheck("password").build();
         authService.register(registerRequestDto);
     }
 }
