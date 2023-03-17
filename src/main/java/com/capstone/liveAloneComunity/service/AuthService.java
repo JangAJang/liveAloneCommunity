@@ -38,6 +38,7 @@ public class AuthService {
     }
 
     public TokenResponseDto logIn(LogInRequestDto logInRequestDto){
+        memberValidator.validateLogIn(logInRequestDto);
         return createTokenDtoByAuthentication(getAuthenticationToLogIn(logInRequestDto));
     }
 
