@@ -1,13 +1,9 @@
 package com.capstone.liveAloneComunity.service;
 import com.capstone.liveAloneComunity.config.jwt.TokenProvider;
-import com.capstone.liveAloneComunity.dto.auth.LogInRequestDto;
-import com.capstone.liveAloneComunity.dto.auth.RegisterRequestDto;
-import com.capstone.liveAloneComunity.dto.token.TokenDto;
-import com.capstone.liveAloneComunity.dto.token.TokenResponseDto;
+import com.capstone.liveAloneComunity.dto.auth.*;
+import com.capstone.liveAloneComunity.dto.token.*;
 import com.capstone.liveAloneComunity.entity.Member;
 import com.capstone.liveAloneComunity.entity.RefreshToken;
-import com.capstone.liveAloneComunity.exception.member.MemberNotFoundException;
-import com.capstone.liveAloneComunity.exception.member.PasswordNotMatchingException;
 import com.capstone.liveAloneComunity.repository.MemberRepository;
 import com.capstone.liveAloneComunity.repository.RefreshTokenRepository;
 import jakarta.annotation.PostConstruct;
@@ -33,7 +29,7 @@ public class AuthService {
 
     @PostConstruct
     private void initiateValidator(){
-        memberValidator = new MemberValidator(memberRepository);
+        memberValidator = new MemberValidator(memberRepository, passwordEncoder);
     }
 
     public void register(RegisterRequestDto registerRequestDto){

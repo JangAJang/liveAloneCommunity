@@ -1,9 +1,12 @@
 package com.capstone.liveAloneComunity.service;
 
+import com.capstone.liveAloneComunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneComunity.dto.auth.RegisterRequestDto;
+import com.capstone.liveAloneComunity.entity.Member;
 import com.capstone.liveAloneComunity.exception.member.*;
 import com.capstone.liveAloneComunity.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.regex.Pattern;
 
@@ -11,6 +14,7 @@ import java.util.regex.Pattern;
 public class MemberValidator {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public void validateRegister(RegisterRequestDto registerRequestDto){
         if(isUsernamePresent(registerRequestDto.getUsername()))
@@ -18,6 +22,13 @@ public class MemberValidator {
         validateNickname(registerRequestDto.getNickname());
         validateEmail(registerRequestDto.getEmail());
         validatePassword(registerRequestDto.getPassword(), registerRequestDto.getPasswordCheck());
+    }
+
+    public void validateLogIn(LogInRequestDto logInRequestDto){
+        Member member = memberRepository.findByUsername_Username(logInRequestDto.getUsername())
+                .orElseThrow(MemberNotFoundException::new);
+        if(!member.isRightPassword(logInRequestDto.getPassword(), passwordEncoder))
+            throw new PasswordNotMatchingException();
     }
 
     public void validateNickname(String nickname){
