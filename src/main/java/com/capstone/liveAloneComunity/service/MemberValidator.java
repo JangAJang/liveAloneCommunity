@@ -1,6 +1,6 @@
 package com.capstone.liveAloneComunity.service;
 
-import com.capstone.liveAloneComunity.dto.member.RegisterRequestDto;
+import com.capstone.liveAloneComunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneComunity.exception.member.*;
 import com.capstone.liveAloneComunity.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

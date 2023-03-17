@@ -1,4 +1,4 @@
-package com.capstone.liveAloneComunity.dto.member;
+package com.capstone.liveAloneComunity.dto.auth;
 
 import lombok.*;
 
