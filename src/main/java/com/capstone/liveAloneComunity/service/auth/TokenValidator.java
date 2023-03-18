@@ -1,4 +1,4 @@
-package com.capstone.liveAloneComunity.service;
+package com.capstone.liveAloneComunity.service.auth;
 
 import com.capstone.liveAloneComunity.config.jwt.TokenProvider;
 import com.capstone.liveAloneComunity.dto.token.ReissueRequestDto;
