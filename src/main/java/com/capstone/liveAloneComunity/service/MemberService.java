@@ -39,8 +39,10 @@ public class MemberService {
         return MemberResponseDto.toDto(member);
     }
 
-    public void deleteMember(Long id){
-        memberRepository.deleteById(id);
+    public void deleteMember(Long id, Member currentMember){
+        Member target = findMemberById(id);
+        memberValidator.validateAuthorization(currentMember, target);
+        memberRepository.delete(target);
     }
 
     private Member findMemberById(Long id){
