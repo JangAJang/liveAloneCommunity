@@ -46,6 +46,14 @@ public class MemberController {
         return Response.success(memberService.editMember(id, editMemberInfoDto, getMember()));
     }
 
+    @DeleteMapping("/delete")
+    @ApiOperation(value = "회원 삭제", notes = "회원 삭제(회원 탈퇴)를 수행한다.")
+    @ResponseStatus(HttpStatus.OK)
+    public Response deleteMember(@RequestParam Long id){
+        memberService.deleteMember(id, getMember());
+        return Response.success();
+    }
+
     private Member getMember(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return memberRepository.findByUsername_Username(authentication.getName())
