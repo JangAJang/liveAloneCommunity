@@ -5,7 +5,7 @@ import com.capstone.liveAloneComunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneComunity.dto.token.ReissueRequestDto;
 import com.capstone.liveAloneComunity.dto.token.TokenResponseDto;
 import com.capstone.liveAloneComunity.exception.member.*;
-import com.capstone.liveAloneComunity.repository.MemberRepository;
+import com.capstone.liveAloneComunity.repository.member.MemberRepository;
 import com.capstone.liveAloneComunity.repository.RefreshTokenRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

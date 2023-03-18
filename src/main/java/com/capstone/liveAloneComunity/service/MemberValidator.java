@@ -4,9 +4,8 @@ import com.capstone.liveAloneComunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneComunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneComunity.dto.member.EditMemberInfoDto;
 import com.capstone.liveAloneComunity.entity.Member;
-import com.capstone.liveAloneComunity.exception.authentication.NotRightAuthenticationException;
 import com.capstone.liveAloneComunity.exception.member.*;
-import com.capstone.liveAloneComunity.repository.MemberRepository;
+import com.capstone.liveAloneComunity.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

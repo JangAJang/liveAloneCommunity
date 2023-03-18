@@ -5,7 +5,7 @@ import com.capstone.liveAloneComunity.dto.token.*;
 import com.capstone.liveAloneComunity.entity.Member;
 import com.capstone.liveAloneComunity.entity.RefreshToken;
 import com.capstone.liveAloneComunity.exception.authentication.LogInAgainException;
-import com.capstone.liveAloneComunity.repository.MemberRepository;
+import com.capstone.liveAloneComunity.repository.member.MemberRepository;
 import com.capstone.liveAloneComunity.repository.RefreshTokenRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

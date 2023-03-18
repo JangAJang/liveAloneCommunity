@@ -1,13 +1,21 @@
 package com.capstone.liveAloneComunity.dto.member;
 
 import com.capstone.liveAloneComunity.entity.Member;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
 public class MemberResponseDto {
+
+    @Builder
+    @QueryProjection
+    public MemberResponseDto(long id, String username, String nickname, String email) {
+        this.id = id;
+        this.username = username;
+        this.nickname = nickname;
+        this.email = email;
+    }
 
     private long id;
     private String username;

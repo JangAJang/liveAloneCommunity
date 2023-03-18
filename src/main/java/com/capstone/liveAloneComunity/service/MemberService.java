@@ -1,12 +1,10 @@
 package com.capstone.liveAloneComunity.service;
 
-import com.capstone.liveAloneComunity.domain.member.MemberInfo;
 import com.capstone.liveAloneComunity.dto.member.EditMemberInfoDto;
 import com.capstone.liveAloneComunity.dto.member.MemberResponseDto;
 import com.capstone.liveAloneComunity.entity.Member;
-import com.capstone.liveAloneComunity.exception.authentication.NotRightAuthenticationException;
 import com.capstone.liveAloneComunity.exception.member.MemberNotFoundException;
-import com.capstone.liveAloneComunity.repository.MemberRepository;
+import com.capstone.liveAloneComunity.repository.member.MemberRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
