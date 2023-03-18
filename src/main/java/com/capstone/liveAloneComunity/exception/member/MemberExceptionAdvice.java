@@ -68,4 +68,11 @@ public class MemberExceptionAdvice {
     public Response needToPutPasswordTwiceToEditException(){
         return Response.failure(400, "비밀번호를 수정하기 위해서는, 비밀번호를 두 번 입력해야 합니다.");
     }
+
+    @ExceptionHandler(MemberNotAllowedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Response memberNotAllowedException(){
+        return Response.failure(401, "권한이 없습니다.");
+    }
+
 }

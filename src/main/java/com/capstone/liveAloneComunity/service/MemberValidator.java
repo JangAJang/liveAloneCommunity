@@ -2,7 +2,9 @@ package com.capstone.liveAloneComunity.service;
 
 import com.capstone.liveAloneComunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneComunity.dto.auth.RegisterRequestDto;
+import com.capstone.liveAloneComunity.dto.member.EditMemberInfoDto;
 import com.capstone.liveAloneComunity.entity.Member;
+import com.capstone.liveAloneComunity.exception.authentication.NotRightAuthenticationException;
 import com.capstone.liveAloneComunity.exception.member.*;
 import com.capstone.liveAloneComunity.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,11 @@ public class MemberValidator {
             throw new PasswordNotMatchingException();
     }
 
+    public void validateEditInfoRequest(EditMemberInfoDto editMemberInfoDto){
+        validateNickname(editMemberInfoDto.getNickname());
+        validateEmail(editMemberInfoDto.getEmail());
+    }
+
     public void validateNickname(String nickname){
         if(memberRepository.findByMemberInfo_Nickname(nickname).isPresent())
             throw new NicknameAlreadyInUseException();
@@ -53,5 +60,10 @@ public class MemberValidator {
     public void validatePassword(String password, String passwordCheck){
         if(!password.equals(passwordCheck))
             throw new PasswordNotMatchingException();
+    }
+
+    public void validateAuthorization(Member currentMember, Member targetMember){
+        if(currentMember.equals(targetMember)) return;
+        throw new MemberNotAllowedException();
     }
 }

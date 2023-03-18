@@ -4,6 +4,7 @@ import com.capstone.liveAloneComunity.domain.member.MemberInfo;
 import com.capstone.liveAloneComunity.dto.member.EditMemberInfoDto;
 import com.capstone.liveAloneComunity.dto.member.MemberResponseDto;
 import com.capstone.liveAloneComunity.entity.Member;
+import com.capstone.liveAloneComunity.exception.authentication.NotRightAuthenticationException;
 import com.capstone.liveAloneComunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneComunity.repository.MemberRepository;
 import jakarta.annotation.PostConstruct;
@@ -27,12 +28,13 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public MemberResponseDto getMemberInfo(Long id) {
-        Member member = findMemberById(id)
+        Member member = findMemberById(id);
         return MemberResponseDto.toDto(member);
     }
 
     public MemberResponseDto editMember(Long id, EditMemberInfoDto editMemberInfoDto, Member current){
         Member member = findMemberById(id);
+        memberValidator.validateEditInfoRequest(editMemberInfoDto);
         member.editInfo(editMemberInfoDto.getNickname(), editMemberInfoDto.getEmail());
         return MemberResponseDto.toDto(member);
     }
