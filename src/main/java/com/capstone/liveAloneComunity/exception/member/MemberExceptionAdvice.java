@@ -75,4 +75,9 @@ public class MemberExceptionAdvice {
         return Response.failure(401, "권한이 없습니다.");
     }
 
+    @ExceptionHandler(CurrentPasswordWrongException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response currentPasswordWrongException(){
+        return Response.failure(400, "비밀번호를 다시 확인해주세요.");
+    }
 }

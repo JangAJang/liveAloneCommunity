@@ -2,6 +2,7 @@ package com.capstone.liveAloneComunity.service.member;
 
 import com.capstone.liveAloneComunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneComunity.dto.auth.RegisterRequestDto;
+import com.capstone.liveAloneComunity.dto.member.ChangePasswordRequestDto;
 import com.capstone.liveAloneComunity.dto.member.EditMemberInfoDto;
 import com.capstone.liveAloneComunity.entity.Member;
 import com.capstone.liveAloneComunity.exception.member.*;
@@ -35,6 +36,12 @@ public class MemberValidator {
     public void validateEditInfoRequest(EditMemberInfoDto editMemberInfoDto){
         validateNickname(editMemberInfoDto.getNickname());
         validateEmail(editMemberInfoDto.getEmail());
+    }
+
+    public void validateChangePasswordRequest(Member member, ChangePasswordRequestDto changePasswordRequestDto){
+        validatePassword(changePasswordRequestDto.getNewPassword(), changePasswordRequestDto.getNewPasswordCheck());
+        if(!member.isRightPassword(changePasswordRequestDto.getNewPassword(), passwordEncoder))
+            throw new CurrentPasswordWrongException();
     }
 
     public void validateNickname(String nickname){

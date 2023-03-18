@@ -1,9 +1,6 @@
 package com.capstone.liveAloneComunity.service.member;
 
-import com.capstone.liveAloneComunity.dto.member.EditMemberInfoDto;
-import com.capstone.liveAloneComunity.dto.member.MemberResponseDto;
-import com.capstone.liveAloneComunity.dto.member.MemberSearchResultDto;
-import com.capstone.liveAloneComunity.dto.member.SearchMemberDto;
+import com.capstone.liveAloneComunity.dto.member.*;
 import com.capstone.liveAloneComunity.entity.Member;
 import com.capstone.liveAloneComunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneComunity.repository.member.MemberRepository;
@@ -45,6 +42,12 @@ public class MemberService {
         memberValidator.validateEditInfoRequest(editMemberInfoDto);
         member.editInfo(editMemberInfoDto.getNickname(), editMemberInfoDto.getEmail());
         return MemberResponseDto.toDto(member);
+    }
+
+    public void changePassword(Long id, Member member, ChangePasswordRequestDto changePasswordRequestDto){
+        memberValidator.validateAuthorization(findMemberById(id), member);
+        memberValidator.validateChangePasswordRequest(member, changePasswordRequestDto);
+        member.changePassword(changePasswordRequestDto.getNewPassword(), passwordEncoder);
     }
 
     public void deleteMember(Long id, Member currentMember){

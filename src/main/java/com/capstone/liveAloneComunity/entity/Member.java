@@ -66,4 +66,8 @@ public class Member{
     public void editInfo(String nickname, String email) {
         this.memberInfo = new MemberInfo(nickname, email);
     }
+
+    public void changePassword(String newPassword, PasswordEncoder passwordEncoder) {
+        this.password = new Password(passwordEncoder.encode(newPassword));
+    }
 }
