@@ -54,4 +54,12 @@ public class Member{
     public String getPassword(){
         return this.password.getPassword();
     }
+
+    public String getNickname(){
+        return memberInfo.getNickname();
+    }
+
+    public String getEmail(){
+        return memberInfo.getEmail();
+    }
 }
