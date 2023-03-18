@@ -1,5 +1,6 @@
 package com.capstone.liveAloneComunity.controller.member;
 
+import com.capstone.liveAloneComunity.dto.member.ChangePasswordRequestDto;
 import com.capstone.liveAloneComunity.dto.member.EditMemberInfoDto;
 import com.capstone.liveAloneComunity.dto.member.SearchMemberDto;
 import com.capstone.liveAloneComunity.entity.Member;
@@ -44,6 +45,14 @@ public class MemberController {
     @ResponseStatus(HttpStatus.OK)
     public Response editMemberInfo(@RequestBody EditMemberInfoDto editMemberInfoDto, @RequestParam Long id){
         return Response.success(memberService.editMember(id, editMemberInfoDto, getMember()));
+    }
+
+    @PatchMapping("/changePassword")
+    @ApiOperation(value = "비밀번호 변경", notes = "현재비밀번호, 새 비밀번호, 새 비밀번호 다시 입력을 입력하면 비밀번호를 수정한다.")
+    @ResponseStatus(HttpStatus.OK)
+    public Response changePassword(@RequestParam Long id, @RequestBody ChangePasswordRequestDto changePasswordRequestDto){
+        memberService.changePassword(id, getMember(), changePasswordRequestDto);
+        return Response.success();
     }
 
     @DeleteMapping("/delete")
