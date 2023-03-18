@@ -7,6 +7,7 @@ import com.capstone.liveAloneComunity.dto.token.TokenResponseDto;
 import com.capstone.liveAloneComunity.exception.member.*;
 import com.capstone.liveAloneComunity.repository.member.MemberRepository;
 import com.capstone.liveAloneComunity.repository.RefreshTokenRepository;
+import com.capstone.liveAloneComunity.service.auth.AuthService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

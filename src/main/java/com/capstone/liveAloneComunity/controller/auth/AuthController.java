@@ -4,7 +4,7 @@ import com.capstone.liveAloneComunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneComunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneComunity.dto.token.ReissueRequestDto;
 import com.capstone.liveAloneComunity.response.Response;
-import com.capstone.liveAloneComunity.service.AuthService;
+import com.capstone.liveAloneComunity.service.auth.AuthService;
 import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
