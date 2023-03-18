@@ -27,4 +27,8 @@ public class MemberService {
         member.editInfo(editMemberInfoDto.getNickname(), editMemberInfoDto.getEmail());
         return MemberResponseDto.toDto(member);
     }
+
+    public void deleteMember(Long id){
+        memberRepository.deleteById(id);
+    }
 }
