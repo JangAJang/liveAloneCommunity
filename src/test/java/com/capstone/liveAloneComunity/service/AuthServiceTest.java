@@ -2,6 +2,7 @@ package com.capstone.liveAloneComunity.service;
 
 import com.capstone.liveAloneComunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneComunity.dto.auth.RegisterRequestDto;
+import com.capstone.liveAloneComunity.dto.token.ReissueRequestDto;
 import com.capstone.liveAloneComunity.dto.token.TokenResponseDto;
 import com.capstone.liveAloneComunity.exception.member.*;
 import com.capstone.liveAloneComunity.repository.MemberRepository;
@@ -177,6 +178,42 @@ public class AuthServiceTest {
         //then
         Assertions.assertThatThrownBy(() -> authService.logIn(logInRequestDto))
                 .isInstanceOf(PasswordNotMatchingException.class);
+    }
+
+    @Test
+    @DisplayName("토큰 재발행을 요청할 때, 정상적인 토큰이 존재할 경우, 토큰을 재발행해준다. ")
+    public void reissueTest() throws Exception{
+        //given
+        createDummyMember();
+        LogInRequestDto logInRequestDto = LogInRequestDto.builder()
+                .username("username")
+                .password("password").build();
+        //when
+        TokenResponseDto tokenResponseDto = authService.logIn(logInRequestDto);
+        TokenResponseDto reissueResponse = authService.reissue(ReissueRequestDto.builder()
+                .accessToken(tokenResponseDto.getAccessToken())
+                .refreshToken(tokenResponseDto.getRefreshToken()).build());
+        //then
+        Assertions.assertThat(StringUtils.hasText(reissueResponse.getAccessToken())).isTrue();
+        Assertions.assertThat(StringUtils.hasText(reissueResponse.getRefreshToken())).isTrue();
+    }
+
+    @Test
+    @DisplayName("토큰 재발행을 요청할 때, 정상적인 토큰이 존재할 경우, 토큰을 재발행해준다. ")
+    public void reissueFail_() throws Exception{
+        //given
+        createDummyMember();
+        LogInRequestDto logInRequestDto = LogInRequestDto.builder()
+                .username("username")
+                .password("password").build();
+        //when
+        TokenResponseDto tokenResponseDto = authService.logIn(logInRequestDto);
+        TokenResponseDto reissueResponse = authService.reissue(ReissueRequestDto.builder()
+                .accessToken(tokenResponseDto.getAccessToken())
+                .refreshToken(tokenResponseDto.getRefreshToken()).build());
+        //then
+        Assertions.assertThat(StringUtils.hasText(reissueResponse.getAccessToken())).isTrue();
+        Assertions.assertThat(StringUtils.hasText(reissueResponse.getRefreshToken())).isTrue();
     }
 
     private void createDummyMember(){
