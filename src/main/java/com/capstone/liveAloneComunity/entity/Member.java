@@ -62,4 +62,8 @@ public class Member{
     public String getEmail(){
         return memberInfo.getEmail();
     }
+
+    public void editInfo(String nickname, String email) {
+        this.memberInfo = new MemberInfo(nickname, email);
+    }
 }
