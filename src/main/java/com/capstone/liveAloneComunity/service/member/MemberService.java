@@ -39,6 +39,7 @@ public class MemberService {
 
     public MemberResponseDto editMember(Long id, EditMemberInfoDto editMemberInfoDto, Member current){
         Member member = findMemberById(id);
+        memberValidator.validateAuthorization(current, member);
         memberValidator.validateEditInfoRequest(editMemberInfoDto);
         member.editInfo(editMemberInfoDto.getNickname(), editMemberInfoDto.getEmail());
         return MemberResponseDto.toDto(member);
