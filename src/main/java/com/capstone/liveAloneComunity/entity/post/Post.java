@@ -2,13 +2,12 @@ package com.capstone.liveAloneComunity.entity.post;
 
 import com.capstone.liveAloneComunity.domain.post.Content;
 import com.capstone.liveAloneComunity.domain.post.Title;
+import com.capstone.liveAloneComunity.entity.category.Category;
 import com.capstone.liveAloneComunity.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,15 +24,19 @@ public class Post {
     private Content content;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CATEGORY_ID")
+    private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     @Builder
-    public Post(Title title, Content content, Member member){
+    public Post(Title title, Content content, Member member, Category category){
         this.title = title;
         this.content = content;
         this.member = member;
-        member.addPost(this);
+        this.category = category;
     }
 
     public String getTitle(){
