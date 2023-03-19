@@ -2,14 +2,15 @@ package com.capstone.liveAloneComunity.dto.auth;
 
 import lombok.*;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Getter
 public class RegisterRequestDto {
 
-    private final String username;
-    private final String nickname;
-    private final String email;
-    private final String password;
-    private final String passwordCheck;
+    private String username;
+    private String nickname;
+    private String email;
+    private String password;
+    private String passwordCheck;
 }

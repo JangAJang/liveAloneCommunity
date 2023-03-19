@@ -5,6 +5,7 @@ import com.capstone.liveAloneComunity.config.jwt.JwtAuthenticationEntryPoint;
 import com.capstone.liveAloneComunity.config.jwt.JwtSecurityConfig;
 import com.capstone.liveAloneComunity.config.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -49,6 +50,10 @@ public class SecurityConfig{
                 .accessDeniedHandler(jwtAccessDenialHandler)
                 .and()
                 .authorizeRequests()
+                .requestMatchers("/api/auth/logIn", "/api/auth/join").permitAll()
+                .requestMatchers("/api/auth/reissue").access("hasAuthority('USER') or hasAuthority('MANAGER') or hasAuthority('ADMIN')")
+                .requestMatchers("/api/members/**").access("hasAuthority('USER') or hasAuthority('MANAGER') or hasAuthority('ADMIN')")
+                .requestMatchers("/api/posts/**").access("hasAuthority('USER') or hasAuthority('MANAGER') or hasAuthority('ADMIN')")
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
         return http.build();
