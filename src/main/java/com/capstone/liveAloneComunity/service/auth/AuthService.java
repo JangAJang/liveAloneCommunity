@@ -47,6 +47,7 @@ public class AuthService {
     }
 
     public TokenResponseDto reissue(ReissueRequestDto reissueRequestDto){
+        reissueRequestDto.deletePrefix();
         tokenValidator.validateRefreshToken(reissueRequestDto);
         Authentication tokenAuthentication = tokenValidator.getAuthentication(reissueRequestDto);
         RefreshToken refreshToken = refreshTokenRepository.findByKey(tokenAuthentication.getName())
