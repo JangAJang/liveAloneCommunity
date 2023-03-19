@@ -34,4 +34,11 @@ public class PostController {
                                @RequestParam SearchPostType searchPostType){
         return Response.success(postService.searchPost(searchPostRequestDto, pageable, searchPostType));
     }
+
+    @GetMapping("/")
+    @ApiOperation(value = "회원의 게시물 조회", notes = "회원의 게시물을 이름의 역순으로 조회한다.")
+    @ResponseStatus(HttpStatus.OK)
+    public Response getMembersPost(@RequestParam("member") Long id, @PageableDefault Pageable pageable){
+        return Response.success(postService.getMembersPost(pageable, id));
+    }
 }
