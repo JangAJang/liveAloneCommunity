@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class WritePostRequestDto {
 
+    private Long categoryId;
+
     @NotNull(message = "제목을 입력하세요.")
     @NotEmpty(message = "제목을 입력하세요.")
     @NotBlank(message = "제목을 입력하세요.")
