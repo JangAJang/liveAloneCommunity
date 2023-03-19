@@ -6,7 +6,6 @@ import com.capstone.liveAloneComunity.dto.post.WritePostRequestDto;
 import com.capstone.liveAloneComunity.entity.member.Member;
 import com.capstone.liveAloneComunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneComunity.repository.member.MemberRepository;
-import com.capstone.liveAloneComunity.repository.member.MemberRepositoryCustom;
 import com.capstone.liveAloneComunity.repository.post.SearchPostType;
 import com.capstone.liveAloneComunity.response.Response;
 import com.capstone.liveAloneComunity.service.post.PostService;
@@ -42,7 +41,7 @@ public class PostController {
         return Response.success(postService.searchPost(searchPostRequestDto, pageable, searchPostType));
     }
 
-    @GetMapping("/")
+    @GetMapping("/of")
     @ApiOperation(value = "회원의 게시물 조회", notes = "회원의 게시물을 이름의 역순으로 조회한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response getMembersPost(@RequestParam("member") Long id, @PageableDefault Pageable pageable){
