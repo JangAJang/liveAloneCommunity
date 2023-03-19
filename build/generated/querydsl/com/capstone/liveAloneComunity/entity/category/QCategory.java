@@ -26,6 +26,8 @@ public class QCategory extends EntityPathBase<Category> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final QCategory parent;
+
     public final com.capstone.liveAloneComunity.domain.post.QTitle title;
 
     public QCategory(String variable) {
@@ -47,6 +49,7 @@ public class QCategory extends EntityPathBase<Category> {
     public QCategory(Class<? extends Category> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.content = inits.isInitialized("content") ? new com.capstone.liveAloneComunity.domain.post.QContent(forProperty("content")) : null;
+        this.parent = inits.isInitialized("parent") ? new QCategory(forProperty("parent"), inits.get("parent")) : null;
         this.title = inits.isInitialized("title") ? new com.capstone.liveAloneComunity.domain.post.QTitle(forProperty("title")) : null;
     }
 
