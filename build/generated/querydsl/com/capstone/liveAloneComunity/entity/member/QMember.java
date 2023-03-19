@@ -1,4 +1,4 @@
-package com.capstone.liveAloneComunity.entity;
+package com.capstone.liveAloneComunity.entity.member;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QMember extends EntityPathBase<Member> {
 
-    private static final long serialVersionUID = -137111380L;
+    private static final long serialVersionUID = -925222308L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 

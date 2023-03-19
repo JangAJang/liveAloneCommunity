@@ -1,7 +1,7 @@
 package com.capstone.liveAloneComunity.service.member;
 
 import com.capstone.liveAloneComunity.dto.member.*;
-import com.capstone.liveAloneComunity.entity.Member;
+import com.capstone.liveAloneComunity.entity.member.Member;
 import com.capstone.liveAloneComunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneComunity.repository.member.MemberRepository;
 import jakarta.annotation.PostConstruct;

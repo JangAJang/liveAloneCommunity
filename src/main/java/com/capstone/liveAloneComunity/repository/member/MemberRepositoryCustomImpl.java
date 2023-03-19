@@ -4,6 +4,7 @@ import com.capstone.liveAloneComunity.dto.member.MemberResponseDto;
 import com.capstone.liveAloneComunity.dto.member.MemberSearchType;
 import com.capstone.liveAloneComunity.dto.member.QMemberResponseDto;
 import com.capstone.liveAloneComunity.dto.member.SearchMemberDto;
+import com.capstone.liveAloneComunity.entity.member.QMember;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -12,7 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import static com.capstone.liveAloneComunity.entity.QMember.*;
+import static com.capstone.liveAloneComunity.entity.member.QMember.*;
+
 
 @RequiredArgsConstructor
 public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{

@@ -1,4 +1,4 @@
-package com.capstone.liveAloneComunity.entity;
+package com.capstone.liveAloneComunity.entity.member;
 
 import com.capstone.liveAloneComunity.domain.member.*;
 import com.capstone.liveAloneComunity.dto.auth.RegisterRequestDto;

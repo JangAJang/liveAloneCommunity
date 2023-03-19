@@ -2,7 +2,7 @@ package com.capstone.liveAloneComunity.service.auth;
 import com.capstone.liveAloneComunity.config.jwt.TokenProvider;
 import com.capstone.liveAloneComunity.dto.auth.*;
 import com.capstone.liveAloneComunity.dto.token.*;
-import com.capstone.liveAloneComunity.entity.Member;
+import com.capstone.liveAloneComunity.entity.member.Member;
 import com.capstone.liveAloneComunity.entity.RefreshToken;
 import com.capstone.liveAloneComunity.exception.authentication.LogInAgainException;
 import com.capstone.liveAloneComunity.repository.member.MemberRepository;

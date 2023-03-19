@@ -4,7 +4,7 @@ import com.capstone.liveAloneComunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneComunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneComunity.dto.member.ChangePasswordRequestDto;
 import com.capstone.liveAloneComunity.dto.member.EditMemberInfoDto;
-import com.capstone.liveAloneComunity.entity.Member;
+import com.capstone.liveAloneComunity.entity.member.Member;
 import com.capstone.liveAloneComunity.exception.member.*;
 import com.capstone.liveAloneComunity.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
