@@ -1,7 +1,6 @@
 package com.capstone.liveAloneComunity.repository.member;
 
-import com.capstone.liveAloneComunity.entity.Member;
-import com.capstone.liveAloneComunity.repository.member.MemberRepositoryCustom;
+import com.capstone.liveAloneComunity.entity.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

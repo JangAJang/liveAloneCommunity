@@ -2,11 +2,11 @@ package com.capstone.liveAloneComunity.service.auth;
 import com.capstone.liveAloneComunity.config.jwt.TokenProvider;
 import com.capstone.liveAloneComunity.dto.auth.*;
 import com.capstone.liveAloneComunity.dto.token.*;
-import com.capstone.liveAloneComunity.entity.Member;
+import com.capstone.liveAloneComunity.entity.member.Member;
 import com.capstone.liveAloneComunity.entity.RefreshToken;
 import com.capstone.liveAloneComunity.exception.authentication.LogInAgainException;
 import com.capstone.liveAloneComunity.repository.member.MemberRepository;
-import com.capstone.liveAloneComunity.repository.RefreshTokenRepository;
+import com.capstone.liveAloneComunity.repository.refreshToken.RefreshTokenRepository;
 import com.capstone.liveAloneComunity.service.member.MemberValidator;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +47,7 @@ public class AuthService {
     }
 
     public TokenResponseDto reissue(ReissueRequestDto reissueRequestDto){
+        reissueRequestDto.deletePrefix();
         tokenValidator.validateRefreshToken(reissueRequestDto);
         Authentication tokenAuthentication = tokenValidator.getAuthentication(reissueRequestDto);
         RefreshToken refreshToken = refreshTokenRepository.findByKey(tokenAuthentication.getName())

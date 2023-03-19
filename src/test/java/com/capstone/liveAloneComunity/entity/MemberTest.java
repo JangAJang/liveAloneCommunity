@@ -3,6 +3,8 @@ package com.capstone.liveAloneComunity.entity;
 import com.capstone.liveAloneComunity.domain.member.MemberInfo;
 import com.capstone.liveAloneComunity.domain.member.Password;
 import com.capstone.liveAloneComunity.domain.member.Username;
+import com.capstone.liveAloneComunity.entity.member.Member;
+import com.capstone.liveAloneComunity.entity.member.Role;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

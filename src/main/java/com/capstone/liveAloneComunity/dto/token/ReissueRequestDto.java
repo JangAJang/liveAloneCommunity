@@ -14,4 +14,11 @@ public class ReissueRequestDto {
     private String refreshToken;
 
     private String accessToken;
+
+    public void deletePrefix(){
+        refreshToken = refreshToken.substring(7);
+        System.out.println(refreshToken);
+        accessToken = accessToken.substring(7);
+        System.out.println(accessToken);
+    }
 }

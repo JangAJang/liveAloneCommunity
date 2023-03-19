@@ -1,6 +1,6 @@
 package com.capstone.liveAloneComunity.dto.member;
 
-import com.capstone.liveAloneComunity.entity.Member;
+import com.capstone.liveAloneComunity.entity.member.Member;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 

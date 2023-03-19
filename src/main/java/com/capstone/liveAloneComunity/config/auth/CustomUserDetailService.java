@@ -1,6 +1,6 @@
 package com.capstone.liveAloneComunity.config.auth;
 
-import com.capstone.liveAloneComunity.entity.Member;
+import com.capstone.liveAloneComunity.entity.member.Member;
 import com.capstone.liveAloneComunity.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
