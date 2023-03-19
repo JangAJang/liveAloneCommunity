@@ -1,4 +1,4 @@
-package com.capstone.liveAloneComunity.service;
+package com.capstone.liveAloneComunity.service.authentication;
 
 import com.capstone.liveAloneComunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneComunity.dto.auth.RegisterRequestDto;
