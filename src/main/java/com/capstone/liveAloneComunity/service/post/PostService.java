@@ -37,6 +37,7 @@ public class PostService {
         return PostResponseDto.toDto(post);
     }
 
+    @Transactional(readOnly = true)
     public MultiPostResponseDto searchPost(SearchPostRequestDto searchPostRequestDto
             , Pageable pageable, SearchPostType searchPostType){
         Page<PostResponseDto> searchResult = postRepository
@@ -44,17 +45,33 @@ public class PostService {
         return new MultiPostResponseDto(searchResult);
     }
 
+    @Transactional(readOnly = true)
     public MultiPostResponseDto getMembersPost(Pageable pageable, Long id){
         Page<PostResponseDto> membersPost = postRepository.getMembersPost(id, pageable);
         return new MultiPostResponseDto(membersPost);
     }
 
+    @Transactional(readOnly = true)
+    public PostResponseDto getPost(Long id){
+        return PostResponseDto.toDto(getPostById(id));
+    }
+
     public PostResponseDto editPost(EditPostRequestDto editPostRequestDto, Member currentMember, Long id){
-        Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+        Post post = getPostById(id);
         validatePostAuthority(currentMember, post);
         post.editTitle(new Title(editPostRequestDto.getTitle()));
         post.editContent(new Content(editPostRequestDto.getContent()));
         return PostResponseDto.toDto(post);
+    }
+
+    public void deletePost(Long id, Member currentMember){
+        Post post = getPostById(id);
+        validatePostAuthority(currentMember, post);
+        postRepository.delete(post);
+    }
+
+    private Post getPostById(Long id) {
+        return postRepository.findById(id).orElseThrow(PostNotFoundException::new);
     }
 
     public void validatePostAuthority(Member member, Post post){
