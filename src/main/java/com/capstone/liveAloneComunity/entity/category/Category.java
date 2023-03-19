@@ -23,9 +23,14 @@ public class Category {
     @Embedded
     private Content content;
 
-    public Category(Title title, Content content) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PARENT_ID")
+    private Category parent;
+
+    public Category(Title title, Content content, Category parent) {
         this.title = title;
         this.content = content;
+        this.parent = parent;
     }
 
     public void edit(CategoryRequestDto categoryRequestDto){
