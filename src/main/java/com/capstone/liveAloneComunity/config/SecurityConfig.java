@@ -4,7 +4,7 @@ import com.capstone.liveAloneComunity.config.jwt.JwtAccessDenialHandler;
 import com.capstone.liveAloneComunity.config.jwt.JwtAuthenticationEntryPoint;
 import com.capstone.liveAloneComunity.config.jwt.JwtSecurityConfig;
 import com.capstone.liveAloneComunity.config.jwt.TokenProvider;
-import lombok.RequiredArgsConstructor;
+import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +28,11 @@ public class SecurityConfig{
     private final JwtAccessDenialHandler jwtAccessDenialHandler;
     private final CorsConfig config;
 
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web) -> web.ignoring().requestMatchers();
+//    }
+
     @Bean
     public PasswordEncoder encode(){
         return new BCryptPasswordEncoder();
@@ -36,7 +41,7 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.httpBasic(withDefaults())
-                .authorizeRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
+                .authorizeHttpRequests().requestMatchers(CorsUtils::isPreFlightRequest).permitAll();
 
         http.addFilter(config.corsFilter())
                 .csrf().disable()
@@ -44,17 +49,15 @@ public class SecurityConfig{
                 .and()
                 .formLogin().disable()
                 .httpBasic().disable();
-
         http.exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDenialHandler)
                 .and()
-                .authorizeRequests()
-                .requestMatchers("/api/auth/logIn", "/api/auth/join").permitAll()
-                .requestMatchers("/api/auth/reissue").access("hasAuthority('USER') or hasAuthority('MANAGER') or hasAuthority('ADMIN')")
-                .requestMatchers("/api/members/**").access("hasAuthority('USER') or hasAuthority('MANAGER') or hasAuthority('ADMIN')")
-                .requestMatchers("/api/posts/**").access("hasAuthority('USER') or hasAuthority('MANAGER') or hasAuthority('ADMIN')")
-                .and()
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/api/auth/logIn", "/api/auth/join").permitAll()
+                        .requestMatchers("/api/auth/reissue").hasAnyAuthority("USER", "MANAGER", "ADMIN")
+                        .requestMatchers("/api/members/**").hasAnyAuthority("USER", "MANAGER", "ADMIN")
+                        .requestMatchers("/api/posts/**").hasAnyAuthority("USER", "MANAGER", "ADMIN"))
                 .apply(new JwtSecurityConfig(tokenProvider));
         return http.build();
     }
