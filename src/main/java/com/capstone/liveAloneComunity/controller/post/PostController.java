@@ -58,12 +58,22 @@ public class PostController {
         return Response.success(postService.writePost(member, writePostRequestDto));
     }
 
-    @PostMapping("/edit")
-    @ApiOperation(value = "게시글 작성", notes = "게시글을 새로 작성한다.")
+    @PatchMapping("/edit")
+    @ApiOperation(value = "게시글 수정", notes = "존재하는 게시물을 수정한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response editPost(@RequestBody EditPostRequestDto editPostRequestDto, @RequestParam("id") Long id){
         Member member = memberRepository.findByUsername_Username(SecurityContextHolder.getContext()
                 .getAuthentication().getName()).orElseThrow(MemberNotFoundException::new);
         return Response.success(postService.editPost(editPostRequestDto, member, id));
+    }
+
+    @DeleteMapping("/delete")
+    @ApiOperation(value = "게시글 삭제", notes = "게시글을 삭제한다.")
+    @ResponseStatus(HttpStatus.OK)
+    public Response deletePost(@RequestParam("id") Long id){
+        Member member = memberRepository.findByUsername_Username(SecurityContextHolder.getContext()
+                .getAuthentication().getName()).orElseThrow(MemberNotFoundException::new);
+        postService.deletePost(id, member);
+        return Response.success();
     }
 }
