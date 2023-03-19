@@ -1,5 +1,6 @@
 package com.capstone.liveAloneComunity.controller.post;
 
+import com.capstone.liveAloneComunity.dto.post.EditPostRequestDto;
 import com.capstone.liveAloneComunity.dto.post.SearchPostRequestDto;
 import com.capstone.liveAloneComunity.dto.post.WritePostRequestDto;
 import com.capstone.liveAloneComunity.entity.member.Member;
@@ -55,5 +56,14 @@ public class PostController {
         Member member = memberRepository.findByUsername_Username(SecurityContextHolder.getContext()
                 .getAuthentication().getName()).orElseThrow(MemberNotFoundException::new);
         return Response.success(postService.writePost(member, writePostRequestDto));
+    }
+
+    @PostMapping("/edit")
+    @ApiOperation(value = "게시글 작성", notes = "게시글을 새로 작성한다.")
+    @ResponseStatus(HttpStatus.OK)
+    public Response editPost(@RequestBody EditPostRequestDto editPostRequestDto, @RequestParam("id") Long id){
+        Member member = memberRepository.findByUsername_Username(SecurityContextHolder.getContext()
+                .getAuthentication().getName()).orElseThrow(MemberNotFoundException::new);
+        return Response.success(postService.editPost(editPostRequestDto, member, id));
     }
 }
