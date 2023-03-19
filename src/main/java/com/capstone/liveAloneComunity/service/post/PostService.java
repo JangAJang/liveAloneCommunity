@@ -2,7 +2,9 @@ package com.capstone.liveAloneComunity.service.post;
 
 import com.capstone.liveAloneComunity.domain.post.Content;
 import com.capstone.liveAloneComunity.domain.post.Title;
+import com.capstone.liveAloneComunity.dto.post.MultiPostResponseDto;
 import com.capstone.liveAloneComunity.dto.post.PostResponseDto;
+import com.capstone.liveAloneComunity.dto.post.SearchPostRequestDto;
 import com.capstone.liveAloneComunity.dto.post.WritePostRequestDto;
 import com.capstone.liveAloneComunity.entity.category.Category;
 import com.capstone.liveAloneComunity.entity.member.Member;
@@ -10,7 +12,10 @@ import com.capstone.liveAloneComunity.entity.post.Post;
 import com.capstone.liveAloneComunity.exception.category.CategoryNotFoundException;
 import com.capstone.liveAloneComunity.repository.category.CategoryRepository;
 import com.capstone.liveAloneComunity.repository.post.PostRepository;
+import com.capstone.liveAloneComunity.repository.post.SearchPostType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,5 +36,12 @@ public class PostService {
                 .category(category).build();
         postRepository.save(post);
         return PostResponseDto.toDto(post);
+    }
+
+    public MultiPostResponseDto searchPost(SearchPostRequestDto searchPostRequestDto
+            , Pageable pageable, SearchPostType searchPostType){
+        Page<PostResponseDto> searchResult = postRepository
+                .searchPost(searchPostRequestDto, searchPostType, pageable);
+        return new MultiPostResponseDto(searchResult);
     }
 }
