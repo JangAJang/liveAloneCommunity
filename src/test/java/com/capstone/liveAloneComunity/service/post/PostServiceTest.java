@@ -144,4 +144,16 @@ public class PostServiceTest {
                 .containsExactly("title15", "title14", "title13", "title12", "title11",
                         "title105", "title104", "title103", "title102", "title101");
     }
+
+    @Test
+    @DisplayName("회원의 아이디를 입력하고 해당 회원의 게시물을 조회하면, 제목의 역순으로 반환된다.")
+    public void getMembersPostTest() throws Exception{
+        //given
+        Long memberId = 1L; // test1
+        //when
+        MultiPostResponseDto membersPost = postService.getMembersPost(PageRequest.of(0, 10), memberId);
+        //then
+        Assertions.assertThat(membersPost.getResult().getContent().stream().map(PostResponseDto::getTitle))
+                .containsExactly("title15", "title14", "title13", "title12", "title11");
+    }
 }
