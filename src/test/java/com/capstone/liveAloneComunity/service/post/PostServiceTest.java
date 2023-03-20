@@ -25,7 +25,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -131,5 +130,18 @@ public class PostServiceTest {
         Assertions.assertThat(multiPostResponseDto.getResult().getContent().stream().map(PostResponseDto::getTitle).toList())
                 .containsExactly("title91", "title81", "title71", "title61", "title51",
                         "title41", "title31", "title21", "title15", "title14");
+    }
+
+    @Test
+    @DisplayName("게시물을 검색할 때, 작성자를 이용해 검색하면, 이에 대한 결과가 이름의 역순으로 페이징처리되어 반환된다.")
+    public void searchPostTest_WRITER() throws Exception{
+        //given
+        SearchPostRequestDto searchPostRequestDto = new SearchPostRequestDto("1", SearchPostType.WRITER);
+        //when
+        MultiPostResponseDto multiPostResponseDto = postService.searchPost(searchPostRequestDto, PageRequest.of(0, 10));
+        //then
+        Assertions.assertThat(multiPostResponseDto.getResult().getContent().stream().map(PostResponseDto::getTitle).toList())
+                .containsExactly("title15", "title14", "title13", "title12", "title11",
+                        "title105", "title104", "title103", "title102", "title101");
     }
 }
