@@ -2,7 +2,9 @@ package com.capstone.liveAloneComunity.service.post;
 
 import com.capstone.liveAloneComunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneComunity.dto.category.CategoryRequestDto;
+import com.capstone.liveAloneComunity.dto.post.MultiPostResponseDto;
 import com.capstone.liveAloneComunity.dto.post.PostResponseDto;
+import com.capstone.liveAloneComunity.dto.post.SearchPostRequestDto;
 import com.capstone.liveAloneComunity.dto.post.WritePostRequestDto;
 import com.capstone.liveAloneComunity.entity.category.Category;
 import com.capstone.liveAloneComunity.entity.member.Member;
@@ -11,6 +13,7 @@ import com.capstone.liveAloneComunity.exception.post.PostNotFoundException;
 import com.capstone.liveAloneComunity.repository.category.CategoryRepository;
 import com.capstone.liveAloneComunity.repository.member.MemberRepository;
 import com.capstone.liveAloneComunity.repository.post.PostRepository;
+import com.capstone.liveAloneComunity.repository.post.SearchPostType;
 import com.capstone.liveAloneComunity.service.auth.AuthService;
 import com.capstone.liveAloneComunity.service.category.CategoryService;
 import org.assertj.core.api.Assertions;
@@ -19,8 +22,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -102,5 +107,16 @@ public class PostServiceTest {
                 .isInstanceOf(PostNotFoundException.class);
     }
 
-
+    @Test
+    @DisplayName("게시물을 검색할 때, 제목을 이용해 검색하면, 이에 대한 결과가 이름의 역순으로 페이징처리되어 반환된다.")
+    public void searchPostTest_TITLE() throws Exception{
+        //given
+        SearchPostRequestDto searchPostRequestDto = new SearchPostRequestDto("title", SearchPostType.TITLE);
+        //when
+        MultiPostResponseDto multiPostResponseDto = postService.searchPost(searchPostRequestDto, PageRequest.of(0, 10));
+        //then
+        Assertions.assertThat(multiPostResponseDto.getResult().getContent().stream().map(PostResponseDto::getTitle).toList())
+                .containsExactly("title95", "title94", "title93", "title92", "title91",
+                        "title85", "title84", "title83", "title82", "title81");
+    }
 }
