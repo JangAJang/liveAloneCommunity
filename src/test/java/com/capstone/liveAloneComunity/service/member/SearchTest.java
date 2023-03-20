@@ -45,7 +45,7 @@ public class SearchTest {
 
     @Test
     @DisplayName("아이디에 test를 검색하면 결과가 10개씩 페이징처리되어 반환된다.")
-    public void searchTest() throws Exception{
+    public void searchTest_Username() throws Exception{
         //given
         SearchMemberDto searchMemberDto = new SearchMemberDto("test", MemberSearchType.USERNAME);
         //when
@@ -54,6 +54,31 @@ public class SearchTest {
         Assertions.assertThat(memberSearchResultDto.getSearchResult().stream().map(MemberResponseDto::getUsername))
                 .containsExactly("test1", "test2", "test3", "test4", "test5",
                         "test6", "test7", "test8", "test9", "test10");
+    }
+
+    @Test
+    @DisplayName("아이디에 test를 검색하면 결과가 10개씩 페이징처리되어 반환된다.")
+    public void searchTest_Nickname() throws Exception{
+        //given
+        SearchMemberDto searchMemberDto = new SearchMemberDto("test", MemberSearchType.NICKNAME);
+        //when
+        MemberSearchResultDto memberSearchResultDto = memberService.searchMember(searchMemberDto, PAGE);
+        //then
+        Assertions.assertThat(memberSearchResultDto.getSearchResult().stream().map(MemberResponseDto::getUsername))
+                .containsExactly("test1", "test2", "test3", "test4", "test5",
+                        "test6", "test7", "test8", "test9", "test10");
+    }
+
+    @Test
+    @DisplayName("아이디에 test를 검색하면 결과가 10개씩 페이징처리되어 반환된다.")
+    public void searchTest_Email() throws Exception{
+        //given
+        SearchMemberDto searchMemberDto = new SearchMemberDto("1", MemberSearchType.EMAIL);
+        //when
+        MemberSearchResultDto memberSearchResultDto = memberService.searchMember(searchMemberDto, PAGE);
+        //then
+        Assertions.assertThat(memberSearchResultDto.getSearchResult().stream().map(MemberResponseDto::getUsername))
+                .containsExactly("test1",  "test10");
     }
 
 }
