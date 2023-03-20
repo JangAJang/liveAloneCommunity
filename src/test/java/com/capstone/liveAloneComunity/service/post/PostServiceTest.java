@@ -204,4 +204,25 @@ public class PostServiceTest {
         Assertions.assertThatThrownBy(() -> postService.editPost(editPostRequestDto, member1, post.getId()))
                 .isInstanceOf(MemberNotAllowedException.class);
     }
+
+    @Test
+    @DisplayName("작성한 멤버가 게시물을 삭제하려하면 정상적으로 삭제시킨다.")
+    public void deleteTest() throws Exception{
+        //given
+        authService.register(RegisterRequestDto.builder()
+                .username("test")
+                .nickname("test")
+                .email("test@test.com")
+                .password("test")
+                .passwordCheck("test").build());
+        Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
+        Category category = categoryRepository.findByTitle_Title("category").orElseThrow(IllegalAccessError::new);
+        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(category.getId(), "title", "content");
+        postService.writePost(member, writePostRequestDto);
+        Post post = postRepository.findByTitle_Title("title").orElseThrow(PostNotFoundException::new);
+        //when
+        postService.deletePost(post.getId(), member);
+        //then
+        Assertions.assertThat(postRepository.findById(post.getId()).isPresent()).isFalse();
+    }
 }
