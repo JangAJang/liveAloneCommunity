@@ -6,6 +6,7 @@ import com.capstone.liveAloneComunity.dto.post.*;
 import com.capstone.liveAloneComunity.entity.category.Category;
 import com.capstone.liveAloneComunity.entity.member.Member;
 import com.capstone.liveAloneComunity.entity.post.Post;
+import com.capstone.liveAloneComunity.exception.member.MemberNotAllowedException;
 import com.capstone.liveAloneComunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneComunity.exception.post.PostNotFoundException;
 import com.capstone.liveAloneComunity.repository.category.CategoryRepository;
@@ -178,5 +179,29 @@ public class PostServiceTest {
         Assertions.assertThat(post.getContent()).isEqualTo(editPostRequestDto.getContent());
         Assertions.assertThat(postRepository.findByTitle_Title("newT").orElseThrow(PostNotFoundException::new).getContent())
                 .isEqualTo("newC");
+    }
+
+    @Test
+    @DisplayName("다른 사람이 작성한 게시물을 수정하려하면, MemberNotAllowedException을 반환한다.")
+    public void editPostFail_NoAuthority() throws Exception{
+        //given
+        EditPostRequestDto editPostRequestDto = new EditPostRequestDto("newT", "newC");
+        authService.register(RegisterRequestDto.builder()
+                .username("test")
+                .nickname("test")
+                .email("test@test.com")
+                .password("test")
+                .passwordCheck("test").build());
+        Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
+        Category category = categoryRepository.findByTitle_Title("category").orElseThrow(IllegalAccessError::new);
+        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(category.getId(), "title", "content");
+        postService.writePost(member, writePostRequestDto);
+        Post post = postRepository.findByTitle_Title("title").orElseThrow(PostNotFoundException::new);
+        Member member1 = memberRepository.findByUsername_Username("test1").orElseThrow(MemberNotFoundException::new);
+        //when
+
+        //then
+        Assertions.assertThatThrownBy(() -> postService.editPost(editPostRequestDto, member1, post.getId()))
+                .isInstanceOf(MemberNotAllowedException.class);
     }
 }
