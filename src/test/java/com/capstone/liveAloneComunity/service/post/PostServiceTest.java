@@ -2,12 +2,10 @@ package com.capstone.liveAloneComunity.service.post;
 
 import com.capstone.liveAloneComunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneComunity.dto.category.CategoryRequestDto;
-import com.capstone.liveAloneComunity.dto.post.MultiPostResponseDto;
-import com.capstone.liveAloneComunity.dto.post.PostResponseDto;
-import com.capstone.liveAloneComunity.dto.post.SearchPostRequestDto;
-import com.capstone.liveAloneComunity.dto.post.WritePostRequestDto;
+import com.capstone.liveAloneComunity.dto.post.*;
 import com.capstone.liveAloneComunity.entity.category.Category;
 import com.capstone.liveAloneComunity.entity.member.Member;
+import com.capstone.liveAloneComunity.entity.post.Post;
 import com.capstone.liveAloneComunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneComunity.exception.post.PostNotFoundException;
 import com.capstone.liveAloneComunity.repository.category.CategoryRepository;
@@ -155,5 +153,28 @@ public class PostServiceTest {
         //then
         Assertions.assertThat(membersPost.getResult().getContent().stream().map(PostResponseDto::getTitle))
                 .containsExactly("title15", "title14", "title13", "title12", "title11");
+    }
+
+    @Test
+    @DisplayName("회원의 게시물을 수정할 때, 작성한 회원이 게시물을 수정하면 제목과 내용을 초기화해준다.")
+    public void editPostTest() throws Exception{
+        //given
+        EditPostRequestDto editPostRequestDto = new EditPostRequestDto("newT", "newC");
+        authService.register(RegisterRequestDto.builder()
+                .username("test")
+                .nickname("test")
+                .email("test@test.com")
+                .password("test")
+                .passwordCheck("test").build());
+        Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
+        Category category = categoryRepository.findByTitle_Title("category").orElseThrow(IllegalAccessError::new);
+        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(category.getId(), "title", "content");
+        postService.writePost(member, writePostRequestDto);
+        Post post = postRepository.findByTitle_Title("title").orElseThrow(PostNotFoundException::new);
+        //when
+        postService.editPost(editPostRequestDto, member, post.getId());
+        //then
+        Assertions.assertThat(post.getTitle()).isEqualTo(editPostRequestDto.getTitle());
+        Assertions.assertThat(post.getContent()).isEqualTo(editPostRequestDto.getContent());
     }
 }
