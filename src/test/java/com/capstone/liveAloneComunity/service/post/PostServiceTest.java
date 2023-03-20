@@ -225,4 +225,50 @@ public class PostServiceTest {
         //then
         Assertions.assertThat(postRepository.findById(post.getId()).isPresent()).isFalse();
     }
+
+    @Test
+    @DisplayName("게시물을 삭제할 때, 해당 게시물의 소유자가 아니면 MemberNotAllowedException을 반환한다.")
+    public void deleteFail() throws Exception{
+        //given
+        authService.register(RegisterRequestDto.builder()
+                .username("test")
+                .nickname("test")
+                .email("test@test.com")
+                .password("test")
+                .passwordCheck("test").build());
+        Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
+        Member member1 = memberRepository.findByUsername_Username("test1").orElseThrow(MemberNotFoundException::new);
+        Category category = categoryRepository.findByTitle_Title("category").orElseThrow(IllegalAccessError::new);
+        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(category.getId(), "title", "content");
+        postService.writePost(member, writePostRequestDto);
+        Post post = postRepository.findByTitle_Title("title").orElseThrow(PostNotFoundException::new);
+        //when
+
+        //then
+        Assertions.assertThatThrownBy(() -> postService.deletePost(post.getId(), member1))
+                .isInstanceOf(MemberNotAllowedException.class);
+    }
+
+    @Test
+    @DisplayName("게시물을 삭제할 때, 존재하지 않는 게시물을 삭제하면 PostNotFoundException을 반환한다.")
+    public void deleteFail_PostNotFound() throws Exception{
+        //given
+        authService.register(RegisterRequestDto.builder()
+                .username("test")
+                .nickname("test")
+                .email("test@test.com")
+                .password("test")
+                .passwordCheck("test").build());
+        Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
+        Member member1 = memberRepository.findByUsername_Username("test1").orElseThrow(MemberNotFoundException::new);
+        Category category = categoryRepository.findByTitle_Title("category").orElseThrow(IllegalAccessError::new);
+        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(category.getId(), "title", "content");
+        postService.writePost(member, writePostRequestDto);
+        Post post = postRepository.findByTitle_Title("title").orElseThrow(PostNotFoundException::new);
+        //when
+
+        //then
+        Assertions.assertThatThrownBy(() -> postService.deletePost(100L, member))
+                .isInstanceOf(PostNotFoundException.class);
+    }
 }
