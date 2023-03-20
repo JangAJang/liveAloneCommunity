@@ -24,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -45,6 +46,8 @@ public class PostServiceTest {
 
     @BeforeEach
     void initTestData(){
+        memberRepository.deleteAll();
+        postRepository.deleteAll();
         categoryService.createCategory(new CategoryRequestDto("category", "categoryDescription"), java.util.Optional.empty());
         Category category = categoryRepository.findByTitle_Title("category").orElseThrow(IllegalAccessError::new);
         IntStream.range(1, 11).forEach(i -> {
@@ -152,7 +155,7 @@ public class PostServiceTest {
         //when
         MultiPostResponseDto membersPost = postService.getMembersPost(PageRequest.of(0, 10), memberId);
         //then
-        Assertions.assertThat(membersPost.getResult().getContent().stream().map(PostResponseDto::getTitle))
+        Assertions.assertThat(membersPost.getResult().getContent().stream().map(PostResponseDto::getTitle).collect(Collectors.toList()))
                 .containsExactly("title15", "title14", "title13", "title12", "title11");
     }
 
@@ -179,6 +182,28 @@ public class PostServiceTest {
         Assertions.assertThat(post.getContent()).isEqualTo(editPostRequestDto.getContent());
         Assertions.assertThat(postRepository.findByTitle_Title("newT").orElseThrow(PostNotFoundException::new).getContent())
                 .isEqualTo("newC");
+    }
+
+    @Test
+    @DisplayName("회원의 게시물을 수정할 때, 존재하지 않는 게시물을 수정하면 PostNotFoundException을 반환한다.")
+    public void editPostFail_NotFound() throws Exception{
+        //given
+        EditPostRequestDto editPostRequestDto = new EditPostRequestDto("newT", "newC");
+        authService.register(RegisterRequestDto.builder()
+                .username("test")
+                .nickname("test")
+                .email("test@test.com")
+                .password("test")
+                .passwordCheck("test").build());
+        Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
+        Category category = categoryRepository.findByTitle_Title("category").orElseThrow(IllegalAccessError::new);
+        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(category.getId(), "title", "content");
+        postService.writePost(member, writePostRequestDto);
+        //when
+
+        //then
+        Assertions.assertThatThrownBy(()-> postService.editPost(editPostRequestDto, member, 100L))
+                .isInstanceOf(PostNotFoundException.class);
     }
 
     @Test
