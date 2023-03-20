@@ -57,7 +57,7 @@ public class SearchTest {
     }
 
     @Test
-    @DisplayName("아이디에 test를 검색하면 결과가 10개씩 페이징처리되어 반환된다.")
+    @DisplayName("닉네임 test를 검색하면 결과가 10개씩 페이징처리되어 반환된다.")
     public void searchTest_Nickname() throws Exception{
         //given
         SearchMemberDto searchMemberDto = new SearchMemberDto("test", MemberSearchType.NICKNAME);
@@ -70,7 +70,7 @@ public class SearchTest {
     }
 
     @Test
-    @DisplayName("아이디에 test를 검색하면 결과가 10개씩 페이징처리되어 반환된다.")
+    @DisplayName("이메일에 1을 검색하면 결과가 1, 10이 페이징처리되어 반환된다.")
     public void searchTest_Email() throws Exception{
         //given
         SearchMemberDto searchMemberDto = new SearchMemberDto("1", MemberSearchType.EMAIL);
@@ -80,5 +80,4 @@ public class SearchTest {
         Assertions.assertThat(memberSearchResultDto.getSearchResult().stream().map(MemberResponseDto::getUsername))
                 .containsExactly("test1",  "test10");
     }
-
 }
