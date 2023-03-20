@@ -9,8 +9,6 @@ import com.capstone.liveAloneComunity.repository.category.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
@@ -21,6 +19,10 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     public void createCategory(CategoryRequestDto categoryRequestDto, Optional<Category> category){
+        if(category.isEmpty()) {
+            categoryRepository.save(new Category(new Title(categoryRequestDto.getTitle()), new Content(categoryRequestDto.getContent()), null));
+            return;
+        }
         categoryRepository.save(new Category(new Title(categoryRequestDto.getTitle()), new Content(categoryRequestDto.getContent()), category.get()));
     }
 

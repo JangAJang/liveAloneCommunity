@@ -38,7 +38,7 @@ public class PostController {
     public Response searchPost(@RequestBody SearchPostRequestDto searchPostRequestDto,
                                @PageableDefault Pageable pageable,
                                @RequestParam SearchPostType searchPostType){
-        return Response.success(postService.searchPost(searchPostRequestDto, pageable, searchPostType));
+        return Response.success(postService.searchPost(searchPostRequestDto, pageable));
     }
 
     @GetMapping("/of")
