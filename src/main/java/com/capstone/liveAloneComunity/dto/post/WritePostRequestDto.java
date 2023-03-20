@@ -24,7 +24,8 @@ public class WritePostRequestDto {
     private String content;
 
     @Builder
-    public WritePostRequestDto(String title, String content){
+    public WritePostRequestDto(Long categoryId, String title, String content){
+        this.categoryId = categoryId;
         this.title = title;
         this.content = content;
     }
