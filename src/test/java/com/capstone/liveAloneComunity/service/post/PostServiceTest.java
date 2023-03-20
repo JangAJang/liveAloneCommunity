@@ -176,5 +176,7 @@ public class PostServiceTest {
         //then
         Assertions.assertThat(post.getTitle()).isEqualTo(editPostRequestDto.getTitle());
         Assertions.assertThat(post.getContent()).isEqualTo(editPostRequestDto.getContent());
+        Assertions.assertThat(postRepository.findByTitle_Title("newT").orElseThrow(PostNotFoundException::new).getContent())
+                .isEqualTo("newC");
     }
 }
