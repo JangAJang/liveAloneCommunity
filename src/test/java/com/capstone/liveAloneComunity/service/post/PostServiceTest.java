@@ -89,4 +89,18 @@ public class PostServiceTest {
         //then
         Assertions.assertThat(postResponseDto.getTitle()).isEqualTo("title11");
     }
+
+    @Test
+    @DisplayName("게시물이 존재하지 않으면, PostNotFoundException을 반환한다..")
+    public void getPostTest_FAIL() throws Exception{
+        //given
+
+        //when
+
+        //then
+        Assertions.assertThatThrownBy(() -> postService.getPost(70L))
+                .isInstanceOf(PostNotFoundException.class);
+    }
+
+
 }

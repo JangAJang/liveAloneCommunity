@@ -1,5 +1,6 @@
 package com.capstone.liveAloneComunity.dto.post;
 
+import com.capstone.liveAloneComunity.repository.post.SearchPostType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -16,7 +17,10 @@ public class SearchPostRequestDto {
     @NotEmpty(message = "검색할 내용을 입력해주세요.")
     private String text;
 
-    public SearchPostRequestDto(String text) {
+    private SearchPostType searchPostType;
+
+    public SearchPostRequestDto(String text, SearchPostType searchPostType) {
         this.text = text;
+        this.searchPostType  = searchPostType;
     }
 }

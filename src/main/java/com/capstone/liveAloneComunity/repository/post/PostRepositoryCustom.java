@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface PostRepositoryCustom {
 
-    Page<PostResponseDto> searchPost(SearchPostRequestDto searchPostRequestDto, SearchPostType searchPostType, Pageable pageable);
+    Page<PostResponseDto> searchPost(SearchPostRequestDto searchPostRequestDto, Pageable pageable);
 
     Page<PostResponseDto> getMembersPost(Long id, Pageable pageable);
 }
