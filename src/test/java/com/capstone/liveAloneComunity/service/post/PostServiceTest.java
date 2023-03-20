@@ -119,4 +119,17 @@ public class PostServiceTest {
                 .containsExactly("title95", "title94", "title93", "title92", "title91",
                         "title85", "title84", "title83", "title82", "title81");
     }
+
+    @Test
+    @DisplayName("게시물을 검색할 때, 내용을 이용해 검색하면, 이에 대한 결과가 이름의 역순으로 페이징처리되어 반환된다.")
+    public void searchPostTest_CONTENT() throws Exception{
+        //given
+        SearchPostRequestDto searchPostRequestDto = new SearchPostRequestDto("1", SearchPostType.CONTENT);
+        //when
+        MultiPostResponseDto multiPostResponseDto = postService.searchPost(searchPostRequestDto, PageRequest.of(0, 10));
+        //then
+        Assertions.assertThat(multiPostResponseDto.getResult().getContent().stream().map(PostResponseDto::getTitle).toList())
+                .containsExactly("title91", "title81", "title71", "title61", "title51",
+                        "title41", "title31", "title21", "title15", "title14");
+    }
 }
