@@ -11,7 +11,6 @@ import com.capstone.liveAloneComunity.exception.member.MemberNotAllowedException
 import com.capstone.liveAloneComunity.exception.post.PostNotFoundException;
 import com.capstone.liveAloneComunity.repository.category.CategoryRepository;
 import com.capstone.liveAloneComunity.repository.post.PostRepository;
-import com.capstone.liveAloneComunity.repository.post.SearchPostType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +26,8 @@ public class PostService {
     private final CategoryRepository categoryRepository;
 
     public PostResponseDto writePost(Member member, WritePostRequestDto writePostRequestDto){
-        Category category = categoryRepository.findById(writePostRequestDto.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
+        Category category = categoryRepository.findById(writePostRequestDto.getCategoryId())
+                .orElseThrow(CategoryNotFoundException::new);
         Post post = Post.builder()
                 .title(new Title(writePostRequestDto.getTitle()))
                 .content(new Content(writePostRequestDto.getContent()))
@@ -75,6 +75,6 @@ public class PostService {
     }
 
     public void validatePostAuthority(Member member, Post post){
-        if(!post.getMember().equals(member)) throw new MemberNotAllowedException();
+        if(!post.isWriter(member)) throw new MemberNotAllowedException();
     }
 }

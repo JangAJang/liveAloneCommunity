@@ -23,7 +23,8 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
 
     @Override
     public Page<MemberResponseDto> searchMember(SearchMemberDto searchMemberDto, Pageable pageable) {
-        QueryResults<MemberResponseDto> result = query.select(new QMemberResponseDto(member.id, member.username.username,
+        QueryResults<MemberResponseDto> result = query.select(new QMemberResponseDto(member.id,
+                        member.username.username,
                         member.memberInfo.nickname, member.memberInfo.email))
                 .from(member)
                 .where(getContains(searchMemberDto))

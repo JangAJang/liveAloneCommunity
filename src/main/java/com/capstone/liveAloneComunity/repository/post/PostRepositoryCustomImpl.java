@@ -34,21 +34,6 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
         return new PageImpl<>(result.getResults(), pageable, result.getTotal());
     }
 
-    @Override
-    public Page<PostResponseDto> getMembersPost(Long id, Pageable pageable) {
-        QueryResults<PostResponseDto> result = queryFactory
-                .select(new QPostResponseDto(post.id, member.memberInfo.nickname.as("writer"),
-                        post.title.title, post.content.content))
-                .from(post)
-                .leftJoin(post.member, member)
-                .where(member.id.eq(id))
-                .orderBy(post.title.title.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetchResults();
-        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
-    }
-
     private BooleanExpression makeConditionQuery(String text, SearchPostType searchPostType){
         if(searchPostType.equals(SearchPostType.WRITER) || searchPostType.equals(SearchPostType.WRITER_AND_TITLE))
             return makeConditionQueryWithMember(text, searchPostType);
@@ -67,5 +52,20 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
         if(searchPostType.equals(SearchPostType.CONTENT))
             return post.content.content.contains(text);
         return post.title.title.contains(text).or(post.content.content.contains(text));
+    }
+
+    @Override
+    public Page<PostResponseDto> getMembersPost(Long id, Pageable pageable) {
+        QueryResults<PostResponseDto> result = queryFactory
+                .select(new QPostResponseDto(post.id, member.memberInfo.nickname.as("writer"),
+                        post.title.title, post.content.content))
+                .from(post)
+                .leftJoin(post.member, member)
+                .where(member.id.eq(id))
+                .orderBy(post.title.title.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
     }
 }

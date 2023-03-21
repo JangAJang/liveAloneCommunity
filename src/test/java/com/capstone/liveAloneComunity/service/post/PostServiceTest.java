@@ -151,7 +151,7 @@ public class PostServiceTest {
     @DisplayName("회원의 아이디를 입력하고 해당 회원의 게시물을 조회하면, 제목의 역순으로 반환된다.")
     public void getMembersPostTest() throws Exception{
         //given
-        Long memberId = 1L; // test1
+        Long memberId = memberRepository.findByUsername_Username("test1").orElseThrow(MemberNotFoundException::new).getId();
         //when
         MultiPostResponseDto membersPost = postService.getMembersPost(PageRequest.of(0, 10), memberId);
         //then
