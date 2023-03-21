@@ -27,7 +27,8 @@ public class PostService {
     private final CategoryRepository categoryRepository;
 
     public PostResponseDto writePost(Member member, WritePostRequestDto writePostRequestDto){
-        Category category = categoryRepository.findById(writePostRequestDto.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
+        Category category = categoryRepository.findById(writePostRequestDto.getCategoryId())
+                .orElseThrow(CategoryNotFoundException::new);
         Post post = Post.builder()
                 .title(new Title(writePostRequestDto.getTitle()))
                 .content(new Content(writePostRequestDto.getContent()))
