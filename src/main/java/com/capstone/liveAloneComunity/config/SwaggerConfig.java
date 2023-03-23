@@ -29,7 +29,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.OAS_30)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.board"))
+                .apis(RequestHandlerSelectors.basePackage("com.capstone"))
                 .paths(PathSelectors.any())
                 .build()
                 .securityContexts(Arrays.asList(securityContext()))
@@ -39,9 +39,9 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("게시판만들기")
+                .title("Live-Alone-Network")
                 .license("janghee5395@gmail.com")
-                .licenseUrl("https://github.com/JangAJang/Board_Upgraded")
+                .licenseUrl("https://github.com/JangAJang/liveAloneComunity")
                 .version("1.0")
                 .build();
     }
