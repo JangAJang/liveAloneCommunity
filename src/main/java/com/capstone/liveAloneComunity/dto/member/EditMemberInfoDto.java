@@ -1,6 +1,5 @@
 package com.capstone.liveAloneComunity.dto.member;
 
-import com.capstone.liveAloneComunity.domain.member.MemberInfo;
 import lombok.*;
 
 @Getter
