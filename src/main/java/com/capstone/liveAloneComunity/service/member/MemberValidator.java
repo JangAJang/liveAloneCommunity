@@ -40,7 +40,7 @@ public class MemberValidator {
 
     public void validateChangePasswordRequest(Member member, ChangePasswordRequestDto changePasswordRequestDto){
         validatePassword(changePasswordRequestDto.getNewPassword(), changePasswordRequestDto.getNewPasswordCheck());
-        if(!member.isRightPassword(changePasswordRequestDto.getNewPassword(), passwordEncoder))
+        if(!member.isRightPassword(changePasswordRequestDto.getCurrentPassword(), passwordEncoder))
             throw new CurrentPasswordWrongException();
     }
 
