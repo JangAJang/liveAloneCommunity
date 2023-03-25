@@ -52,10 +52,11 @@ public class SecurityConfig{
                 .accessDeniedHandler(jwtAccessDenialHandler)
                 .and()
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/auth/logIn", "/api/auth/join").permitAll()
+                        .requestMatchers("/api/auth/logIn", "/api/auth/register").permitAll()
                         .requestMatchers("/api/auth/reissue").hasAnyAuthority("USER", "MANAGER", "ADMIN")
                         .requestMatchers("/api/members/**").hasAnyAuthority("USER", "MANAGER", "ADMIN")
-                        .requestMatchers("/api/posts/**").hasAnyAuthority("USER", "MANAGER", "ADMIN"))
+                        .requestMatchers("/api/posts/**").hasAnyAuthority("USER", "MANAGER", "ADMIN")
+                        .anyRequest().authenticated())
                 .apply(new JwtSecurityConfig(tokenProvider));
         return http.build();
     }
