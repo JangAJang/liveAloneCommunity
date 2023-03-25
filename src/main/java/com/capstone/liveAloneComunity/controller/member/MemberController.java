@@ -11,6 +11,7 @@ import com.capstone.liveAloneComunity.service.member.MemberService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -35,8 +36,8 @@ public class MemberController {
     @GetMapping("/search")
     @ApiOperation(value = "회원 검색", notes = "회원의 DB의 번호, 아이디, 닉네임, 이메일을 검색한 값을 포함하는 페이지로 반환한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response searchMember(@RequestBody SearchMemberDto searchMemberDto, @PageableDefault PageRequest pageRequest){
-        return Response.success(memberService.searchMember(searchMemberDto, pageRequest));
+    public Response searchMember(@RequestBody SearchMemberDto searchMemberDto, @PageableDefault Pageable pageable){
+        return Response.success(memberService.searchMember(searchMemberDto, pageable));
     }
 
     @PatchMapping("/edit")
