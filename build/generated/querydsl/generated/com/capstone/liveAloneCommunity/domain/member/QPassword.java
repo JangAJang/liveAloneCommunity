@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEmbeddableSerializer")
 public class QPassword extends BeanPath<Password> {
 
-    private static final long serialVersionUID = 1144426686L;
+    private static final long serialVersionUID = -1367577557L;
 
     public static final QPassword password1 = new QPassword("password1");
 

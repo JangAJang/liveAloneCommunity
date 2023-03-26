@@ -27,11 +27,11 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.OAS_30)
-                .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.capstone"))
+                .apis(RequestHandlerSelectors.basePackage("com.capstone.liveAloneCommunity"))
                 .paths(PathSelectors.any())
                 .build()
+                .apiInfo(apiInfo())
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()));
 
@@ -41,7 +41,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("Live-Alone-Network")
                 .license("janghee5395@gmail.com")
-                .licenseUrl("https://github.com/JangAJang/liveAloneComunity")
+                .licenseUrl("https://github.com/JangAJang/liveAloneCommunity")
                 .version("1.0")
                 .build();
     }
