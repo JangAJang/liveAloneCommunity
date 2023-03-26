@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,11 +25,17 @@ public class SecurityConfig{
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDenialHandler jwtAccessDenialHandler;
     private final CorsConfig config;
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/swagger-ui/**", "swagger/**");
-    }
+    private static final String[] PERMIT_URL_ARRAY = {
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+    };
 
     @Bean
     public PasswordEncoder encode(){
@@ -44,6 +49,13 @@ public class SecurityConfig{
 
         http.addFilter(config.corsFilter())
                 .csrf().disable()
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers(PERMIT_URL_ARRAY).permitAll()
+                        .requestMatchers("/api/auth/logIn", "/api/auth/register").permitAll()
+                        .requestMatchers("/api/auth/reissue").hasAnyAuthority("USER", "MANAGER", "ADMIN")
+                        .requestMatchers("/api/members/**").hasAnyAuthority("USER", "MANAGER", "ADMIN")
+                        .requestMatchers("/api/posts/**").hasAnyAuthority("USER", "MANAGER", "ADMIN")
+                        .anyRequest().authenticated())
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin().disable()
@@ -52,12 +64,6 @@ public class SecurityConfig{
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDenialHandler)
                 .and()
-                .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/auth/logIn", "/api/auth/register").permitAll()
-                        .requestMatchers("/api/auth/reissue").hasAnyAuthority("USER", "MANAGER", "ADMIN")
-                        .requestMatchers("/api/members/**").hasAnyAuthority("USER", "MANAGER", "ADMIN")
-                        .requestMatchers("/api/posts/**").hasAnyAuthority("USER", "MANAGER", "ADMIN")
-                        .anyRequest().authenticated())
                 .apply(new JwtSecurityConfig(tokenProvider));
         return http.build();
     }
