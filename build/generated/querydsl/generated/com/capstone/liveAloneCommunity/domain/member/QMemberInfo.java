@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEmbeddableSerializer")
 public class QMemberInfo extends BeanPath<MemberInfo> {
 
-    private static final long serialVersionUID = 1943691211L;
+    private static final long serialVersionUID = 1679234040L;
 
     public static final QMemberInfo memberInfo = new QMemberInfo("memberInfo");
 

@@ -9,6 +9,7 @@ import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.response.Response;
 import com.capstone.liveAloneCommunity.service.member.MemberService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -26,28 +27,28 @@ public class MemberController {
     private final MemberRepository memberRepository;
 
     @GetMapping("")
-    @ApiOperation(value = "회원 조회", notes = "회원의 DB의 번호, 아이디, 닉네임, 이메일을 조회한다.")
+    @Operation(summary = "회원 조회", description = "회원의 DB의 번호, 아이디, 닉네임, 이메일을 조회한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response getMemberInfo(@RequestParam Long id){
         return Response.success(memberService.getMemberInfo(id));
     }
 
     @GetMapping("/search")
-    @ApiOperation(value = "회원 검색", notes = "회원의 DB의 번호, 아이디, 닉네임, 이메일을 검색한 값을 포함하는 페이지로 반환한다.")
+    @Operation(summary = "회원 검색", description = "회원의 DB의 번호, 아이디, 닉네임, 이메일을 검색한 값을 포함하는 페이지로 반환한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response searchMember(@RequestBody SearchMemberDto searchMemberDto, @PageableDefault Pageable pageable){
         return Response.success(memberService.searchMember(searchMemberDto, pageable));
     }
 
     @PatchMapping("/edit")
-    @ApiOperation(value = "회원 정보 수정", notes = "회원의 이메일, 닉네임을 수정한다.")
+    @Operation(summary = "회원 정보 수정", description = "회원의 이메일, 닉네임을 수정한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response editMemberInfo(@RequestBody EditMemberInfoDto editMemberInfoDto, @RequestParam Long id){
         return Response.success(memberService.editMember(id, editMemberInfoDto, getMember()));
     }
 
     @PatchMapping("/changePassword")
-    @ApiOperation(value = "비밀번호 변경", notes = "현재비밀번호, 새 비밀번호, 새 비밀번호 다시 입력을 입력하면 비밀번호를 수정한다.")
+    @Operation(summary = "비밀번호 변경", description = "현재비밀번호, 새 비밀번호, 새 비밀번호 다시 입력을 입력하면 비밀번호를 수정한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response changePassword(@RequestParam Long id, @RequestBody ChangePasswordRequestDto changePasswordRequestDto){
         memberService.changePassword(id, getMember(), changePasswordRequestDto);
@@ -55,7 +56,7 @@ public class MemberController {
     }
 
     @DeleteMapping("/delete")
-    @ApiOperation(value = "회원 삭제", notes = "회원 삭제(회원 탈퇴)를 수행한다.")
+    @Operation(summary = "회원 삭제", description = "회원 삭제(회원 탈퇴)를 수행한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response deleteMember(@RequestParam Long id){
         memberService.deleteMember(id, getMember());

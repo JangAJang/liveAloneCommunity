@@ -1,5 +1,3 @@
-
-
 server:
   port: 8080
   servlet:
@@ -18,12 +16,19 @@ spring:
     hibernate:
       ddl-auto: create #create update none
     show-sql: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   data:
     web:
       pageable:
         one-indexed-parameters: true
         default-page-size: 10
-
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
 
 jwt:
   secret: 9q28hinltgiahsd098ehan5optiugsdu908hnbrio5tu3h0w98BHNOP354H4R26f8wbnaet0a98ehgdspoih59083hwneodfghjso

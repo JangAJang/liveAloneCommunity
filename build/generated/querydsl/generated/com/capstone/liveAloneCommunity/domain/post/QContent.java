@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEmbeddableSerializer")
 public class QContent extends BeanPath<Content> {
 
-    private static final long serialVersionUID = 1070186044L;
+    private static final long serialVersionUID = -1922145809L;
 
     public static final QContent content1 = new QContent("content1");
 

@@ -10,6 +10,7 @@ import com.capstone.liveAloneCommunity.repository.post.SearchPostType;
 import com.capstone.liveAloneCommunity.response.Response;
 import com.capstone.liveAloneCommunity.service.post.PostService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -26,14 +27,14 @@ public class PostController {
     private final MemberRepository memberRepository;
 
     @GetMapping("/")
-    @ApiOperation(value = "게시물 단건 조회", notes = "게시물 단건을 조회한다.")
+    @Operation(summary = "게시물 단건 조회", description = "게시물 단건을 조회한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response getPost(@RequestParam("id") Long id){
         return Response.success(postService.getPost(id));
     }
 
     @GetMapping("/search")
-    @ApiOperation(value = "게시물 검색", notes = "게시물을 검색해 페이징처리해 반환한다.")
+    @Operation(summary = "게시물 검색", description = "게시물을 검색해 페이징처리해 반환한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response searchPost(@RequestBody SearchPostRequestDto searchPostRequestDto,
                                @PageableDefault Pageable pageable,
@@ -42,14 +43,14 @@ public class PostController {
     }
 
     @GetMapping("/of")
-    @ApiOperation(value = "회원의 게시물 조회", notes = "회원의 게시물을 이름의 역순으로 조회한다.")
+    @Operation(summary = "회원의 게시물 조회", description = "회원의 게시물을 이름의 역순으로 조회한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response getMembersPost(@RequestParam("member") Long id, @PageableDefault Pageable pageable){
         return Response.success(postService.getMembersPost(pageable, id));
     }
 
     @PostMapping("/write")
-    @ApiOperation(value = "게시글 작성", notes = "게시글을 새로 작성한다.")
+    @Operation(summary = "게시글 작성", description = "게시글을 새로 작성한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response writePost(@RequestBody WritePostRequestDto writePostRequestDto){
         Member member = memberRepository.findByUsername_Username(SecurityContextHolder.getContext()
@@ -58,7 +59,7 @@ public class PostController {
     }
 
     @PatchMapping("/edit")
-    @ApiOperation(value = "게시글 수정", notes = "존재하는 게시물을 수정한다.")
+    @Operation(summary = "게시글 수정", description = "존재하는 게시물을 수정한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response editPost(@RequestBody EditPostRequestDto editPostRequestDto, @RequestParam("id") Long id){
         Member member = memberRepository.findByUsername_Username(SecurityContextHolder.getContext()
@@ -67,7 +68,7 @@ public class PostController {
     }
 
     @DeleteMapping("/delete")
-    @ApiOperation(value = "게시글 삭제", notes = "게시글을 삭제한다.")
+    @Operation(summary = "게시글 삭제", description = "게시글을 삭제한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response deletePost(@RequestParam("id") Long id){
         Member member = memberRepository.findByUsername_Username(SecurityContextHolder.getContext()
