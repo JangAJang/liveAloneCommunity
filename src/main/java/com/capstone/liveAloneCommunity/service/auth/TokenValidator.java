@@ -13,15 +13,9 @@ public class TokenValidator {
 
     private final TokenProvider tokenProvider;
 
-    public void validateRefreshToken(ReissueRequestDto reissueRequestDto){
-        if (!tokenProvider.validateToken(reissueRequestDto.getRefreshToken())) {
+    public void validateRefreshToken(RefreshToken refreshToken){
+        if (!tokenProvider.validateToken(refreshToken.getValue())) {
             throw new UnvalidRefreshTokenException();
-        }
-    }
-
-    public void validateTokenInfo(RefreshToken refreshToken, ReissueRequestDto reissueRequestDto){
-        if (!refreshToken.getValue().equals(reissueRequestDto.getRefreshToken())) {
-            throw new TokenUnmatchWithMemberException();
         }
     }
 

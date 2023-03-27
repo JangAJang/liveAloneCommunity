@@ -5,6 +5,7 @@ import com.capstone.liveAloneCommunity.dto.token.*;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.RefreshToken;
 import com.capstone.liveAloneCommunity.exception.authentication.LogInAgainException;
+import com.capstone.liveAloneCommunity.exception.authentication.NeedToLoginException;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.repository.refreshToken.RefreshTokenRepository;
 import com.capstone.liveAloneCommunity.service.member.MemberValidator;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,11 +50,10 @@ public class AuthService {
 
     public TokenResponseDto reissue(ReissueRequestDto reissueRequestDto){
         reissueRequestDto.deletePrefix();
-        tokenValidator.validateRefreshToken(reissueRequestDto);
+        RefreshToken refreshToken = refreshTokenRepository.findByKey(SecurityContextHolder.getContext().getAuthentication().getName())
+                        .orElseThrow(NeedToLoginException::new);
+        tokenValidator.validateRefreshToken(refreshToken);
         Authentication tokenAuthentication = tokenValidator.getAuthentication(reissueRequestDto);
-        RefreshToken refreshToken = refreshTokenRepository.findByKey(tokenAuthentication.getName())
-                .orElseThrow(LogInAgainException::new);
-        tokenValidator.validateTokenInfo(refreshToken, reissueRequestDto);
         TokenDto tokenDto = tokenProvider.generateTokenDto(tokenAuthentication);
         refreshToken.updateValue(tokenDto.getRefreshToken());
         return new TokenResponseDto(tokenDto);
