@@ -22,7 +22,7 @@ public class QPost extends EntityPathBase<Post> {
 
     public static final QPost post = new QPost("post");
 
-    public final com.capstone.liveAloneCommunity.entity.category.QCategory category;
+    public final EnumPath<com.capstone.liveAloneCommunity.domain.post.Category> category = createEnum("category", com.capstone.liveAloneCommunity.domain.post.Category.class);
 
     public final com.capstone.liveAloneCommunity.domain.post.QContent content;
 
@@ -50,7 +50,6 @@ public class QPost extends EntityPathBase<Post> {
 
     public QPost(Class<? extends Post> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.category = inits.isInitialized("category") ? new com.capstone.liveAloneCommunity.entity.category.QCategory(forProperty("category"), inits.get("category")) : null;
         this.content = inits.isInitialized("content") ? new com.capstone.liveAloneCommunity.domain.post.QContent(forProperty("content")) : null;
         this.member = inits.isInitialized("member") ? new com.capstone.liveAloneCommunity.entity.member.QMember(forProperty("member"), inits.get("member")) : null;
         this.title = inits.isInitialized("title") ? new com.capstone.liveAloneCommunity.domain.post.QTitle(forProperty("title")) : null;

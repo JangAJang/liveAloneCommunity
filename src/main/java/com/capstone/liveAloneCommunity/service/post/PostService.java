@@ -3,13 +3,10 @@ package com.capstone.liveAloneCommunity.service.post;
 import com.capstone.liveAloneCommunity.domain.post.Content;
 import com.capstone.liveAloneCommunity.domain.post.Title;
 import com.capstone.liveAloneCommunity.dto.post.*;
-import com.capstone.liveAloneCommunity.entity.category.Category;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.post.Post;
-import com.capstone.liveAloneCommunity.exception.category.CategoryNotFoundException;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotAllowedException;
 import com.capstone.liveAloneCommunity.exception.post.PostNotFoundException;
-import com.capstone.liveAloneCommunity.repository.category.CategoryRepository;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,16 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final CategoryRepository categoryRepository;
 
     public PostResponseDto writePost(Member member, WritePostRequestDto writePostRequestDto){
-        Category category = categoryRepository.findById(writePostRequestDto.getCategoryId())
-                .orElseThrow(CategoryNotFoundException::new);
         Post post = Post.builder()
                 .title(new Title(writePostRequestDto.getTitle()))
                 .content(new Content(writePostRequestDto.getContent()))
                 .member(member)
-                .category(category).build();
+                .category(writePostRequestDto.getCategory()).build();
         postRepository.save(post);
         return PostResponseDto.toDto(post);
     }

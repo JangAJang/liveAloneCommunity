@@ -1,20 +1,18 @@
 package com.capstone.liveAloneCommunity.service.post;
 
+import com.capstone.liveAloneCommunity.domain.post.Category;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneCommunity.dto.category.CategoryRequestDto;
 import com.capstone.liveAloneCommunity.dto.post.*;
-import com.capstone.liveAloneCommunity.entity.category.Category;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.post.Post;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotAllowedException;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneCommunity.exception.post.PostNotFoundException;
-import com.capstone.liveAloneCommunity.repository.category.CategoryRepository;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
 import com.capstone.liveAloneCommunity.repository.post.SearchPostType;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
-import com.capstone.liveAloneCommunity.service.category.CategoryService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import static com.capstone.liveAloneCommunity.domain.post.Category.*;
 
 @SpringBootTest
 @Transactional
@@ -39,17 +39,11 @@ public class PostServiceTest {
     private MemberRepository memberRepository;
     @Autowired
     private PostRepository postRepository;
-    @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     @BeforeEach
     void initTestData(){
         memberRepository.deleteAll();
         postRepository.deleteAll();
-        categoryService.createCategory(new CategoryRequestDto("category", "categoryDescription"), java.util.Optional.empty());
-        Category category = categoryRepository.findByTitle_Title("category").orElseThrow(IllegalAccessError::new);
         IntStream.range(1, 11).forEach(i -> {
             authService.register(RegisterRequestDto.builder()
                     .username("test" + i)
@@ -60,7 +54,7 @@ public class PostServiceTest {
             Member member = memberRepository.findByUsername_Username("test"+i).orElseThrow(MemberNotFoundException::new);
             IntStream.range(i*10+1, i*10+6).forEach(index ->
                     postService.writePost(member, WritePostRequestDto.builder()
-                            .categoryId(category.getId())
+                            .category(COOKING)
                             .title("title"+index)
                             .content("content" + index).build()));
         });
@@ -77,8 +71,7 @@ public class PostServiceTest {
                 .password("test")
                 .passwordCheck("test").build());
         Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
-        Category category = categoryRepository.findByTitle_Title("category").orElseThrow(IllegalAccessError::new);
-        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(category.getId(), "title", "content");
+        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(COOKING, "title", "content");
         //when
         postService.writePost(member, writePostRequestDto);
         //then
@@ -171,8 +164,7 @@ public class PostServiceTest {
                 .password("test")
                 .passwordCheck("test").build());
         Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
-        Category category = categoryRepository.findByTitle_Title("category").orElseThrow(IllegalAccessError::new);
-        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(category.getId(), "title", "content");
+        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(COOKING, "title", "content");
         postService.writePost(member, writePostRequestDto);
         Post post = postRepository.findByTitle_Title("title").orElseThrow(PostNotFoundException::new);
         //when
@@ -196,8 +188,7 @@ public class PostServiceTest {
                 .password("test")
                 .passwordCheck("test").build());
         Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
-        Category category = categoryRepository.findByTitle_Title("category").orElseThrow(IllegalAccessError::new);
-        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(category.getId(), "title", "content");
+        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(COOKING, "title", "content");
         postService.writePost(member, writePostRequestDto);
         //when
 
@@ -218,8 +209,7 @@ public class PostServiceTest {
                 .password("test")
                 .passwordCheck("test").build());
         Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
-        Category category = categoryRepository.findByTitle_Title("category").orElseThrow(IllegalAccessError::new);
-        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(category.getId(), "title", "content");
+        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(COOKING, "title", "content");
         postService.writePost(member, writePostRequestDto);
         Post post = postRepository.findByTitle_Title("title").orElseThrow(PostNotFoundException::new);
         Member member1 = memberRepository.findByUsername_Username("test1").orElseThrow(MemberNotFoundException::new);
@@ -241,8 +231,7 @@ public class PostServiceTest {
                 .password("test")
                 .passwordCheck("test").build());
         Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
-        Category category = categoryRepository.findByTitle_Title("category").orElseThrow(IllegalAccessError::new);
-        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(category.getId(), "title", "content");
+        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(COOKING, "title", "content");
         postService.writePost(member, writePostRequestDto);
         Post post = postRepository.findByTitle_Title("title").orElseThrow(PostNotFoundException::new);
         //when
@@ -263,8 +252,7 @@ public class PostServiceTest {
                 .passwordCheck("test").build());
         Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
         Member member1 = memberRepository.findByUsername_Username("test1").orElseThrow(MemberNotFoundException::new);
-        Category category = categoryRepository.findByTitle_Title("category").orElseThrow(IllegalAccessError::new);
-        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(category.getId(), "title", "content");
+        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(COOKING, "title", "content");
         postService.writePost(member, writePostRequestDto);
         Post post = postRepository.findByTitle_Title("title").orElseThrow(PostNotFoundException::new);
         //when
@@ -286,8 +274,7 @@ public class PostServiceTest {
                 .passwordCheck("test").build());
         Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
         Member member1 = memberRepository.findByUsername_Username("test1").orElseThrow(MemberNotFoundException::new);
-        Category category = categoryRepository.findByTitle_Title("category").orElseThrow(IllegalAccessError::new);
-        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(category.getId(), "title", "content");
+        WritePostRequestDto writePostRequestDto = new WritePostRequestDto(COOKING, "title", "content");
         postService.writePost(member, writePostRequestDto);
         Post post = postRepository.findByTitle_Title("title").orElseThrow(PostNotFoundException::new);
         //when

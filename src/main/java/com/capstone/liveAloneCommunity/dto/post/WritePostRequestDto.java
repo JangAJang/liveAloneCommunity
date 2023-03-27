@@ -1,5 +1,6 @@
 package com.capstone.liveAloneCommunity.dto.post;
 
+import com.capstone.liveAloneCommunity.domain.post.Category;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class WritePostRequestDto {
 
-    private Long categoryId;
+    private Category category;
 
     @NotNull(message = "제목을 입력하세요.")
     @NotEmpty(message = "제목을 입력하세요.")
@@ -24,8 +25,8 @@ public class WritePostRequestDto {
     private String content;
 
     @Builder
-    public WritePostRequestDto(Long categoryId, String title, String content){
-        this.categoryId = categoryId;
+    public WritePostRequestDto(Category category, String title, String content){
+        this.category = category;
         this.title = title;
         this.content = content;
     }
