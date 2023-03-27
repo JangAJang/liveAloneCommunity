@@ -38,7 +38,7 @@ public class SecurityConfig{
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/v3/api-docs**",
-            "/swagger-ui**"
+            "/swagger-ui**", "/error"
     };
 
     @Bean
@@ -46,10 +46,10 @@ public class SecurityConfig{
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public WebSecurityCustomizer customizer() throws Exception{
-        return (web) -> web.ignoring().requestMatchers(PERMIT_URL_ARRAY);
-    }
+//    @Bean
+//    public WebSecurityCustomizer customizer() throws Exception{
+//        return (web) -> web.ignoring().requestMatchers(PERMIT_URL_ARRAY);
+//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -59,6 +59,7 @@ public class SecurityConfig{
         http.addFilter(config.corsFilter())
                 .csrf().disable()
                 .authorizeHttpRequests(request -> request
+                        .requestMatchers(PERMIT_URL_ARRAY).permitAll()
                         .requestMatchers("/api/auth/logIn", "/api/auth/register").permitAll()
                         .requestMatchers("/api/auth/reissue").hasAnyAuthority("USER", "MANAGER", "ADMIN")
                         .requestMatchers("/api/members/**").hasAnyAuthority("USER", "MANAGER", "ADMIN")
