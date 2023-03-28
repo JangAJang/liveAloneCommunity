@@ -1,5 +1,4 @@
 package com.capstone.liveAloneCommunity.domain.post;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
