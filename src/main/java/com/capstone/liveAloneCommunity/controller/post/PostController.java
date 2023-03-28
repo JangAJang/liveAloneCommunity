@@ -1,5 +1,6 @@
 package com.capstone.liveAloneCommunity.controller.post;
 
+import com.capstone.liveAloneCommunity.domain.post.Category;
 import com.capstone.liveAloneCommunity.dto.post.EditPostRequestDto;
 import com.capstone.liveAloneCommunity.dto.post.SearchPostRequestDto;
 import com.capstone.liveAloneCommunity.dto.post.WritePostRequestDto;
@@ -31,6 +32,13 @@ public class PostController {
     @ResponseStatus(HttpStatus.OK)
     public Response getPost(@RequestParam("id") Long id){
         return Response.success(postService.getPost(id));
+    }
+
+    @GetMapping("/category")
+    @Operation(summary = "게시물 단건 조회", description = "게시물 단건을 조회한다.")
+    @ResponseStatus(HttpStatus.OK)
+    public Response getPostOfCategory(@RequestParam("type")Category category, @PageableDefault Pageable pageable){
+        return Response.success(postService.getPostByCategory(category, pageable));
     }
 
     @GetMapping("/search")
