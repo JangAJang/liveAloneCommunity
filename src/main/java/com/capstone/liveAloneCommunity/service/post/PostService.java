@@ -1,5 +1,6 @@
 package com.capstone.liveAloneCommunity.service.post;
 
+import com.capstone.liveAloneCommunity.domain.post.Category;
 import com.capstone.liveAloneCommunity.domain.post.Content;
 import com.capstone.liveAloneCommunity.domain.post.Title;
 import com.capstone.liveAloneCommunity.dto.post.*;
@@ -13,6 +14,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -36,13 +40,20 @@ public class PostService {
             , Pageable pageable){
         Page<PostResponseDto> searchResult = postRepository
                 .searchPost(searchPostRequestDto, pageable);
-        return new MultiPostResponseDto(searchResult);
+        return new MultiPostResponseDto(searchResult.getContent());
     }
 
     @Transactional(readOnly = true)
     public MultiPostResponseDto getMembersPost(Pageable pageable, Long id){
         Page<PostResponseDto> membersPost = postRepository.getMembersPost(id, pageable);
-        return new MultiPostResponseDto(membersPost);
+        return new MultiPostResponseDto(membersPost.getContent());
+    }
+
+    @Transactional(readOnly = true)
+    public MultiPostResponseDto getPostByCategory(Category category, Pageable pageable){
+        List<PostResponseDto> postByCategory = postRepository.findAllByCategory(category, pageable).getContent()
+                .stream().map(PostResponseDto::toDto).collect(Collectors.toList());
+        return new MultiPostResponseDto(postByCategory);
     }
 
     @Transactional(readOnly = true)
