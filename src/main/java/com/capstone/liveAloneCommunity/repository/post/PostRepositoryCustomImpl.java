@@ -27,7 +27,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
                 .from(post)
                 .leftJoin(post.member, member)
                 .where(makeConditionQuery(searchPostRequestDto.getText(), searchPostRequestDto.getSearchPostType()))
-                .orderBy(post.title.title.desc())
+                .orderBy(post.createdTime.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
@@ -62,7 +62,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
                 .from(post)
                 .leftJoin(post.member, member)
                 .where(member.id.eq(id))
-                .orderBy(post.title.title.desc())
+                .orderBy(post.createdTime.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();

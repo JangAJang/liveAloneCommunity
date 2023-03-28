@@ -2,6 +2,7 @@ package com.capstone.liveAloneCommunity.entity.post;
 
 import com.capstone.liveAloneCommunity.domain.post.Category;
 import com.capstone.liveAloneCommunity.domain.post.Content;
+import com.capstone.liveAloneCommunity.domain.post.CreatedTime;
 import com.capstone.liveAloneCommunity.domain.post.Title;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import jakarta.persistence.*;
@@ -11,6 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,6 +29,9 @@ public class Post {
 
     @Embedded
     private Content content;
+
+    @Embedded
+    private CreatedTime createdTime;
 
     @Enumerated(value = EnumType.STRING)
     private Category category;
@@ -65,5 +71,9 @@ public class Post {
 
     public String getWritersName(){
         return member.getNickname();
+    }
+
+    public LocalDateTime getCreatedTime(){
+        return this.createdTime.getCreatedDate();
     }
 }
