@@ -22,13 +22,19 @@ public class QPost extends EntityPathBase<Post> {
 
     public static final QPost post = new QPost("post");
 
+    public final com.capstone.liveAloneCommunity.entity.QBaseTimeEntity _super = new com.capstone.liveAloneCommunity.entity.QBaseTimeEntity(this);
+
     public final EnumPath<com.capstone.liveAloneCommunity.domain.post.Category> category = createEnum("category", com.capstone.liveAloneCommunity.domain.post.Category.class);
 
     public final com.capstone.liveAloneCommunity.domain.post.QContent content;
 
-    public final com.capstone.liveAloneCommunity.domain.post.QCreatedTime createdTime;
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
 
     public final com.capstone.liveAloneCommunity.entity.member.QMember member;
 
@@ -53,7 +59,6 @@ public class QPost extends EntityPathBase<Post> {
     public QPost(Class<? extends Post> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.content = inits.isInitialized("content") ? new com.capstone.liveAloneCommunity.domain.post.QContent(forProperty("content")) : null;
-        this.createdTime = inits.isInitialized("createdTime") ? new com.capstone.liveAloneCommunity.domain.post.QCreatedTime(forProperty("createdTime")) : null;
         this.member = inits.isInitialized("member") ? new com.capstone.liveAloneCommunity.entity.member.QMember(forProperty("member"), inits.get("member")) : null;
         this.title = inits.isInitialized("title") ? new com.capstone.liveAloneCommunity.domain.post.QTitle(forProperty("title")) : null;
     }

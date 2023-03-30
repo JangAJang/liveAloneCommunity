@@ -18,16 +18,22 @@ public class PostResponseDto {
     private String title;
     private String content;
     private String categoryName;
-    private LocalDateTime lastModifiedDate;
+    private String createdDate;
 
     @Builder
     @QueryProjection
-    public PostResponseDto(Long id, String writer, String title, String content, Category category) {
+    public PostResponseDto(Long id, String writer, String title, String content, Category category, LocalDateTime createdDate) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.content = content;
         this.categoryName = category.getName();
+        this.createdDate = getCreatedDateToString(createdDate);
+    }
+
+    private String getCreatedDateToString(LocalDateTime createdDate){
+        return createdDate.getYear() + ". " +createdDate.getMonthValue() + ". " + createdDate.getDayOfMonth()
+                + ". " + createdDate.getHour() + ":" + createdDate.getDayOfMonth();
     }
 
     public static PostResponseDto toDto(Post post){
@@ -37,6 +43,7 @@ public class PostResponseDto {
                 .writer(post.getWritersName())
                 .title(post.getTitle())
                 .content(post.getContent())
+                .createdDate(post.getCreatedDate())
                 .build();
     }
 }

@@ -2,7 +2,6 @@ package com.capstone.liveAloneCommunity.entity.post;
 
 import com.capstone.liveAloneCommunity.domain.post.Category;
 import com.capstone.liveAloneCommunity.domain.post.Content;
-import com.capstone.liveAloneCommunity.domain.post.CreatedTime;
 import com.capstone.liveAloneCommunity.domain.post.Title;
 import com.capstone.liveAloneCommunity.entity.BaseTimeEntity;
 import com.capstone.liveAloneCommunity.entity.member.Member;
@@ -30,9 +29,6 @@ public class Post extends BaseTimeEntity {
 
     @Embedded
     private Content content;
-
-    @Embedded
-    private CreatedTime createdTime;
 
     @Enumerated(value = EnumType.STRING)
     private Category category;

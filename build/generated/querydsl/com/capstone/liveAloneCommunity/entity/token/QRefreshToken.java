@@ -1,8 +1,7 @@
-package com.capstone.liveAloneCommunity.entity;
+package com.capstone.liveAloneCommunity.entity.token;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.capstone.liveAloneCommunity.entity.token.RefreshToken;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
@@ -16,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QRefreshToken extends EntityPathBase<RefreshToken> {
 
-    private static final long serialVersionUID = 1339384867L;
+    private static final long serialVersionUID = -1209523656L;
 
     public static final QRefreshToken refreshToken = new QRefreshToken("refreshToken");
 
