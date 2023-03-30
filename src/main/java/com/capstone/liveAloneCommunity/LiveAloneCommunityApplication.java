@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
 @EnableJpaAuditing
-public class LiveAloneComunityApplication {
+public class LiveAloneCommunityApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LiveAloneComunityApplication.class, args);
+		SpringApplication.run(LiveAloneCommunityApplication.class, args);
 	}
 
 }

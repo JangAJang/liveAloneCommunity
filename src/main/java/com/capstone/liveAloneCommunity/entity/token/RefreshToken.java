@@ -1,4 +1,4 @@
-package com.capstone.liveAloneCommunity.entity;
+package com.capstone.liveAloneCommunity.entity.token;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -2,6 +2,7 @@ package com.capstone.liveAloneCommunity.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
+import com.capstone.liveAloneCommunity.entity.token.RefreshToken;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;

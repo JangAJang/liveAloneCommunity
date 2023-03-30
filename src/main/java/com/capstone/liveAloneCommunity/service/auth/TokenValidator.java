@@ -2,8 +2,7 @@ package com.capstone.liveAloneCommunity.service.auth;
 
 import com.capstone.liveAloneCommunity.config.jwt.TokenProvider;
 import com.capstone.liveAloneCommunity.dto.token.ReissueRequestDto;
-import com.capstone.liveAloneCommunity.entity.RefreshToken;
-import com.capstone.liveAloneCommunity.exception.token.TokenUnmatchWithMemberException;
+import com.capstone.liveAloneCommunity.entity.token.RefreshToken;
 import com.capstone.liveAloneCommunity.exception.token.UnvalidRefreshTokenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
