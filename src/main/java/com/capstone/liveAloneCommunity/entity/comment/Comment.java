@@ -2,11 +2,12 @@ package com.capstone.liveAloneCommunity.entity.comment;
 
 import com.capstone.liveAloneCommunity.entity.post.Post;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Comment {
 
