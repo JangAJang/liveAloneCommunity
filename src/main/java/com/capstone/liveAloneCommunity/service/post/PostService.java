@@ -37,8 +37,7 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public MultiPostResponseDto searchPost(SearchPostRequestDto searchPostRequestDto
-            , Pageable pageable){
+    public MultiPostResponseDto searchPost(SearchPostRequestDto searchPostRequestDto){
         Page<PostResponseDto> searchResult = postRepository
                 .searchPost(searchPostRequestDto);
         return new MultiPostResponseDto(searchResult.getContent());

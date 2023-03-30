@@ -43,10 +43,8 @@ public class PostController {
     @GetMapping("/search")
     @Operation(summary = "게시물 검색", description = "게시물을 검색해 페이징처리해 반환한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response searchPost(@RequestBody SearchPostRequestDto searchPostRequestDto,
-                               @PageableDefault Pageable pageable,
-                               @RequestParam SearchPostType searchPostType){
-        return Response.success(postService.searchPost(searchPostRequestDto, pageable));
+    public Response searchPost(@RequestBody @Valid SearchPostRequestDto searchPostRequestDto){
+        return Response.success(postService.searchPost(searchPostRequestDto));
     }
 
     @GetMapping("/of")
