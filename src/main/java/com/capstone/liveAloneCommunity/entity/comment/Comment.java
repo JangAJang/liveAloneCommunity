@@ -1,5 +1,6 @@
 package com.capstone.liveAloneCommunity.entity.comment;
 
+import com.capstone.liveAloneCommunity.domain.post.Content;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.post.Post;
 import jakarta.persistence.*;
@@ -16,7 +17,8 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String comment;
+    @Embedded
+    private Content content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POST_ID")
