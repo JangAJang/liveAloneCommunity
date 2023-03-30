@@ -23,11 +23,11 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
     public Page<PostResponseDto> searchPost(SearchPostRequestDto searchPostRequestDto, Pageable pageable) {
         QueryResults<PostResponseDto> result = queryFactory
                 .select(new QPostResponseDto(post.id, member.memberInfo.nickname.as("writer"),
-                        post.title.title, post.content.content, post.category))
+                        post.title.title, post.content.content, post.category, post.createdDate))
                 .from(post)
                 .leftJoin(post.member, member)
                 .where(makeConditionQuery(searchPostRequestDto.getText(), searchPostRequestDto.getSearchPostType()))
-                .orderBy(post.createdTime.createdDate.desc())
+                .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
@@ -58,11 +58,11 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
     public Page<PostResponseDto> getMembersPost(Long id, Pageable pageable) {
         QueryResults<PostResponseDto> result = queryFactory
                 .select(new QPostResponseDto(post.id, member.memberInfo.nickname.as("writer"),
-                        post.title.title, post.content.content, post.category))
+                        post.title.title, post.content.content, post.category, post.createdDate))
                 .from(post)
                 .leftJoin(post.member, member)
                 .where(member.id.eq(id))
-                .orderBy(post.createdTime.createdDate.desc())
+                .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
