@@ -10,6 +10,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import static com.capstone.liveAloneCommunity.entity.member.QMember.*;
@@ -21,7 +22,8 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
     private final JPAQueryFactory query;
 
     @Override
-    public Page<MemberResponseDto> searchMember(SearchMemberDto searchMemberDto, Pageable pageable) {
+    public Page<MemberResponseDto> searchMember(SearchMemberDto searchMemberDto) {
+        Pageable pageable = PageRequest.of(searchMemberDto.getPage(), searchMemberDto.getSize());
         QueryResults<MemberResponseDto> result = query.select(new QMemberResponseDto(member.id,
                         member.username.username,
                         member.memberInfo.nickname, member.memberInfo.email))

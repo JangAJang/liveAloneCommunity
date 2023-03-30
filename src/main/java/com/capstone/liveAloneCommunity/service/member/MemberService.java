@@ -34,8 +34,7 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public MemberSearchResultDto searchMember(SearchMemberDto searchMemberDto){
-        Pageable pageable = PageRequest.of(searchMemberDto.getPage(), searchMemberDto.getSize());
-        Page<MemberResponseDto> result = memberRepository.searchMember(searchMemberDto, pageable);
+        Page<MemberResponseDto> result = memberRepository.searchMember(searchMemberDto);
         return new MemberSearchResultDto(result);
     }
 
