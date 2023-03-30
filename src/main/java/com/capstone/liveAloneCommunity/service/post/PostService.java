@@ -63,8 +63,8 @@ public class PostService {
         return PostResponseDto.toDto(getPostById(id));
     }
 
-    public PostResponseDto editPost(EditPostRequestDto editPostRequestDto, Member currentMember, Long id){
-        Post post = getPostById(id);
+    public PostResponseDto editPost(EditPostRequestDto editPostRequestDto, Member currentMember){
+        Post post = getPostById(editPostRequestDto.getId());
         validatePostAuthority(currentMember, post);
         post.editTitle(new Title(editPostRequestDto.getTitle()));
         post.editContent(new Content(editPostRequestDto.getContent()));
