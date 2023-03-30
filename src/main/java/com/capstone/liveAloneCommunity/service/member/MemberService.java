@@ -7,6 +7,7 @@ import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,8 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public MemberSearchResultDto searchMember(SearchMemberDto searchMemberDto, Pageable pageable){
+    public MemberSearchResultDto searchMember(SearchMemberDto searchMemberDto){
+        Pageable pageable = PageRequest.of(searchMemberDto.getPage(), searchMemberDto.getSize());
         Page<MemberResponseDto> result = memberRepository.searchMember(searchMemberDto, pageable);
         return new MemberSearchResultDto(result);
     }
@@ -45,8 +47,8 @@ public class MemberService {
         return MemberResponseDto.toDto(member);
     }
 
-    public void changePassword(Long id, Member member, ChangePasswordRequestDto changePasswordRequestDto){
-        memberValidator.validateAuthorization(findMemberById(id), member);
+    public void changePassword(Member member, ChangePasswordRequestDto changePasswordRequestDto){
+        memberValidator.validateAuthorization(findMemberById(changePasswordRequestDto.getId()), member);
         memberValidator.validateChangePasswordRequest(member, changePasswordRequestDto);
         member.changePassword(changePasswordRequestDto.getNewPassword(), passwordEncoder);
     }

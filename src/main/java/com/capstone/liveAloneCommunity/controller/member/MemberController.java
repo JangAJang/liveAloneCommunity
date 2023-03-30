@@ -10,6 +10,7 @@ import com.capstone.liveAloneCommunity.response.Response;
 import com.capstone.liveAloneCommunity.service.member.MemberService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -36,8 +37,8 @@ public class MemberController {
     @GetMapping("/search")
     @Operation(summary = "회원 검색", description = "회원의 DB의 번호, 아이디, 닉네임, 이메일을 검색한 값을 포함하는 페이지로 반환한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response searchMember(@RequestBody SearchMemberDto searchMemberDto, @PageableDefault Pageable pageable){
-        return Response.success(memberService.searchMember(searchMemberDto, pageable));
+    public Response searchMember(@RequestBody @Valid SearchMemberDto searchMemberDto){
+        return Response.success(memberService.searchMember(searchMemberDto));
     }
 
     @PatchMapping("/edit")
@@ -50,8 +51,8 @@ public class MemberController {
     @PatchMapping("/changePassword")
     @Operation(summary = "비밀번호 변경", description = "현재비밀번호, 새 비밀번호, 새 비밀번호 다시 입력을 입력하면 비밀번호를 수정한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response changePassword(@RequestParam Long id, @RequestBody ChangePasswordRequestDto changePasswordRequestDto){
-        memberService.changePassword(id, getMember(), changePasswordRequestDto);
+    public Response changePassword(@RequestBody @Valid ChangePasswordRequestDto changePasswordRequestDto){
+        memberService.changePassword(getMember(), changePasswordRequestDto);
         return Response.success();
     }
 
