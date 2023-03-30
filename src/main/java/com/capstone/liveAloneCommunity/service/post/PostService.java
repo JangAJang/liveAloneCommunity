@@ -11,6 +11,7 @@ import com.capstone.liveAloneCommunity.exception.post.PostNotFoundException;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,8 +51,10 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public MultiPostResponseDto getPostByCategory(Category category, Pageable pageable){
-        List<PostResponseDto> postByCategory = postRepository.findAllByCategory(category, pageable).getContent()
+    public MultiPostResponseDto getPostByCategory(PostByCategoryRequestDto postByCategoryRequestDto){
+        Pageable pageable = PageRequest.of(postByCategoryRequestDto.getPage(), postByCategoryRequestDto.getSize());
+        List<PostResponseDto> postByCategory = postRepository
+                .findAllByCategory(postByCategoryRequestDto.getCategory(), pageable).getContent()
                 .stream().map(PostResponseDto::toDto).collect(Collectors.toList());
         return new MultiPostResponseDto(postByCategory);
     }

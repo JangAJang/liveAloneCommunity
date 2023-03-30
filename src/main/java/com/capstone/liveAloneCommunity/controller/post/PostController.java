@@ -1,10 +1,7 @@
 package com.capstone.liveAloneCommunity.controller.post;
 
 import com.capstone.liveAloneCommunity.domain.post.Category;
-import com.capstone.liveAloneCommunity.dto.post.EditPostRequestDto;
-import com.capstone.liveAloneCommunity.dto.post.MembersPostRequestDto;
-import com.capstone.liveAloneCommunity.dto.post.SearchPostRequestDto;
-import com.capstone.liveAloneCommunity.dto.post.WritePostRequestDto;
+import com.capstone.liveAloneCommunity.dto.post.*;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
@@ -37,10 +34,10 @@ public class PostController {
     }
 
     @GetMapping("/category")
-    @Operation(summary = "게시물 단건 조회", description = "게시물 단건을 조회한다.")
+    @Operation(summary = "카테고리별 게시물 조회", description = "게시물을 카테고리별로 페이징처리해 조회한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response getPostOfCategory(@RequestParam("type")Category category, @PageableDefault Pageable pageable){
-        return Response.success(postService.getPostByCategory(category, pageable));
+    public Response getPostOfCategory(PostByCategoryRequestDto postByCategoryRequestDto){
+        return Response.success(postService.getPostByCategory(postByCategoryRequestDto));
     }
 
     @GetMapping("/search")
