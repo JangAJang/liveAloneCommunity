@@ -37,7 +37,7 @@ public class MemberController {
     @GetMapping("/search")
     @Operation(summary = "회원 검색", description = "회원의 DB의 번호, 아이디, 닉네임, 이메일을 검색한 값을 포함하는 페이지로 반환한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response searchMember(@RequestBody SearchMemberDto searchMemberDto){
+    public Response searchMember(@RequestBody @Valid SearchMemberDto searchMemberDto){
         return Response.success(memberService.searchMember(searchMemberDto));
     }
 
