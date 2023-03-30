@@ -50,8 +50,8 @@ public class MemberController {
     @PatchMapping("/changePassword")
     @Operation(summary = "비밀번호 변경", description = "현재비밀번호, 새 비밀번호, 새 비밀번호 다시 입력을 입력하면 비밀번호를 수정한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response changePassword(@RequestParam Long id, @RequestBody ChangePasswordRequestDto changePasswordRequestDto){
-        memberService.changePassword(id, getMember(), changePasswordRequestDto);
+    public Response changePassword(@RequestBody ChangePasswordRequestDto changePasswordRequestDto){
+        memberService.changePassword(getMember(), changePasswordRequestDto);
         return Response.success();
     }
 
