@@ -1,5 +1,6 @@
 package com.capstone.liveAloneCommunity.entity.comment;
 
+import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.post.Post;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -20,4 +21,8 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POST_ID")
     private Post post;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBEER_ID")
+    private Member member;
 }
