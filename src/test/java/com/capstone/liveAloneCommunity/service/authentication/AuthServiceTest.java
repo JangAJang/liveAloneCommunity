@@ -148,7 +148,6 @@ public class AuthServiceTest {
         TokenResponseDto tokenResponseDto = authService.logIn(logInRequestDto);
         //then
         Assertions.assertThat(StringUtils.hasText(tokenResponseDto.getAccessToken())).isTrue();
-        Assertions.assertThat(StringUtils.hasText(tokenResponseDto.getRefreshToken())).isTrue();
     }
 
     @Test
@@ -192,11 +191,9 @@ public class AuthServiceTest {
         //when
         TokenResponseDto tokenResponseDto = authService.logIn(logInRequestDto);
         TokenResponseDto reissueResponse = authService.reissue(ReissueRequestDto.builder()
-                .accessToken(tokenResponseDto.getAccessToken())
-                .refreshToken(tokenResponseDto.getRefreshToken()).build());
+                .accessToken(tokenResponseDto.getAccessToken()).build());
         //then
         Assertions.assertThat(StringUtils.hasText(reissueResponse.getAccessToken())).isTrue();
-        Assertions.assertThat(StringUtils.hasText(reissueResponse.getRefreshToken())).isTrue();
     }
 
     @Test
@@ -210,11 +207,9 @@ public class AuthServiceTest {
         //when
         TokenResponseDto tokenResponseDto = authService.logIn(logInRequestDto);
         TokenResponseDto reissueResponse = authService.reissue(ReissueRequestDto.builder()
-                .accessToken(tokenResponseDto.getAccessToken())
-                .refreshToken(tokenResponseDto.getRefreshToken()).build());
+                .accessToken(tokenResponseDto.getAccessToken()).build());
         //then
         Assertions.assertThat(StringUtils.hasText(reissueResponse.getAccessToken())).isTrue();
-        Assertions.assertThat(StringUtils.hasText(reissueResponse.getRefreshToken())).isTrue();
     }
 
     private void createDummyMember(){
