@@ -39,13 +39,13 @@ public class PostService {
     public MultiPostResponseDto searchPost(SearchPostRequestDto searchPostRequestDto
             , Pageable pageable){
         Page<PostResponseDto> searchResult = postRepository
-                .searchPost(searchPostRequestDto, pageable);
+                .searchPost(searchPostRequestDto);
         return new MultiPostResponseDto(searchResult.getContent());
     }
 
     @Transactional(readOnly = true)
-    public MultiPostResponseDto getMembersPost(Pageable pageable, Long id){
-        Page<PostResponseDto> membersPost = postRepository.getMembersPost(id, pageable);
+    public MultiPostResponseDto getMembersPost(MembersPostRequestDto membersPostRequestDto){
+        Page<PostResponseDto> membersPost = postRepository.getMembersPost(membersPostRequestDto);
         return new MultiPostResponseDto(membersPost.getContent());
     }
 

@@ -1,5 +1,6 @@
 package com.capstone.liveAloneCommunity.repository.post;
 
+import com.capstone.liveAloneCommunity.dto.post.MembersPostRequestDto;
 import com.capstone.liveAloneCommunity.dto.post.PostResponseDto;
 import com.capstone.liveAloneCommunity.dto.post.QPostResponseDto;
 import com.capstone.liveAloneCommunity.dto.post.SearchPostRequestDto;
@@ -9,6 +10,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import static com.capstone.liveAloneCommunity.entity.member.QMember.member;
@@ -20,14 +22,15 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<PostResponseDto> searchPost(SearchPostRequestDto searchPostRequestDto, Pageable pageable) {
+    public Page<PostResponseDto> searchPost(SearchPostRequestDto searchPostRequestDto) {
+        Pageable pageable = PageRequest.of(searchPostRequestDto.getPage(), searchPostRequestDto.getSize());
         QueryResults<PostResponseDto> result = queryFactory
                 .select(new QPostResponseDto(post.id, member.memberInfo.nickname.as("writer"),
-                        post.title.title, post.content.content, post.category))
+                        post.title.title, post.content.content, post.category, post.createdDate))
                 .from(post)
                 .leftJoin(post.member, member)
                 .where(makeConditionQuery(searchPostRequestDto.getText(), searchPostRequestDto.getSearchPostType()))
-                .orderBy(post.createdTime.createdDate.desc())
+                .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
@@ -55,14 +58,15 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
     }
 
     @Override
-    public Page<PostResponseDto> getMembersPost(Long id, Pageable pageable) {
+    public Page<PostResponseDto> getMembersPost(MembersPostRequestDto membersPostRequestDto) {
+        Pageable pageable = PageRequest.of(membersPostRequestDto.getPage(), membersPostRequestDto.getSize());
         QueryResults<PostResponseDto> result = queryFactory
                 .select(new QPostResponseDto(post.id, member.memberInfo.nickname.as("writer"),
-                        post.title.title, post.content.content, post.category))
+                        post.title.title, post.content.content, post.category, post.createdDate))
                 .from(post)
                 .leftJoin(post.member, member)
-                .where(member.id.eq(id))
-                .orderBy(post.createdTime.createdDate.desc())
+                .where(member.id.eq(membersPostRequestDto.getId()))
+                .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();

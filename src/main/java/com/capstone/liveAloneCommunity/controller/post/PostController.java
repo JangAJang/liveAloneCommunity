@@ -2,6 +2,7 @@ package com.capstone.liveAloneCommunity.controller.post;
 
 import com.capstone.liveAloneCommunity.domain.post.Category;
 import com.capstone.liveAloneCommunity.dto.post.EditPostRequestDto;
+import com.capstone.liveAloneCommunity.dto.post.MembersPostRequestDto;
 import com.capstone.liveAloneCommunity.dto.post.SearchPostRequestDto;
 import com.capstone.liveAloneCommunity.dto.post.WritePostRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
@@ -12,6 +13,7 @@ import com.capstone.liveAloneCommunity.response.Response;
 import com.capstone.liveAloneCommunity.service.post.PostService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -53,8 +55,8 @@ public class PostController {
     @GetMapping("/of")
     @Operation(summary = "회원의 게시물 조회", description = "회원의 게시물을 이름의 역순으로 조회한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response getMembersPost(@RequestParam("member") Long id, @PageableDefault Pageable pageable){
-        return Response.success(postService.getMembersPost(pageable, id));
+    public Response getMembersPost(@RequestBody @Valid MembersPostRequestDto membersPostRequestDto){
+        return Response.success(postService.getMembersPost(membersPostRequestDto));
     }
 
     @PostMapping("/write")
