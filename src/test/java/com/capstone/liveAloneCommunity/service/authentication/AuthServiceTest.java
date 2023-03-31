@@ -14,6 +14,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
@@ -27,6 +31,8 @@ public class AuthServiceTest {
     private MemberRepository memberRepository;
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
+    @Autowired
+    private AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @BeforeEach
     void clearDB(){
@@ -190,6 +196,7 @@ public class AuthServiceTest {
                 .password("password").build();
         //when
         TokenResponseDto tokenResponseDto = authService.logIn(logInRequestDto);
+        SecurityContextHolder.getContext().setAuthentication(getAuthenticationToLogIn(logInRequestDto));
         TokenResponseDto reissueResponse = authService.reissue(ReissueRequestDto.builder()
                 .accessToken(tokenResponseDto.getAccessToken()).build());
         //then
@@ -206,10 +213,16 @@ public class AuthServiceTest {
                 .password("password").build();
         //when
         TokenResponseDto tokenResponseDto = authService.logIn(logInRequestDto);
+        SecurityContextHolder.getContext().setAuthentication(getAuthenticationToLogIn(logInRequestDto));
         TokenResponseDto reissueResponse = authService.reissue(ReissueRequestDto.builder()
                 .accessToken(tokenResponseDto.getAccessToken()).build());
         //then
         Assertions.assertThat(StringUtils.hasText(reissueResponse.getAccessToken())).isTrue();
+    }
+
+    private Authentication getAuthenticationToLogIn(LogInRequestDto logInRequestDto){
+        UsernamePasswordAuthenticationToken authenticationToken = logInRequestDto.toAuthentication();
+        return authenticationManagerBuilder.getObject().authenticate(authenticationToken);
     }
 
     private void createDummyMember(){
