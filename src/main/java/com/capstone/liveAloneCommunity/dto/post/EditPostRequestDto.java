@@ -1,20 +1,14 @@
 package com.capstone.liveAloneCommunity.dto.post;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Getter
 public class EditPostRequestDto {
 
+    private Long id;
     private String title;
     private String content;
-
-    @Builder
-    public EditPostRequestDto(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
 }
