@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -50,10 +51,17 @@ public class PostServiceTest {
                     .passwordCheck("test").build());
             Member member = memberRepository.findByUsername_Username("test"+i).orElseThrow(MemberNotFoundException::new);
             IntStream.range(i*10+1, i*10+6).forEach(index ->
-                    postService.writePost(member, WritePostRequestDto.builder()
-                            .category(COOKING)
-                            .title("title"+index)
-                            .content("content" + index).build()));
+            {
+                postService.writePost(member, WritePostRequestDto.builder()
+                        .category(COOKING)
+                        .title("title" + index)
+                        .content("content" + index).build());
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         });
     }
 
@@ -111,8 +119,9 @@ public class PostServiceTest {
         MultiPostResponseDto multiPostResponseDto = postService.searchPost(searchPostRequestDto);
         //then
         Assertions.assertThat(multiPostResponseDto.getResult().stream().map(PostResponseDto::getTitle).toList())
-                .containsExactly("title95", "title94", "title93", "title92", "title91",
-                        "title85", "title84", "title83", "title82", "title81");
+                .containsExactly("title105", "title104", "title103", "title102", "title101",
+                        "title95", "title94", "title93", "title92", "title91"
+                        );
     }
 
     @Test
@@ -128,8 +137,17 @@ public class PostServiceTest {
         MultiPostResponseDto multiPostResponseDto = postService.searchPost(searchPostRequestDto);
         //then
         Assertions.assertThat(multiPostResponseDto.getResult().stream().map(PostResponseDto::getTitle).toList())
-                .containsExactly("title91", "title81", "title71", "title61", "title51",
-                        "title41", "title31", "title21", "title15", "title14");
+                .containsExactly(
+                        "title105",
+                        "title104",
+                        "title103",
+                        "title102",
+                        "title101",
+                        "title91",
+                        "title81",
+                        "title71",
+                        "title61",
+                        "title51");
     }
 
     @Test
@@ -145,12 +163,13 @@ public class PostServiceTest {
         MultiPostResponseDto multiPostResponseDto = postService.searchPost(searchPostRequestDto);
         //then
         Assertions.assertThat(multiPostResponseDto.getResult().stream().map(PostResponseDto::getTitle).toList())
-                .containsExactly("title15", "title14", "title13", "title12", "title11",
-                        "title105", "title104", "title103", "title102", "title101");
+                .containsExactly(
+                        "title105", "title104", "title103", "title102", "title101",
+                        "title15", "title14", "title13", "title12", "title11");
     }
 
     @Test
-    @DisplayName("회원의 아이디를 입력하고 해당 회원의 게시물을 조회하면, 제목의 역순으로 반환된다.")
+    @DisplayName("회원의 아이디를 입력하고 해당 회원의 게시물을 조회하면, 게시물의 시간순으로 조회한다. ")
     public void getMembersPostTest() throws Exception{
         //given
         Long memberId = memberRepository.findByUsername_Username("test1").orElseThrow(MemberNotFoundException::new).getId();
