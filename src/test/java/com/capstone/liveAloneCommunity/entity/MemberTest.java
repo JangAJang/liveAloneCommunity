@@ -1,6 +1,7 @@
 package com.capstone.liveAloneCommunity.entity;
 
-import com.capstone.liveAloneCommunity.domain.member.MemberInfo;
+import com.capstone.liveAloneCommunity.domain.member.Email;
+import com.capstone.liveAloneCommunity.domain.member.Nickname;
 import com.capstone.liveAloneCommunity.domain.member.Password;
 import com.capstone.liveAloneCommunity.domain.member.Username;
 import com.capstone.liveAloneCommunity.entity.member.Member;
@@ -24,13 +25,15 @@ public class MemberTest {
         //given
         Username username = new Username("username");
         Password password = new Password("password");
-        MemberInfo memberInfo = new MemberInfo("nickname", "email");
+        Nickname nickname = new Nickname("nickname");
+        Email email = new Email("email");
         //when
-        Member member = new Member(username, memberInfo, password, Role.USER);
+        Member member = new Member(username, nickname, email, password, Role.USER);
         //then
         Assertions.assertThat(member.getUsername()).isEqualTo(username.getUsername());
         Assertions.assertThat(member.getPassword()).isEqualTo(password.getPassword());
-        Assertions.assertThat(member.getMemberInfo()).isEqualTo(memberInfo);
+        Assertions.assertThat(member.getNickname()).isEqualTo(nickname.getNickname());
+        Assertions.assertThat(member.getEmail()).isEqualTo(email.getEmail());
         Assertions.assertThat(member.getRole()).isEqualTo(Role.USER);
     }
 
@@ -40,9 +43,10 @@ public class MemberTest {
         //given
         Username username = new Username("username");
         Password password = new Password(passwordEncoder.encode("password"));
-        MemberInfo memberInfo = new MemberInfo("nickname", "email");
+        Nickname nickname = new Nickname("nickname");
+        Email email = new Email("email");
         //when
-        Member member = new Member(username, memberInfo, password, Role.USER);
+        Member member = new Member(username, nickname, email, password, Role.USER);
         //then
         Assertions.assertThat(member.isRightPassword("password", passwordEncoder)).isTrue();
     }
@@ -53,9 +57,10 @@ public class MemberTest {
         //given
         Username username = new Username("username");
         Password password = new Password(passwordEncoder.encode("password"));
-        MemberInfo memberInfo = new MemberInfo("nickname", "email");
+        Nickname nickname = new Nickname("nickname");
+        Email email = new Email("email");
         //when
-        Member member = new Member(username, memberInfo, password, Role.USER);
+        Member member = new Member(username, nickname, email, password, Role.USER);
         //then
         Assertions.assertThat(member.isRightPassword("password1", passwordEncoder)).isFalse();
     }
