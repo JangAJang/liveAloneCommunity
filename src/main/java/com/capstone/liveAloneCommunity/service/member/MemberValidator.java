@@ -3,7 +3,6 @@ package com.capstone.liveAloneCommunity.service.member;
 import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneCommunity.dto.member.ChangePasswordRequestDto;
-import com.capstone.liveAloneCommunity.dto.member.EditNicknameDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.exception.member.*;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
@@ -40,12 +39,12 @@ public class MemberValidator {
     }
 
     public void validateNickname(String nickname){
-        if(memberRepository.findByMemberInfo_Nickname(nickname).isPresent())
+        if(memberRepository.findByNickname_Nickname(nickname).isPresent())
             throw new NicknameAlreadyInUseException();
     }
 
     public void validateEmail(String email){
-        if(memberRepository.findByMemberInfo_Email(email).isPresent())
+        if(memberRepository.findByEmail_Email(email).isPresent())
             throw new EmailAlreadyInUseException();
         if(isEmailNotFormat(email)) throw new EmailNotFormatException();
     }
