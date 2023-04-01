@@ -1,8 +1,6 @@
 package com.capstone.liveAloneCommunity.service.post;
 
-import com.capstone.liveAloneCommunity.domain.post.Category;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
-import com.capstone.liveAloneCommunity.dto.category.CategoryRequestDto;
 import com.capstone.liveAloneCommunity.dto.post.*;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.post.Post;
@@ -19,9 +17,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -53,10 +51,29 @@ public class PostServiceTest {
                     .passwordCheck("test").build());
             Member member = memberRepository.findByUsername_Username("test"+i).orElseThrow(MemberNotFoundException::new);
             IntStream.range(i*10+1, i*10+6).forEach(index ->
-                    postService.writePost(member, WritePostRequestDto.builder()
-                            .category(COOKING)
-                            .title("title"+index)
-                            .content("content" + index).build()));
+            {
+                postService.writePost(member, WritePostRequestDto.builder()
+                        .category(COOKING)
+                        .title("title" + index)
+                        .content("content" + index).build());
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            IntStream.range(i*10+6, i*10+11).forEach(index ->
+            {
+                postService.writePost(member, WritePostRequestDto.builder()
+                        .category(HOBBY_SHARE)
+                        .title("title" + index)
+                        .content("content" + index).build());
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         });
     }
 
@@ -105,50 +122,78 @@ public class PostServiceTest {
     @DisplayName("게시물을 검색할 때, 제목을 이용해 검색하면, 이에 대한 결과가 이름의 역순으로 페이징처리되어 반환된다.")
     public void searchPostTest_TITLE() throws Exception{
         //given
-        SearchPostRequestDto searchPostRequestDto = new SearchPostRequestDto("title", SearchPostType.TITLE);
+        SearchPostRequestDto searchPostRequestDto = SearchPostRequestDto.builder()
+                .searchPostType(SearchPostType.TITLE)
+                .text("title")
+                .page(0)
+                .size(10).build();
         //when
-        MultiPostResponseDto multiPostResponseDto = postService.searchPost(searchPostRequestDto, PageRequest.of(0, 10));
+        MultiPostResponseDto multiPostResponseDto = postService.searchPost(searchPostRequestDto);
         //then
-        Assertions.assertThat(multiPostResponseDto.getResult().getContent().stream().map(PostResponseDto::getTitle).toList())
-                .containsExactly("title95", "title94", "title93", "title92", "title91",
-                        "title85", "title84", "title83", "title82", "title81");
+        Assertions.assertThat(multiPostResponseDto.getResult().stream().map(PostResponseDto::getTitle).toList())
+                .containsExactly("title105", "title104", "title103", "title102", "title101",
+                        "title95", "title94", "title93", "title92", "title91"
+                        );
     }
 
     @Test
     @DisplayName("게시물을 검색할 때, 내용을 이용해 검색하면, 이에 대한 결과가 이름의 역순으로 페이징처리되어 반환된다.")
     public void searchPostTest_CONTENT() throws Exception{
         //given
-        SearchPostRequestDto searchPostRequestDto = new SearchPostRequestDto("1", SearchPostType.CONTENT);
+        SearchPostRequestDto searchPostRequestDto = SearchPostRequestDto.builder()
+                .searchPostType(SearchPostType.CONTENT)
+                .text("1")
+                .page(0)
+                .size(10).build();
         //when
-        MultiPostResponseDto multiPostResponseDto = postService.searchPost(searchPostRequestDto, PageRequest.of(0, 10));
+        MultiPostResponseDto multiPostResponseDto = postService.searchPost(searchPostRequestDto);
         //then
-        Assertions.assertThat(multiPostResponseDto.getResult().getContent().stream().map(PostResponseDto::getTitle).toList())
-                .containsExactly("title91", "title81", "title71", "title61", "title51",
-                        "title41", "title31", "title21", "title15", "title14");
+        Assertions.assertThat(multiPostResponseDto.getResult().stream().map(PostResponseDto::getTitle).toList())
+                .containsExactly(
+                        "title105",
+                        "title104",
+                        "title103",
+                        "title102",
+                        "title101",
+                        "title91",
+                        "title81",
+                        "title71",
+                        "title61",
+                        "title51");
     }
 
     @Test
     @DisplayName("게시물을 검색할 때, 작성자를 이용해 검색하면, 이에 대한 결과가 이름의 역순으로 페이징처리되어 반환된다.")
     public void searchPostTest_WRITER() throws Exception{
         //given
-        SearchPostRequestDto searchPostRequestDto = new SearchPostRequestDto("1", SearchPostType.WRITER);
+        SearchPostRequestDto searchPostRequestDto = SearchPostRequestDto.builder()
+                .searchPostType(SearchPostType.WRITER)
+                .text("1")
+                .page(0)
+                .size(10).build();
         //when
-        MultiPostResponseDto multiPostResponseDto = postService.searchPost(searchPostRequestDto, PageRequest.of(0, 10));
+        MultiPostResponseDto multiPostResponseDto = postService.searchPost(searchPostRequestDto);
         //then
-        Assertions.assertThat(multiPostResponseDto.getResult().getContent().stream().map(PostResponseDto::getTitle).toList())
-                .containsExactly("title15", "title14", "title13", "title12", "title11",
-                        "title105", "title104", "title103", "title102", "title101");
+        Assertions.assertThat(multiPostResponseDto.getResult().stream().map(PostResponseDto::getTitle).toList())
+                .containsExactly(
+                        "title105", "title104", "title103", "title102", "title101",
+                        "title15", "title14", "title13", "title12", "title11");
     }
 
     @Test
-    @DisplayName("회원의 아이디를 입력하고 해당 회원의 게시물을 조회하면, 제목의 역순으로 반환된다.")
+    @DisplayName("회원의 아이디를 입력하고 해당 회원의 게시물을 조회하면, 게시물의 시간순으로 조회한다. ")
     public void getMembersPostTest() throws Exception{
         //given
         Long memberId = memberRepository.findByUsername_Username("test1").orElseThrow(MemberNotFoundException::new).getId();
         //when
-        MultiPostResponseDto membersPost = postService.getMembersPost(PageRequest.of(0, 10), memberId);
+        MultiPostResponseDto membersPost = postService.getMembersPost(
+                MembersPostRequestDto.builder()
+                        .id(memberId)
+                        .page(0)
+                        .size(10)
+                        .build());
         //then
-        Assertions.assertThat(membersPost.getResult().getContent().stream().map(PostResponseDto::getTitle).collect(Collectors.toList()))
+        Assertions.assertThat(membersPost.getResult().stream().map(PostResponseDto::getTitle).collect(Collectors.toList()))
                 .containsExactly("title15", "title14", "title13", "title12", "title11");
     }
 
@@ -156,7 +201,6 @@ public class PostServiceTest {
     @DisplayName("회원의 게시물을 수정할 때, 작성한 회원이 게시물을 수정하면 제목과 내용을 초기화해준다.")
     public void editPostTest() throws Exception{
         //given
-        EditPostRequestDto editPostRequestDto = new EditPostRequestDto("newT", "newC");
         authService.register(RegisterRequestDto.builder()
                 .username("test")
                 .nickname("test")
@@ -167,8 +211,12 @@ public class PostServiceTest {
         WritePostRequestDto writePostRequestDto = new WritePostRequestDto(COOKING, "title", "content");
         postService.writePost(member, writePostRequestDto);
         Post post = postRepository.findByTitle_Title("title").orElseThrow(PostNotFoundException::new);
+        EditPostRequestDto editPostRequestDto = EditPostRequestDto.builder()
+                .id(post.getId())
+                .title("newT")
+                .content("newC").build();
         //when
-        postService.editPost(editPostRequestDto, member, post.getId());
+        postService.editPost(editPostRequestDto, member);
         //then
         Assertions.assertThat(post.getTitle()).isEqualTo(editPostRequestDto.getTitle());
         Assertions.assertThat(post.getContent()).isEqualTo(editPostRequestDto.getContent());
@@ -180,7 +228,7 @@ public class PostServiceTest {
     @DisplayName("회원의 게시물을 수정할 때, 존재하지 않는 게시물을 수정하면 PostNotFoundException을 반환한다.")
     public void editPostFail_NotFound() throws Exception{
         //given
-        EditPostRequestDto editPostRequestDto = new EditPostRequestDto("newT", "newC");
+        EditPostRequestDto editPostRequestDto = new EditPostRequestDto(100L, "newT", "newC");
         authService.register(RegisterRequestDto.builder()
                 .username("test")
                 .nickname("test")
@@ -193,7 +241,7 @@ public class PostServiceTest {
         //when
 
         //then
-        Assertions.assertThatThrownBy(()-> postService.editPost(editPostRequestDto, member, 100L))
+        Assertions.assertThatThrownBy(()-> postService.editPost(editPostRequestDto, member))
                 .isInstanceOf(PostNotFoundException.class);
     }
 
@@ -201,7 +249,6 @@ public class PostServiceTest {
     @DisplayName("다른 사람이 작성한 게시물을 수정하려하면, MemberNotAllowedException을 반환한다.")
     public void editPostFail_NoAuthority() throws Exception{
         //given
-        EditPostRequestDto editPostRequestDto = new EditPostRequestDto("newT", "newC");
         authService.register(RegisterRequestDto.builder()
                 .username("test")
                 .nickname("test")
@@ -212,11 +259,12 @@ public class PostServiceTest {
         WritePostRequestDto writePostRequestDto = new WritePostRequestDto(COOKING, "title", "content");
         postService.writePost(member, writePostRequestDto);
         Post post = postRepository.findByTitle_Title("title").orElseThrow(PostNotFoundException::new);
+        EditPostRequestDto editPostRequestDto = new EditPostRequestDto(post.getId(), "newT", "newC");
         Member member1 = memberRepository.findByUsername_Username("test1").orElseThrow(MemberNotFoundException::new);
         //when
 
         //then
-        Assertions.assertThatThrownBy(() -> postService.editPost(editPostRequestDto, member1, post.getId()))
+        Assertions.assertThatThrownBy(() -> postService.editPost(editPostRequestDto, member1))
                 .isInstanceOf(MemberNotAllowedException.class);
     }
 
@@ -282,5 +330,31 @@ public class PostServiceTest {
         //then
         Assertions.assertThatThrownBy(() -> postService.deletePost(100L, member))
                 .isInstanceOf(PostNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("카테고리로 게시물을 조회할 때, 해당 카테고리의 게시물만을 조회한다. ")
+    public void getPostByCategory() throws Exception{
+        //given
+        MultiPostResponseDto cookingResult = postService.getPostByCategory(PostByCategoryRequestDto.builder()
+                        .page(0)
+                        .size(10)
+                        .category(COOKING)
+                .build());
+        MultiPostResponseDto hobbyResult = postService.getPostByCategory(PostByCategoryRequestDto.builder()
+                        .page(0)
+                        .size(10)
+                        .category(HOBBY_SHARE)
+                .build());
+        //when
+
+        //then
+        Assertions.assertThat(cookingResult.getResult().stream()
+                .map(PostResponseDto::getTitle))
+                .containsExactly("title105", "title104", "title103", "title102", "title101",
+                        "title95", "title94", "title93", "title92", "title91");
+        Assertions.assertThat(hobbyResult.getResult().stream().map(PostResponseDto::getTitle))
+                .containsExactly("title110", "title109", "title108", "title107", "title106",
+                        "title100", "title99", "title98", "title97", "title96");
     }
 }

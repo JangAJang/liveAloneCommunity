@@ -1,13 +1,11 @@
 package com.capstone.liveAloneCommunity.dto.post;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Builder
 public class MembersPostRequestDto {
 
     private int page;

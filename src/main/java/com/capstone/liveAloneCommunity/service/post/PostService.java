@@ -13,9 +13,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,11 +53,16 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public MultiPostResponseDto getPostByCategory(PostByCategoryRequestDto postByCategoryRequestDto){
-        Pageable pageable = PageRequest.of(postByCategoryRequestDto.getPage(), postByCategoryRequestDto.getSize());
         List<PostResponseDto> postByCategory = postRepository
-                .findAllByCategory(postByCategoryRequestDto.getCategory(), pageable).getContent()
+                .findAllByCategoryOrderByCreatedDateDesc(postByCategoryRequestDto.getCategory(),
+                        getPageRequestOfPostByCategory(postByCategoryRequestDto)).getContent()
                 .stream().map(PostResponseDto::toDto).collect(Collectors.toList());
         return new MultiPostResponseDto(postByCategory);
+    }
+
+    private Pageable getPageRequestOfPostByCategory(PostByCategoryRequestDto postByCategoryRequestDto) {
+        return PageRequest.of(postByCategoryRequestDto.getPage(), postByCategoryRequestDto.getSize(),
+                Sort.by("CreatedDate").descending());
     }
 
     @Transactional(readOnly = true)
