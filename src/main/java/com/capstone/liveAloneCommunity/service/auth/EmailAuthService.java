@@ -1,7 +1,10 @@
 package com.capstone.liveAloneCommunity.service.auth;
 
 import com.capstone.liveAloneCommunity.dto.email.EmailAuthRequestDto;
+import com.capstone.liveAloneCommunity.dto.email.EmailAuthValidateRequestDto;
 import com.capstone.liveAloneCommunity.entity.email.EmailAuth;
+import com.capstone.liveAloneCommunity.exception.email.EmailAuthNotEqualException;
+import com.capstone.liveAloneCommunity.exception.email.EmailNotSentException;
 import com.capstone.liveAloneCommunity.repository.email.EmailAuthRepository;
 import com.capstone.liveAloneCommunity.service.member.MemberValidator;
 import jakarta.mail.MessagingException;
@@ -28,12 +31,22 @@ public class EmailAuthService {
     private final EmailAuthRepository emailAuthRepository;
     private final MemberValidator memberValidator;
 
+    public void validateEmailAuth(EmailAuthValidateRequestDto request){
+        EmailAuth requested = getRequestedEmailAuth(request.getEmail());
+        if(requested.isRightAuthNum(request.getAuthNum())) return;
+        throw new EmailAuthNotEqualException();
+    }
+
     public String sendEmail(EmailAuthRequestDto toEmail) throws MessagingException, UnsupportedEncodingException{
         String email = toEmail.getEmail();
         memberValidator.validateEmail(email);
         mailSender.send(createEmailForm(email));
         saveEmailAuth(email);
         return authNum.toString();
+    }
+
+    private EmailAuth getRequestedEmailAuth(String email){
+        return emailAuthRepository.findByEmail_Email(email).orElseThrow(EmailNotSentException::new);
     }
 
     private void saveEmailAuth(String email){
