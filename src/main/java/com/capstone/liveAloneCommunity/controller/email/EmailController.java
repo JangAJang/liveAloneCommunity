@@ -1,6 +1,7 @@
 package com.capstone.liveAloneCommunity.controller.email;
 
 import com.capstone.liveAloneCommunity.dto.email.EmailAuthRequestDto;
+import com.capstone.liveAloneCommunity.dto.email.EmailAuthValidateRequestDto;
 import com.capstone.liveAloneCommunity.response.Response;
 import com.capstone.liveAloneCommunity.service.auth.EmailAuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,5 +23,13 @@ public class EmailController {
     @PostMapping("/send")
     public Response sendEmailAuth(EmailAuthRequestDto emailAuthRequestDto){
         return Response.success(emailAuthService.sendEmail(emailAuthRequestDto));
+    }
+
+    @Operation(summary = "인증번호 확인", description = "이메일로 받은 인증번호가 일치하는지 확인한다. ")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/verify")
+    public Response verifyEmailAuth(EmailAuthValidateRequestDto emailAuthRequestDto){
+        emailAuthService.verifyEmailAuth(emailAuthRequestDto);
+        return Response.success();
     }
 }
