@@ -1,4 +1,4 @@
-package com.capstone.liveAloneCommunity.domain.auth;
+package com.capstone.liveAloneCommunity.domain.email;
 
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
