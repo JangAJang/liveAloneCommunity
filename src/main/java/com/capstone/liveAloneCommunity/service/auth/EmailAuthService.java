@@ -22,20 +22,39 @@ public class EmailAuthService {
     private StringBuilder authNum;
     private final JavaMailSender mailSender;
 
-    private void createCode(){
-        authNum = new StringBuilder();
-        Random random = new Random();
-        IntStream.range(0, 8).forEach(i -> authNum.append(createRandomCharacter(random)));
-    }
-
     public MimeMessage createEmailForm(String email) throws MessagingException, UnsupportedEncodingException {
-        createCode();
         MimeMessage message = mailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, email);
         message.setSubject(TITLE.getValue());
         message.setFrom(SENDER.getValue());
-        message.setText("인증 번호는 " + authNum + "입니다.", "utf-8", "html");
+        message.setText(createMessageText(email), "utf-8", "html");
         return message;
+    }
+
+    private String createMessageText(String email){
+        createCode();
+        return "<div style='margin:100px;'>"
+                +"<h1> 자취생들을 위한 커뮤니티! Live Alone Network, L.A.N</h1>"
+                +"<h1 style='color:orange;'>인증번호 안내 메일입니다.</h1>"
+                +"<br>"
+                +"<p>" + email + "님! L.A.N <p>"
+                +"<br>"
+                +"<p>해당 이메일은 회원가입을 위한 인증번호 안내 메일입니다.<p>"
+                +"<br>"
+                +"<p>하단 인증번호를 '이메일 인증번호' 칸에 입력하여 가입을 완료해주세요.<p>"
+                +"<br>"
+                +"<div align='center' style='border:1px solid black; font-family:verdana';>"
+                +"<h3 style='color:green;'>회원가입 인증 코드입니다.</h3>"
+                +"<div style='font-size:130%'>"
+                +"CODE : <strong>"
+                +authNum + "</strong><div><br/> "
+                +"</div>";
+    }
+
+    private void createCode(){
+        authNum = new StringBuilder();
+        Random random = new Random();
+        IntStream.range(0, 8).forEach(i -> authNum.append(createRandomCharacter(random)));
     }
     private char createRandomCharacter(Random random){
         int value = random.nextInt(3);
