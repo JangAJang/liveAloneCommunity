@@ -14,7 +14,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.IntStream;
@@ -28,8 +27,6 @@ public class MemberServiceTest {
     private MemberRepository memberRepository;
     @Autowired
     private MemberService memberService;
-
-    private static final PageRequest PAGE = PageRequest.of(0, 10);
 
     @BeforeEach
     void addTestData(){
@@ -48,9 +45,13 @@ public class MemberServiceTest {
     @DisplayName("아이디에 test를 검색하면 결과가 10개씩 페이징처리되어 반환된다.")
     public void searchTest_Username() throws Exception{
         //given
-        SearchMemberDto searchMemberDto = new SearchMemberDto("test", MemberSearchType.USERNAME);
+        SearchMemberDto searchMemberDto = SearchMemberDto.builder()
+                .page(0)
+                .size(10)
+                .text("test")
+                .memberSearchType(MemberSearchType.USERNAME).build();
         //when
-        MemberSearchResultDto memberSearchResultDto = memberService.searchMember(searchMemberDto, PAGE);
+        MemberSearchResultDto memberSearchResultDto = memberService.searchMember(searchMemberDto);
         //then
         Assertions.assertThat(memberSearchResultDto.getSearchResult().stream().map(MemberResponseDto::getUsername))
                 .containsExactly("test1", "test2", "test3", "test4", "test5",
@@ -61,9 +62,13 @@ public class MemberServiceTest {
     @DisplayName("닉네임 test를 검색하면 결과가 10개씩 페이징처리되어 반환된다.")
     public void searchTest_Nickname() throws Exception{
         //given
-        SearchMemberDto searchMemberDto = new SearchMemberDto("test", MemberSearchType.NICKNAME);
+        SearchMemberDto searchMemberDto = SearchMemberDto.builder()
+                .text("test")
+                .memberSearchType(MemberSearchType.NICKNAME)
+                .page(0)
+                .size(10).build();
         //when
-        MemberSearchResultDto memberSearchResultDto = memberService.searchMember(searchMemberDto, PAGE);
+        MemberSearchResultDto memberSearchResultDto = memberService.searchMember(searchMemberDto);
         //then
         Assertions.assertThat(memberSearchResultDto.getSearchResult().stream().map(MemberResponseDto::getUsername))
                 .containsExactly("test1", "test2", "test3", "test4", "test5",
@@ -74,9 +79,13 @@ public class MemberServiceTest {
     @DisplayName("이메일에 1을 검색하면 결과가 1, 10이 페이징처리되어 반환된다.")
     public void searchTest_Email() throws Exception{
         //given
-        SearchMemberDto searchMemberDto = new SearchMemberDto("1", MemberSearchType.EMAIL);
+        SearchMemberDto searchMemberDto = SearchMemberDto.builder()
+                .text("1")
+                .memberSearchType(MemberSearchType.EMAIL)
+                .page(0)
+                .size(10).build();
         //when
-        MemberSearchResultDto memberSearchResultDto = memberService.searchMember(searchMemberDto, PAGE);
+        MemberSearchResultDto memberSearchResultDto = memberService.searchMember(searchMemberDto);
         //then
         Assertions.assertThat(memberSearchResultDto.getSearchResult().stream().map(MemberResponseDto::getUsername))
                 .containsExactly("test1",  "test10");
