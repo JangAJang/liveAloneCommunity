@@ -62,6 +62,18 @@ public class PostServiceTest {
                     throw new RuntimeException(e);
                 }
             });
+            IntStream.range(i*10+6, i*10+10).forEach(index ->
+            {
+                postService.writePost(member, WritePostRequestDto.builder()
+                        .category(HOBBY_SHARE)
+                        .title("title" + index)
+                        .content("content" + index).build());
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         });
     }
 
@@ -318,5 +330,31 @@ public class PostServiceTest {
         //then
         Assertions.assertThatThrownBy(() -> postService.deletePost(100L, member))
                 .isInstanceOf(PostNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("카테고리로 게시물을 조회할 때, 해당 카테고리의 게시물만을 조회한다. ")
+    public void getPostByCategory() throws Exception{
+        //given
+        MultiPostResponseDto cookingResult = postService.getPostByCategory(PostByCategoryRequestDto.builder()
+                        .page(0)
+                        .size(10)
+                        .category(COOKING)
+                .build());
+        MultiPostResponseDto hobbyResult = postService.getPostByCategory(PostByCategoryRequestDto.builder()
+                        .page(0)
+                        .size(10)
+                        .category(HOBBY_SHARE)
+                .build());
+        //when
+
+        //then
+        Assertions.assertThat(cookingResult.getResult().stream()
+                .map(PostResponseDto::getTitle))
+                .containsExactly("title105", "title104", "title103", "title102", "title101",
+                        "title95", "title94", "title93", "title92", "title91");
+        Assertions.assertThat(hobbyResult.getResult().stream().map(PostResponseDto::getTitle))
+                .containsExactly("title110", "title109", "title108", "title107", "title106",
+                        "title100", "title99", "title98", "title97", "title96");
     }
 }
