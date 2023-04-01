@@ -25,7 +25,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
     public Page<PostResponseDto> searchPost(SearchPostRequestDto searchPostRequestDto) {
         Pageable pageable = PageRequest.of(searchPostRequestDto.getPage(), searchPostRequestDto.getSize());
         QueryResults<PostResponseDto> result = queryFactory
-                .select(new QPostResponseDto(post.id, member.memberInfo.nickname.as("writer"),
+                .select(new QPostResponseDto(post.id, member.nickname.nickname.as("writer"),
                         post.title.title, post.content.content, post.category, post.createdDate))
                 .from(post)
                 .leftJoin(post.member, member)
@@ -45,8 +45,8 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
 
     private BooleanExpression makeConditionQueryWithMember(String text, SearchPostType searchPostType){
         if(searchPostType.equals(SearchPostType.WRITER))
-            return member.memberInfo.nickname.contains(text);
-        return member.memberInfo.nickname.contains(text).or(post.title.title.contains(text));
+            return member.nickname.nickname.contains(text);
+        return member.nickname.nickname.contains(text).or(post.title.title.contains(text));
     }
 
     private BooleanExpression makeConditionQueryWithoutMember(String text, SearchPostType searchPostType){
@@ -61,7 +61,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
     public Page<PostResponseDto> getMembersPost(MembersPostRequestDto membersPostRequestDto) {
         Pageable pageable = PageRequest.of(membersPostRequestDto.getPage(), membersPostRequestDto.getSize());
         QueryResults<PostResponseDto> result = queryFactory
-                .select(new QPostResponseDto(post.id, member.memberInfo.nickname.as("writer"),
+                .select(new QPostResponseDto(post.id, member.nickname.nickname.as("writer"),
                         post.title.title, post.content.content, post.category, post.createdDate))
                 .from(post)
                 .leftJoin(post.member, member)
