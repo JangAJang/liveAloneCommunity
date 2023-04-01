@@ -18,16 +18,25 @@ public class MemberDomainTest {
     }
 
     @Test
-    @DisplayName("MemberInfo 도메인을 생성하면, 닉네임과 이메일을 가지는 변수를 만든다.")
-    public void createTest() throws Exception{
+    @DisplayName("Nickname 도메인을 생성하면, 닉네임을 가지는 변수를 만든다.")
+    public void createNicknameTest() throws Exception{
         //given
         String nickname = "닉네임";
-        String email = "이메일";
         //when
-        MemberInfo memberInfo = new MemberInfo(nickname, email);
+        Nickname nickname1 = new Nickname(nickname);
         //then
-        Assertions.assertThat(memberInfo.getNickname()).isEqualTo(nickname);
-        Assertions.assertThat(memberInfo.getEmail()).isEqualTo(email);
+        Assertions.assertThat(nickname1.getNickname()).isEqualTo(nickname);
+    }
+
+    @Test
+    @DisplayName("Email 도메인을 생성하면, 이메일을 가지는 변수를 만든다.")
+    public void createEmailTest() throws Exception{
+        //given
+        String email = "닉네임";
+        //when
+        Email email1 = new Email(email);
+        //then
+        Assertions.assertThat(email1.getEmail()).isEqualTo(email);
     }
 
     @Test
