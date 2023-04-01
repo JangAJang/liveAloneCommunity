@@ -19,4 +19,12 @@ public class CommentResponseDto {
         this.nickname = nickname;
         this.createTime = createTime;
     }
+
+    public static CommentResponseDto toDto(Comment comment) {
+        return CommentResponseDto.builder()
+                .id(comment.getId())
+                .content(comment.getContent())
+                .createTime(comment.getCreatedDate())
+                .build();
+    }
 }
