@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -32,7 +31,7 @@ public class EmailAuthService {
     private final EmailAuthRepository emailAuthRepository;
     private final MemberValidator memberValidator;
 
-    public void validateEmailAuth(EmailAuthValidateRequestDto request){
+    public void verifyEmailAuth(EmailAuthValidateRequestDto request){
         EmailAuth requested = getRequestedEmailAuth(request.getEmail());
         if(requested.isRightAuthNum(request.getAuthNum())) return;
         throw new EmailAuthNotEqualException();
