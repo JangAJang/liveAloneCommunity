@@ -62,7 +62,7 @@ public class PostServiceTest {
                     throw new RuntimeException(e);
                 }
             });
-            IntStream.range(i*10+6, i*10+10).forEach(index ->
+            IntStream.range(i*10+6, i*10+11).forEach(index ->
             {
                 postService.writePost(member, WritePostRequestDto.builder()
                         .category(HOBBY_SHARE)
