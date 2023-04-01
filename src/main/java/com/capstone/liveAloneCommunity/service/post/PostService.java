@@ -53,12 +53,16 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public MultiPostResponseDto getPostByCategory(PostByCategoryRequestDto postByCategoryRequestDto){
-        Pageable pageable = PageRequest.of(postByCategoryRequestDto.getPage(), postByCategoryRequestDto.getSize(),
-                Sort.by("CreatedDate").descending());
         List<PostResponseDto> postByCategory = postRepository
-                .findAllByCategoryOrderByCreatedDateDesc(postByCategoryRequestDto.getCategory(), pageable).getContent()
+                .findAllByCategoryOrderByCreatedDateDesc(postByCategoryRequestDto.getCategory(),
+                        getPageRequestOfPostByCategory(postByCategoryRequestDto)).getContent()
                 .stream().map(PostResponseDto::toDto).collect(Collectors.toList());
         return new MultiPostResponseDto(postByCategory);
+    }
+
+    private Pageable getPageRequestOfPostByCategory(PostByCategoryRequestDto postByCategoryRequestDto) {
+        return PageRequest.of(postByCategoryRequestDto.getPage(), postByCategoryRequestDto.getSize(),
+                Sort.by("CreatedDate").descending());
     }
 
     @Transactional(readOnly = true)
