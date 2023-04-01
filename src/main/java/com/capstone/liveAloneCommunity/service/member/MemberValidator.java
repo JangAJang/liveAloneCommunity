@@ -3,7 +3,7 @@ package com.capstone.liveAloneCommunity.service.member;
 import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneCommunity.dto.member.ChangePasswordRequestDto;
-import com.capstone.liveAloneCommunity.dto.member.EditMemberInfoDto;
+import com.capstone.liveAloneCommunity.dto.member.EditNicknameDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.exception.member.*;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
@@ -33,9 +33,9 @@ public class MemberValidator {
             throw new PasswordNotMatchingException();
     }
 
-    public void validateEditInfoRequest(EditMemberInfoDto editMemberInfoDto){
-        validateNickname(editMemberInfoDto.getNickname());
-        validateEmail(editMemberInfoDto.getEmail());
+    public void validateEditInfoRequest(EditNicknameDto editNicknameDto){
+        validateNickname(editNicknameDto.getNickname());
+        validateEmail(editNicknameDto.getEmail());
     }
 
     public void validateChangePasswordRequest(Member member, ChangePasswordRequestDto changePasswordRequestDto){
