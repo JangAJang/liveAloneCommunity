@@ -2,9 +2,7 @@ package com.capstone.liveAloneCommunity.service.auth;
 
 import com.capstone.liveAloneCommunity.dto.email.EmailAuthRequestDto;
 import com.capstone.liveAloneCommunity.entity.email.EmailAuth;
-import com.capstone.liveAloneCommunity.exception.member.EmailAlreadyInUseException;
 import com.capstone.liveAloneCommunity.repository.email.EmailAuthRepository;
-import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.service.member.MemberValidator;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -31,11 +29,17 @@ public class EmailAuthService {
     private final MemberValidator memberValidator;
 
     public String sendEmail(EmailAuthRequestDto toEmail) throws MessagingException, UnsupportedEncodingException{
-        memberValidator.validateEmail(toEmail.getEmail());
-        MimeMessage emailForm = createEmailForm(toEmail.getEmail());
-        mailSender.send(emailForm);
-        emailAuthRepository.save(new EmailAuth(toEmail.getEmail(), authNum.toString()));
+        String email = toEmail.getEmail();
+        memberValidator.validateEmail(email);
+        mailSender.send(createEmailForm(email));
+        saveEmailAuth(email);
         return authNum.toString();
+    }
+
+    private void saveEmailAuth(String email){
+        emailAuthRepository.findByEmail_Email(email)
+                .orElse(emailAuthRepository.save(new EmailAuth(email, authNum.toString())))
+                .updateAuthNum(authNum.toString());
     }
 
     public MimeMessage createEmailForm(String email) throws MessagingException, UnsupportedEncodingException {
