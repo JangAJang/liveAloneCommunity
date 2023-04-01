@@ -5,6 +5,7 @@ import com.capstone.liveAloneCommunity.dto.email.EmailAuthValidateRequestDto;
 import com.capstone.liveAloneCommunity.entity.email.EmailAuth;
 import com.capstone.liveAloneCommunity.exception.email.EmailAuthNotEqualException;
 import com.capstone.liveAloneCommunity.exception.email.EmailNotSentException;
+import com.capstone.liveAloneCommunity.exception.email.TryToSendEmailAgain;
 import com.capstone.liveAloneCommunity.repository.email.EmailAuthRepository;
 import com.capstone.liveAloneCommunity.service.member.MemberValidator;
 import jakarta.mail.MessagingException;
@@ -37,7 +38,15 @@ public class EmailAuthService {
         throw new EmailAuthNotEqualException();
     }
 
-    public String sendEmail(EmailAuthRequestDto toEmail) throws MessagingException, UnsupportedEncodingException{
+    public String sendEmail(EmailAuthRequestDto toEmail){
+        try{
+            return sendEmailAuth(toEmail);
+        }catch (MessagingException e){
+            throw new TryToSendEmailAgain();
+        }
+    }
+
+    private String sendEmailAuth(EmailAuthRequestDto toEmail) throws MessagingException{
         String email = toEmail.getEmail();
         memberValidator.validateEmail(email);
         mailSender.send(createEmailForm(email));
@@ -55,7 +64,7 @@ public class EmailAuthService {
                 .updateAuthNum(authNum.toString());
     }
 
-    public MimeMessage createEmailForm(String email) throws MessagingException, UnsupportedEncodingException {
+    public MimeMessage createEmailForm(String email) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, email);
         message.setSubject(TITLE.getValue());

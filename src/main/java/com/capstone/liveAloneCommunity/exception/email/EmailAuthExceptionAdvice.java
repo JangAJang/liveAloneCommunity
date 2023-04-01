@@ -18,6 +18,12 @@ public class EmailAuthExceptionAdvice {
     @ExceptionHandler(EmailAuthNotEqualException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response emailAuthNotEqualException(){
-        return Response.failure(400, "인증번호가 일치하지 않습니다..");
+        return Response.failure(400, "인증번호가 일치하지 않습니다.");
+    }
+
+    @ExceptionHandler(TryToSendEmailAgain.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response tryToSendEmailAgain(){
+        return Response.failure(400, "인증번호 전송이 정상적으로 동작되지 않았습니다. 다시 시도해주세요.");
     }
 }
