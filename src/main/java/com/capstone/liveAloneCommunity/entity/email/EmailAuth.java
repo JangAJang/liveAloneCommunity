@@ -25,4 +25,8 @@ public class EmailAuth {
     public boolean isRightAuthNum(String authNum){
         return authenticationNumber.equals(authNum);
     }
+
+    public void updateAuthNum(String authNum) {
+        this.authenticationNumber = new AuthenticationNumber(authNum);
+    }
 }
