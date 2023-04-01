@@ -39,7 +39,7 @@ public class MemberService {
     public MemberResponseDto editNickname(Long id, EditNicknameDto editNicknameDto, Member current){
         Member member = findMemberById(id);
         memberValidator.validateAuthorization(current, member);
-        memberValidator.validateEditInfoRequest(editNicknameDto);
+        memberValidator.validateNickname(editNicknameDto.getNickname());
         member.editNickname(editNicknameDto.getNickname());
         return MemberResponseDto.toDto(member);
     }

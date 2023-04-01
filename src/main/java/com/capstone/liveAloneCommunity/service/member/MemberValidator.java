@@ -33,11 +33,6 @@ public class MemberValidator {
             throw new PasswordNotMatchingException();
     }
 
-    public void validateEditInfoRequest(EditNicknameDto editNicknameDto){
-        validateNickname(editNicknameDto.getNickname());
-        validateEmail(editNicknameDto.getEmail());
-    }
-
     public void validateChangePasswordRequest(Member member, ChangePasswordRequestDto changePasswordRequestDto){
         validatePassword(changePasswordRequestDto.getNewPassword(), changePasswordRequestDto.getNewPasswordCheck());
         if(!member.isRightPassword(changePasswordRequestDto.getCurrentPassword(), passwordEncoder))
