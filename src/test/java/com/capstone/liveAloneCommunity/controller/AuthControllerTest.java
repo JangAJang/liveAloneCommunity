@@ -211,6 +211,29 @@ public class AuthControllerTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("입력하려는 값중 내용없는 문자열이 존재하면 400에러륿 반환한다.")
+    public void registerTest_EMPTY() throws Exception{
+        //given
+        createFormerMember();
+        RegisterRequestDto registerRequestDto = RegisterRequestDto.builder()
+                .username("")
+                .nickname("test")
+                .email("former@former.com")
+                .password("test")
+                .passwordCheck("test")
+                .build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(makeJson(registerRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("아이디를 입력해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private void createFormerMember(){
         RegisterRequestDto registerRequestDto = RegisterRequestDto.builder()
                 .username("former")
