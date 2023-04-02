@@ -7,14 +7,12 @@ import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.post.Post;
 import com.querydsl.core.types.dsl.TimeTemplate;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@AllArgsConstructor
 public class Comment extends BaseTimeEntity {
 
     @Id
@@ -32,5 +30,12 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-
+    public Comment(String content, Post post, Member member) {
+        this.content = new Content(content);
+        this.post = post;
+        this.member = member;
+    }
+    public String getContent() {
+        return content.getContent();
+    }
 }
