@@ -10,6 +10,7 @@ import com.capstone.liveAloneCommunity.entity.comment.Comment;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.member.Role;
 import com.capstone.liveAloneCommunity.entity.post.Post;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,7 @@ class CommentTest {
 
     @Test
     @DisplayName("댓글을 생성했을 때 댓글의 필드가 초기화된다.")
-    public void createComment() {
+    void createComment() {
         //given
         Member member = new Member(new Username("test1"), new MemberInfo("test2", "email@email.com"),
                 new Password("test3"), Role.USER);
