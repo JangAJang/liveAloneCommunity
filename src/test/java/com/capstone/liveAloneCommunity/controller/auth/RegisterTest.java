@@ -1,4 +1,4 @@
-package com.capstone.liveAloneCommunity.controller;
+package com.capstone.liveAloneCommunity.controller.auth;
 
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-public class AuthControllerTest {
+public class RegisterTest {
 
     @Autowired
     private MockMvc mvc;
