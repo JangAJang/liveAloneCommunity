@@ -28,14 +28,8 @@ public class AuthService {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RefreshTokenRepository refreshTokenRepository;
-    private TokenValidator tokenValidator;
-    private MemberValidator memberValidator;
-
-    @PostConstruct
-    private void initiateValidator(){
-        memberValidator = new MemberValidator(memberRepository, passwordEncoder);
-        tokenValidator = new TokenValidator(tokenProvider);
-    }
+    private final TokenValidator tokenValidator;
+    private final MemberValidator memberValidator;
 
     public void register(RegisterRequestDto registerRequestDto){
         memberValidator.validateRegister(registerRequestDto);

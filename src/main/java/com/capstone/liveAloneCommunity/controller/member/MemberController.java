@@ -1,19 +1,16 @@
 package com.capstone.liveAloneCommunity.controller.member;
 
 import com.capstone.liveAloneCommunity.dto.member.ChangePasswordRequestDto;
-import com.capstone.liveAloneCommunity.dto.member.EditMemberInfoDto;
+import com.capstone.liveAloneCommunity.dto.member.EditNicknameDto;
 import com.capstone.liveAloneCommunity.dto.member.SearchMemberDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.response.Response;
 import com.capstone.liveAloneCommunity.service.member.MemberService;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,8 +41,8 @@ public class MemberController {
     @PatchMapping("/edit")
     @Operation(summary = "회원 정보 수정", description = "회원의 이메일, 닉네임을 수정한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response editMemberInfo(@RequestBody EditMemberInfoDto editMemberInfoDto, @RequestParam Long id){
-        return Response.success(memberService.editMember(id, editMemberInfoDto, getMember()));
+    public Response editMemberInfo(@RequestBody EditNicknameDto editNicknameDto, @RequestParam Long id){
+        return Response.success(memberService.editNickname(id, editNicknameDto, getMember()));
     }
 
     @PatchMapping("/changePassword")

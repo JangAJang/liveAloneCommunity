@@ -3,7 +3,6 @@ package com.capstone.liveAloneCommunity.service.member;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneCommunity.dto.member.*;
 import com.capstone.liveAloneCommunity.entity.member.Member;
-import com.capstone.liveAloneCommunity.exception.member.EmailNotFormatException;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotAllowedException;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
@@ -92,12 +91,11 @@ public class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("닉네임과 이메일을 수정할 때, 값을 입력하면 해당 값으로 반환된다.")
+    @DisplayName("닉네임을 수정할 때, 값을 입력하면 해당 값으로 반환된다.")
     public void editTest() throws Exception{
         //given
-        EditMemberInfoDto editMemberInfoDto = EditMemberInfoDto.builder()
-                .nickname("newNick")
-                .email("new@e.com").build();
+        EditNicknameDto editNicknameDto = EditNicknameDto.builder()
+                .nickname("newNick").build();
         authService.register(RegisterRequestDto.builder()
                 .username("test")
                 .nickname("test")
@@ -106,40 +104,18 @@ public class MemberServiceTest {
                 .passwordCheck("test").build());
         Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
         //when
-        memberService.editMember(member.getId(), editMemberInfoDto, member);
+        memberService.editNickname(member.getId(), editNicknameDto, member);
         //then
         Assertions.assertThat(member.getNickname()).isEqualTo("newNick");
         Assertions.assertThat(member.getEmail()).isEqualTo("new@e.com");
     }
 
     @Test
-    @DisplayName("닉네임과 이메일을 수정할 때, 이메일 형식이 올바르지 않으면 예외처리한다.")
-    public void editFail_EmailFormat() throws Exception{
-        //given
-        EditMemberInfoDto editMemberInfoDto = EditMemberInfoDto.builder()
-                .nickname("newNick")
-                .email("newe.com").build();
-        authService.register(RegisterRequestDto.builder()
-                .username("test")
-                .nickname("test")
-                .email("test@test.com")
-                .password("test")
-                .passwordCheck("test").build());
-        Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
-        //when
-
-        //then
-        Assertions.assertThatThrownBy(() -> memberService.editMember(member.getId(), editMemberInfoDto, member))
-                .isInstanceOf(EmailNotFormatException.class);
-    }
-
-    @Test
     @DisplayName("자신이 아닌 다른 멤버의 게시물을 수정하려 하면, 예외처리한다.")
     public void editFail_NotAllowed() throws Exception{
         //given
-        EditMemberInfoDto editMemberInfoDto = EditMemberInfoDto.builder()
-                .nickname("newNick")
-                .email("new@e.com").build();
+        EditNicknameDto editNicknameDto = EditNicknameDto.builder()
+                .nickname("newNick").build();
         authService.register(RegisterRequestDto.builder()
                 .username("test")
                 .nickname("test")
@@ -157,7 +133,7 @@ public class MemberServiceTest {
         //when
 
         //then
-        Assertions.assertThatThrownBy(() -> memberService.editMember(member1.getId(), editMemberInfoDto, member))
+        Assertions.assertThatThrownBy(() -> memberService.editNickname(member1.getId(), editNicknameDto, member))
                 .isInstanceOf(MemberNotAllowedException.class);
     }
 

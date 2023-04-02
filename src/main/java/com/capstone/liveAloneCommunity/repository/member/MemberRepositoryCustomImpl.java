@@ -26,7 +26,7 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
         Pageable pageable = PageRequest.of(searchMemberDto.getPage(), searchMemberDto.getSize());
         QueryResults<MemberResponseDto> result = query.select(new QMemberResponseDto(member.id,
                         member.username.username,
-                        member.memberInfo.nickname, member.memberInfo.email))
+                        member.nickname.nickname, member.email.email))
                 .from(member)
                 .where(getContains(searchMemberDto))
                 .offset(pageable.getOffset())
@@ -40,7 +40,7 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
         if(searchType.equals(MemberSearchType.USERNAME))
             return member.username.username.contains(searchMemberDto.getText());
         if(searchType.equals(MemberSearchType.NICKNAME))
-            return member.memberInfo.nickname.contains(searchMemberDto.getText());
-        return member.memberInfo.email.contains(searchMemberDto.getText());
+            return member.nickname.nickname.contains(searchMemberDto.getText());
+        return member.email.email.contains(searchMemberDto.getText());
     }
 }
