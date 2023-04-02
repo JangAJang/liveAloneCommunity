@@ -38,4 +38,8 @@ public class Comment extends BaseTimeEntity {
     public String getContent() {
         return content.getContent();
     }
+
+    public String getWriterName() {
+        return member.getNickname();
+    }
 }
