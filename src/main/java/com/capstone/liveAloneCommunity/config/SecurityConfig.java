@@ -45,12 +45,6 @@ public class SecurityConfig{
     public PasswordEncoder encode(){
         return new BCryptPasswordEncoder();
     }
-
-//    @Bean
-//    public WebSecurityCustomizer customizer() throws Exception{
-//        return (web) -> web.ignoring().requestMatchers(PERMIT_URL_ARRAY);
-//    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.httpBasic(withDefaults())
