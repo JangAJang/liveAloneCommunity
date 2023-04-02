@@ -17,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CommentService {
 
-    private CommentRepository commentRepository;
-    private PostRepository postRepository;
+    private final CommentRepository commentRepository;
+    private final PostRepository postRepository;
 
     public CommentResponseDto writeComment(WriteCommentRequestDto writeCommentRequestDto, Member member) {
         Post post = postRepository.findById(writeCommentRequestDto.getPostId())
