@@ -4,6 +4,7 @@ import com.capstone.liveAloneCommunity.dto.comment.CommentResponseDto;
 import com.capstone.liveAloneCommunity.dto.comment.WriteCommentRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotAllowedException;
+import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.response.Response;
 import com.capstone.liveAloneCommunity.service.comment.CommentService;
@@ -27,7 +28,7 @@ public class CommentController {
     @ResponseStatus(HttpStatus.OK)
     public Response writeComment(@Valid @RequestBody WriteCommentRequestDto writeCommentRequestDto) {
         Member member = memberRepository.findByUsername_Username(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(MemberNotAllowedException::new);
+                .orElseThrow(MemberNotFoundException::new);
         return Response.success(commentService.writeComment(writeCommentRequestDto, member));
     }
 }
