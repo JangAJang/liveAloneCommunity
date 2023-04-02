@@ -12,19 +12,17 @@ import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
 import com.capstone.liveAloneCommunity.service.post.PostService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Random;
 import java.util.stream.IntStream;
-
 import static com.capstone.liveAloneCommunity.domain.post.Category.COOKING;
 import static com.capstone.liveAloneCommunity.domain.post.Category.HOBBY_SHARE;
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -88,7 +86,6 @@ class CommentServiceTest {
         });
     }
 
-
     @Test
     @DisplayName("게시물의 id와 댓글 내용으로 댓글을 생성한다. ")
     void createComment() {
@@ -109,9 +106,8 @@ class CommentServiceTest {
         commentService.writeComment(writeCommentRequestDto, member);
 
         //then
-        Assertions.assertThat(commentRepository.searchCommentByPostId(post.getId()).size())
+        assertThat(commentRepository.searchCommentByPostId(post.getId()).size())
                 .isEqualTo(101);
     }
-
 }
 
