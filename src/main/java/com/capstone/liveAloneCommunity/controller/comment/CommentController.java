@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/comment")
 public class CommentController {
 
-    private CommentService commentService;
-    private MemberRepository memberRepository;
+    private final CommentService commentService;
+    private final MemberRepository memberRepository;
 
     @GetMapping("")
     @Operation(summary = "댓글 작성", description = "게시물의 댓글을 작성한다.")
