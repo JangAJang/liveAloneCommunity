@@ -6,8 +6,10 @@ import com.capstone.liveAloneCommunity.entity.token.RefreshToken;
 import com.capstone.liveAloneCommunity.exception.token.UnvalidRefreshTokenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
+@Component
 public class TokenValidator {
 
     private final TokenProvider tokenProvider;

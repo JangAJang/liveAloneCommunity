@@ -4,7 +4,6 @@ import com.capstone.liveAloneCommunity.dto.member.*;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,12 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private MemberValidator memberValidator;
-
-    @PostConstruct
-    private void initiateValidator(){
-        memberValidator = new MemberValidator(memberRepository, passwordEncoder);
-    }
+    private final MemberValidator memberValidator;
 
     @Transactional(readOnly = true)
     public MemberResponseDto getMemberInfo(Long id) {
