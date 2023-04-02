@@ -20,8 +20,8 @@ import static org.assertj.core.api.Assertions.*;
 @Transactional
 class CommentTest {
 
-    static Member member;
-    static Post post;
+    private static Member member;
+    private static Post post;
 
     @BeforeEach
     void initTestData() {
