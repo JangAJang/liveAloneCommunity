@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
-@AllArgsConstructor
+@AllArgsConstructor(staticName = "toDto")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class MemberSearchResultDto {

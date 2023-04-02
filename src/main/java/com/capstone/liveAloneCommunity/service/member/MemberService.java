@@ -27,7 +27,7 @@ public class MemberService {
     @Transactional(readOnly = true)
     public MemberSearchResultDto searchMember(SearchMemberDto searchMemberDto){
         Page<MemberResponseDto> result = memberRepository.searchMember(searchMemberDto);
-        return new MemberSearchResultDto(result);
+        return MemberSearchResultDto.toDto(result);
     }
 
     public MemberResponseDto editNickname(Long id, EditNicknameDto editNicknameDto, Member current){
