@@ -8,10 +8,12 @@ import com.capstone.liveAloneCommunity.exception.member.*;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
+@Component
 public class MemberValidator {
 
     private final MemberRepository memberRepository;
