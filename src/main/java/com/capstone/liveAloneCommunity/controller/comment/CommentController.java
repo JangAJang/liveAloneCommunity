@@ -23,7 +23,7 @@ public class CommentController {
     private final CommentService commentService;
     private final MemberRepository memberRepository;
 
-    @GetMapping("")
+    @PostMapping("")
     @Operation(summary = "댓글 작성", description = "게시물의 댓글을 작성한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response writeComment(@Valid @RequestBody WriteCommentRequestDto writeCommentRequestDto) {
