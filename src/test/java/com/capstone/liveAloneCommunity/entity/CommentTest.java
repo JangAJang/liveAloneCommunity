@@ -35,4 +35,19 @@ class CommentTest {
         assertThat(comment.getPost()).isEqualTo(post);
         assertThat(comment.getMember()).isEqualTo(member);
     }
+
+    @Test
+    @DisplayName("댓글을 작성했을 때 댓글 작성자를 반환한다.")
+    void getWriteNameTest() {
+        //given
+        Member member = new Member(new Username("test1"), new MemberInfo("test2", "email@email.com"),
+                new Password("test3"), Role.USER);
+        Post post = new Post(new Title("title"), new Content("content"), member, Category.COOKING);
+
+        //when
+        Comment comment = new Comment("test", post, member);
+
+        //then
+        assertThat(comment.getWriterName()).isEqualTo(member.getNickname());
+    }
 }
