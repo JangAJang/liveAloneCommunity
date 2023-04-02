@@ -20,13 +20,20 @@ import static org.assertj.core.api.Assertions.*;
 @Transactional
 class CommentTest {
 
+    static Member member;
+    static Post post;
+
+    @BeforeEach
+    void initTestData() {
+         member = new Member(new Username("test1"), new MemberInfo("test2", "email@email.com"),
+                new Password("test3"), Role.USER);
+         post = new Post(new Title("title"), new Content("content"), member, Category.COOKING);
+    }
+
     @Test
     @DisplayName("댓글을 생성했을 때 댓글의 필드가 초기화된다.")
     void createComment() {
         //given
-        Member member = new Member(new Username("test1"), new MemberInfo("test2", "email@email.com"),
-                new Password("test3"), Role.USER);
-        Post post = new Post(new Title("title"), new Content("content"), member, Category.COOKING);
 
         //when
         Comment comment = new Comment("test", post, member);
@@ -41,9 +48,6 @@ class CommentTest {
     @DisplayName("댓글을 작성했을 때 댓글 작성자를 반환한다.")
     void getWriteNameTest() {
         //given
-        Member member = new Member(new Username("test1"), new MemberInfo("test2", "email@email.com"),
-                new Password("test3"), Role.USER);
-        Post post = new Post(new Title("title"), new Content("content"), member, Category.COOKING);
 
         //when
         Comment comment = new Comment("test", post, member);
