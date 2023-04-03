@@ -183,6 +183,24 @@ public class LogInTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("아이디에 일치하는 비밀번호를 입력하지 않은 경우 400에러와 예외문구를 반환한다.")
+    public void logInTest_Fail_Password_NotEqual() throws Exception{
+        //given
+        LogInRequestDto logInRequestDto = LogInRequestDto.builder()
+                .username("former")
+                .password("former1").build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.post("/api/auth/logIn")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(makeJson(logInRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("비밀번호가 일치하지 않습니다."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private String makeJson(Object object){
         try{
             return new ObjectMapper().writeValueAsString(object);
