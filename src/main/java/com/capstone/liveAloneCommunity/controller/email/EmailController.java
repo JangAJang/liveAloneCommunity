@@ -3,7 +3,7 @@ package com.capstone.liveAloneCommunity.controller.email;
 import com.capstone.liveAloneCommunity.dto.email.EmailAuthRequestDto;
 import com.capstone.liveAloneCommunity.dto.email.EmailAuthValidateRequestDto;
 import com.capstone.liveAloneCommunity.response.Response;
-import com.capstone.liveAloneCommunity.service.auth.EmailAuthService;
+import com.capstone.liveAloneCommunity.service.email.EmailAuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
