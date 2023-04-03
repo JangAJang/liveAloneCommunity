@@ -112,6 +112,59 @@ public class LogInTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("비밀번호가 null값이면 400에러와 \"아이디를 입력하세요\" 문구를 출력한다.")
+    public void logInTest_Fail_Null_Password() throws Exception{
+        //given
+        LogInRequestDto logInRequestDto = LogInRequestDto.builder()
+                .username("former").build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.post("/api/auth/logIn")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(logInRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("비밀번호를 입력하세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("비밀번호가 빈 문자열이면 400에러와 \"아이디를 입력하세요\" 문구를 출력한다.")
+    public void logInTest_Fail_Empty_Password() throws Exception{
+        //given
+        LogInRequestDto logInRequestDto = LogInRequestDto.builder()
+                .password("")
+                .username("former").build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.post("/api/auth/logIn")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(logInRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("비밀번호를 입력하세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("비밀번호가 공백문자열이면 400에러와 \"아이디를 입력하세요\" 문구를 출력한다.")
+    public void logInTest_Fail_Blank_Password() throws Exception{
+        //given
+        LogInRequestDto logInRequestDto = LogInRequestDto.builder()
+                .password("   ")
+                .username("former").build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.post("/api/auth/logIn")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(logInRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("비밀번호를 입력하세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private String makeJson(Object object){
         try{
             return new ObjectMapper().writeValueAsString(object);
