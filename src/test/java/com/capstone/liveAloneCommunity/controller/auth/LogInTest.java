@@ -77,11 +77,29 @@ public class LogInTest {
     }
 
     @Test
-    @DisplayName("아이디가 null값이면 400에러와 \"아이디를 입력하세요\" 문구를 출력한다.")
+    @DisplayName("아이디가 빈 문자열이면 400에러와 \"아이디를 입력하세요\" 문구를 출력한다.")
     public void logInTest_Fail_Empty_Username() throws Exception{
         //given
         LogInRequestDto logInRequestDto = LogInRequestDto.builder()
                 .username("")
+                .password("former").build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.post("/api/auth/logIn")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(logInRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("아이디를 입력하세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("아이디가 공백문자열이면 400에러와 \"아이디를 입력하세요\" 문구를 출력한다.")
+    public void logInTest_Fail_Blank_Username() throws Exception{
+        //given
+        LogInRequestDto logInRequestDto = LogInRequestDto.builder()
+                .username("   ")
                 .password("former").build();
         //expected
         mvc.perform(MockMvcRequestBuilders.post("/api/auth/logIn")
