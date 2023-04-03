@@ -165,6 +165,24 @@ public class LogInTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("존재하지 않는 아이디로 로그인을 요청하면 404에러와 예외문구를 반환한다. ")
+    public void logInTest_Fail_Member_Not_Found() throws Exception{
+        //given
+        LogInRequestDto logInRequestDto = LogInRequestDto.builder()
+                .username("after")
+                .password("former").build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.post("/api/auth/logIn")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(makeJson(logInRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(404))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("해당 사용자를 찾을 수 없습니다."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private String makeJson(Object object){
         try{
             return new ObjectMapper().writeValueAsString(object);
