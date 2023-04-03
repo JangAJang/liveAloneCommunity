@@ -1,11 +1,14 @@
 package com.capstone.liveAloneCommunity.controller.auth;
 
+import com.capstone.liveAloneCommunity.config.jwt.TokenPath;
 import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneCommunity.dto.token.ReissueRequestDto;
+import com.capstone.liveAloneCommunity.dto.token.TokenResponseDto;
 import com.capstone.liveAloneCommunity.response.Response;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final TokenPath tokenPath;
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.OK)
@@ -29,8 +33,10 @@ public class AuthController {
     @PostMapping("/logIn")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "로그인", description = "아이디와 비밀번호를 입력하면, 회원이 존재하고 비밀번호가 일치하면 토큰을 반환한다.")
-    public Response logIn(@RequestBody @Valid LogInRequestDto logInRequestDto){
-        return Response.success(authService.logIn(logInRequestDto));
+    public Response logIn(@RequestBody @Valid LogInRequestDto logInRequestDto, HttpServletResponse response){
+        TokenResponseDto tokenResponseDto = authService.logIn(logInRequestDto);
+        tokenPath.putAccessTokenOnHeader(tokenResponseDto.getAccessToken(), response);
+        return Response.success();
     }
 
     @PatchMapping("/reissue")
