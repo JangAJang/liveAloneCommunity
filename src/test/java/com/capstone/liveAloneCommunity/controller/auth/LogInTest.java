@@ -55,7 +55,7 @@ public class LogInTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.result.data.accessToken").exists())
+                .andExpect(MockMvcResultMatchers.header().exists("Authorization"))
                 .andDo(MockMvcResultHandlers.print());
     }
 
