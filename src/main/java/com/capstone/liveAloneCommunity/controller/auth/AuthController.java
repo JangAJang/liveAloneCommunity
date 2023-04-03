@@ -29,7 +29,7 @@ public class AuthController {
     @PostMapping("/logIn")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "로그인", description = "아이디와 비밀번호를 입력하면, 회원이 존재하고 비밀번호가 일치하면 토큰을 반환한다.")
-    public Response logIn(@RequestBody LogInRequestDto logInRequestDto){
+    public Response logIn(@RequestBody @Valid LogInRequestDto logInRequestDto){
         return Response.success(authService.logIn(logInRequestDto));
     }
 
