@@ -42,7 +42,7 @@ public class LogInTest {
     }
 
     @Test
-    @DisplayName("올바른 아이디와 비밀번호를 입력하면 로그인을 성공하며 토큰을 반환한다.")
+    @DisplayName("올바른 아이디와 비밀번호를 입력하면 로그인을 성공하며 헤더에 토큰을 생성한다.")
     public void logInTest_Success() throws Exception{
         //given
         LogInRequestDto logInRequestDto = LogInRequestDto.builder()
