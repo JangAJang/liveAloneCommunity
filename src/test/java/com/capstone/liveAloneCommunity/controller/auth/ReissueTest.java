@@ -67,7 +67,7 @@ public class ReissueTest {
     }
 
     @Test
-    @DisplayName("헤더에 토큰이 조작된 상태로 토큰 재발행을 요청하면 401에러를 반환한다. ")
+    @DisplayName("헤더에 토큰이 조작된 상태(올바르지 않은 상태)로 토큰 재발행을 요청하면 401에러를 반환한다. ")
     public void reissueTest_Fail_Not_Right_Token() throws Exception{
         //given
         TokenResponseDto tokenResponseDto = getTokenAfterLogIn();
