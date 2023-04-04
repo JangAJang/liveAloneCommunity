@@ -12,6 +12,7 @@ import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
 import com.capstone.liveAloneCommunity.service.post.PostService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,6 @@ class CommentServiceTest {
 
     @BeforeEach
     void initTestData() {
-        databaseCleanup.execute();
         IntStream.range(0, 10).forEach(i -> {
             authService.register(RegisterRequestDto.builder()
                     .username("test" + i)
@@ -79,6 +79,11 @@ class CommentServiceTest {
                 });
             });
         });
+    }
+
+    @AfterEach
+    void afterTestCleanData() {
+        databaseCleanup.execute();
     }
 
     @Test
