@@ -21,10 +21,14 @@ public class CommentService {
     private final PostRepository postRepository;
 
     public CommentResponseDto writeComment(WriteCommentRequestDto writeCommentRequestDto, Member member) {
-        Post post = postRepository.findById(writeCommentRequestDto.getPostId())
-                .orElseThrow(PostNotFoundException::new);
+        Post post = getPost(writeCommentRequestDto);
         Comment comment = new Comment(writeCommentRequestDto.getContent(), post, member);
         commentRepository.save(comment);
         return CommentResponseDto.toDto(comment);
+    }
+
+    private Post getPost(WriteCommentRequestDto writeCommentRequestDto) {
+        return postRepository.findById(writeCommentRequestDto.getPostId())
+                .orElseThrow(PostNotFoundException::new);
     }
 }
