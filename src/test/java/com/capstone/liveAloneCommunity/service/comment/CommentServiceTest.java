@@ -25,7 +25,6 @@ import static com.capstone.liveAloneCommunity.domain.post.Category.HOBBY_SHARE;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
 class CommentServiceTest {
     @Autowired
     private AuthService authService;
@@ -39,8 +38,12 @@ class CommentServiceTest {
     private CommentService commentService;
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private DatabaseCleanup databaseCleanup;
+
     @BeforeEach
     void initTestData() {
+        databaseCleanup.execute();
         IntStream.range(0, 10).forEach(i -> {
             authService.register(RegisterRequestDto.builder()
                     .username("test" + i)
@@ -99,8 +102,26 @@ class CommentServiceTest {
         commentService.writeComment(writeCommentRequestDto, member);
 
         //then
-        assertThat(commentRepository.searchCommentByPostId(post.getId()).size())
+        assertThat(commentRepository.searchCommentByPostId(post.getId()).size()).as("test")
                 .isEqualTo(101);
     }
+
+    @Test
+    @DisplayName("작성한 댓글의 게시물을 찾지 못하면 에러를 발생시킨다.")
+    void postNotFoundExceptionTest () {
+        //given
+        WriteCommentRequestDto writeCommentRequestDto = new WriteCommentRequestDto(101L, "testComment");
+        authService.register(RegisterRequestDto.builder()
+                .username("t")
+                .nickname("t")
+                .email("t1@test.com")
+                .password("t")
+                .passwordCheck("t").build());
+        Member member = memberRepository.findByUsername_Username("t").orElseThrow(MemberNotFoundException::new);
+
+        //when //then
+        assertThatThrownBy(() -> commentService.writeComment(writeCommentRequestDto, member)).isExactlyInstanceOf(PostNotFoundException.class);
+    }
 }
+
 
