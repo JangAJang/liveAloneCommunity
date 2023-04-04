@@ -27,25 +27,18 @@ import static org.assertj.core.api.Assertions.*;
 @SpringBootTest
 @Transactional
 class CommentServiceTest {
-
     @Autowired
     private AuthService authService;
-
     @Autowired
     private MemberRepository memberRepository;
-
     @Autowired
     private PostService postService;
-
     @Autowired
     private PostRepository postRepository;
-
     @Autowired
     private CommentService commentService;
-
     @Autowired
     private CommentRepository commentRepository;
-
     @BeforeEach
     void initTestData() {
         IntStream.range(0, 10).forEach(i -> {
