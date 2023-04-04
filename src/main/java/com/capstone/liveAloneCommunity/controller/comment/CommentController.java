@@ -1,9 +1,7 @@
 package com.capstone.liveAloneCommunity.controller.comment;
 
-import com.capstone.liveAloneCommunity.dto.comment.CommentResponseDto;
 import com.capstone.liveAloneCommunity.dto.comment.WriteCommentRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
-import com.capstone.liveAloneCommunity.exception.member.MemberNotAllowedException;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.response.Response;

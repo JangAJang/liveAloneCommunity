@@ -14,7 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
-
 import static org.assertj.core.api.Assertions.*;
 
 @Transactional
@@ -34,7 +33,6 @@ class CommentTest {
     @DisplayName("댓글을 생성했을 때 댓글의 필드가 초기화된다.")
     void createComment() {
         //given
-
         //when
         Comment comment = new Comment("test", post, member);
 
@@ -48,7 +46,6 @@ class CommentTest {
     @DisplayName("댓글을 작성했을 때 댓글 작성자를 반환한다.")
     void getWriteNameTest() {
         //given
-
         //when
         Comment comment = new Comment("test", post, member);
 

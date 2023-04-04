@@ -1,15 +1,10 @@
 package com.capstone.liveAloneCommunity.repository.comment;
 
 import com.capstone.liveAloneCommunity.entity.comment.Comment;
-import com.capstone.liveAloneCommunity.entity.comment.QComment;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-
-import java.util.ArrayList;
 import java.util.List;
-
 import static com.capstone.liveAloneCommunity.entity.comment.QComment.*;
-
 
 @RequiredArgsConstructor
 public class CommentRepositoryCustomImpl implements CommentRepositoryCustom {

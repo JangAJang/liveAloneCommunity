@@ -1,6 +1,5 @@
 package com.capstone.liveAloneCommunity.repository.comment;
 
-import com.capstone.liveAloneCommunity.controller.comment.CommentController;
 import com.capstone.liveAloneCommunity.entity.comment.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
