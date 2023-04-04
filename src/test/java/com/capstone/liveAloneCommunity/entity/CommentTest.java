@@ -1,6 +1,7 @@
 package com.capstone.liveAloneCommunity.entity;
 
-import com.capstone.liveAloneCommunity.domain.member.MemberInfo;
+import com.capstone.liveAloneCommunity.domain.member.Email;
+import com.capstone.liveAloneCommunity.domain.member.Nickname;
 import com.capstone.liveAloneCommunity.domain.member.Password;
 import com.capstone.liveAloneCommunity.domain.member.Username;
 import com.capstone.liveAloneCommunity.domain.post.Category;
@@ -13,10 +14,8 @@ import com.capstone.liveAloneCommunity.entity.post.Post;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.*;
 
-@Transactional
 class CommentTest {
 
     private static Member member;
@@ -24,7 +23,7 @@ class CommentTest {
 
     @BeforeEach
     void initTestData() {
-         member = new Member(new Username("test1"), new MemberInfo("test2", "email@email.com"),
+        member = new Member(new Username("test1"), new Nickname("test2"), new Email("test@email.com"),
                 new Password("test3"), Role.USER);
          post = new Post(new Title("title"), new Content("content"), member, Category.COOKING);
     }
