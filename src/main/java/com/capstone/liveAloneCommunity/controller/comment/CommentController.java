@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +28,13 @@ public class CommentController {
     @Operation(summary = "댓글 작성", description = "게시물의 댓글을 작성한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response writeComment(@Valid @RequestBody WriteCommentRequestDto writeCommentRequestDto) {
-        Member member = memberRepository.findByUsername_Username(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(MemberNotFoundException::new);
+        Member member = getMember();
         return Response.success(commentService.writeComment(writeCommentRequestDto, member));
+    }
+
+    private Member getMember(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return memberRepository.findByUsername_Username(authentication.getName())
+                .orElseThrow(MemberNotFoundException::new);
     }
 }
