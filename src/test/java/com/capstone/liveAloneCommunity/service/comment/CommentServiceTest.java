@@ -17,7 +17,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 import java.util.Random;
 import java.util.stream.IntStream;
 import static com.capstone.liveAloneCommunity.domain.post.Category.COOKING;
@@ -123,5 +122,4 @@ class CommentServiceTest {
         assertThatThrownBy(() -> commentService.writeComment(writeCommentRequestDto, member)).isExactlyInstanceOf(PostNotFoundException.class);
     }
 }
-
 
