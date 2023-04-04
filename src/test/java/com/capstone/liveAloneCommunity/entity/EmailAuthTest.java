@@ -19,4 +19,18 @@ public class EmailAuthTest {
         Assertions.assertThat(emailAuth.isRightAuthNum(authNum)).isEqualTo(true);
         Assertions.assertThat(emailAuth.isRightAuthNum(different)).isEqualTo(false);
     }
+
+    @Test
+    @DisplayName("EmailAuth에서 updateAuthNum에 새로운 문자열을 입력하면 authNum이 초기화된다.")
+    public void updateAuthNum() throws Exception{
+        //given
+        String authNum = "auth";
+        EmailAuth emailAuth = new EmailAuth("email", "auth");
+        //when
+        String newAuthNum = "different";
+        emailAuth.updateAuthNum(newAuthNum);
+        //then
+        Assertions.assertThat(emailAuth.isRightAuthNum(authNum)).isEqualTo(false);
+        Assertions.assertThat(emailAuth.isRightAuthNum(newAuthNum)).isEqualTo(true);
+    }
 }
