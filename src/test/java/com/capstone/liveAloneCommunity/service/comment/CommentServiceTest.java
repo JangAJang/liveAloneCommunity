@@ -93,7 +93,7 @@ class CommentServiceTest {
                 .passwordCheck("test").build());
         Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
         Random random = new Random();
-        Post post = postRepository.findById(random.nextLong(0, 99))
+        Post post = postRepository.findById(random.nextLong(1, 101))
                 .orElseThrow(PostNotFoundException::new);
         WriteCommentRequestDto writeCommentRequestDto = new WriteCommentRequestDto(post.getId(), "testCase~~!!");
 
