@@ -9,8 +9,6 @@ public class EmailAuthConstructor {
 
     private StringBuilder authNum;
 
-    public EmailAuthConstructor() {}
-
     public String getAuthNum(){
         authNum = new StringBuilder();
         Random random = new Random();
