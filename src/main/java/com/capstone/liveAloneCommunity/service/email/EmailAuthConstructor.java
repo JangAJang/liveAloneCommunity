@@ -9,13 +9,12 @@ public class EmailAuthConstructor {
 
     private StringBuilder authNum;
 
-    public EmailAuthConstructor() {
+    public EmailAuthConstructor() {}
+
+    public String getAuthNum(){
         authNum = new StringBuilder();
         Random random = new Random();
         IntStream.range(0, EMAIL_AUTH_LENGTH.getValue()).forEach(i -> authNum.append(createRandomCharacter(random)));
-    }
-
-    public String getAuthNum(){
         return authNum.toString();
     }
 
