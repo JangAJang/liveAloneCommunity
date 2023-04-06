@@ -70,7 +70,7 @@ public class WriteCommentTest {
                 .password("former")
                 .build();
         String token = authService.logIn(logInRequestDto).getAccessToken();
-        WriteCommentRequestDto writeCommentRequestDto = new WriteCommentRequestDto(1l, "test");
+        WriteCommentRequestDto writeCommentRequestDto = new WriteCommentRequestDto(1L, "test");
 
         //when, then
         mockMvc.perform(post("/api/comment").header("Authorization", token)
@@ -88,7 +88,7 @@ public class WriteCommentTest {
     @DisplayName("댓글을 작성할 때 member의 정보가 존재하지 않으면 예외가 터진다.")
     public void memberNotFoundExceptionTest() throws Exception {
         //given
-        WriteCommentRequestDto writeCommentRequestDto = new WriteCommentRequestDto(1l, "test");
+        WriteCommentRequestDto writeCommentRequestDto = new WriteCommentRequestDto(1L, "test");
 
         //when, then
         mockMvc.perform(post("/api/comment")
