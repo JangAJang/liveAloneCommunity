@@ -91,13 +91,7 @@ class CommentServiceTest {
     @DisplayName("게시물의 id와 댓글 내용으로 댓글을 생성한다. ")
     void createComment() {
         //given
-        authService.register(RegisterRequestDto.builder()
-                .username("test")
-                .nickname("test")
-                .email("test@test.com")
-                .password("test")
-                .passwordCheck("test").build());
-        Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
+        Member member = createMember();
         Random random = new Random();
         Post post = postRepository.findById(random.nextLong(1, 101))
                 .orElseThrow(PostNotFoundException::new);
@@ -116,16 +110,19 @@ class CommentServiceTest {
     void postNotFoundExceptionTest () {
         //given
         WriteCommentRequestDto writeCommentRequestDto = new WriteCommentRequestDto(101L, "testComment");
-        authService.register(RegisterRequestDto.builder()
-                .username("t")
-                .nickname("t")
-                .email("t1@test.com")
-                .password("t")
-                .passwordCheck("t").build());
-        Member member = memberRepository.findByUsername_Username("t").orElseThrow(MemberNotFoundException::new);
+        Member member = createMember();
 
         //when //then
         assertThatThrownBy(() -> commentService.writeComment(writeCommentRequestDto, member)).isExactlyInstanceOf(PostNotFoundException.class);
     }
-}
 
+    private Member createMember() {
+        authService.register(RegisterRequestDto.builder()
+                .username("t")
+                .nickname("t")
+                .email("t@test.com")
+                .password("t")
+                .passwordCheck("t").build());
+        return memberRepository.findByUsername_Username("t").orElseThrow(MemberNotFoundException::new);
+    }
+}
