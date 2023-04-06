@@ -73,6 +73,23 @@ public class VerifyEmailAuthTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("올바르지 않은 이메일 형식으로 요청을 하면 이를 알려주고 400코드로 예외처리한다..")
+    public void verifyTest_Fail_Email_Not_Format() throws Exception{
+        //given
+        EmailAuthValidateRequestDto emailAuthValidateRequestDto = new EmailAuthValidateRequestDto("janghee", "testtest");
+        //expected
+        mvc.perform(MockMvcRequestBuilders.post("/api/email/verify")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(emailAuthValidateRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage")
+                        .value("올바르지 않은 이메일 형식입니다."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private String makeJson(Object object) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(object);
     }
