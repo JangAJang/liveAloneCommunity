@@ -33,14 +33,12 @@ public class VerifyEmailAuthTest {
     private EmailAuthRepository emailAuthRepository;
 
     @BeforeEach
-    void putTestData(){
+    void clearDB(){
         emailAuthRepository.deleteAll();
-        emailAuthService.sendEmail(new EmailAuthRequestDto(SENDER.getValue()));
     }
 
     private String getEmailAuth(){
-        return emailAuthRepository.findByEmail_Email(SENDER.getValue()).orElseThrow(EmailNotSentException::new)
-                .getAuthNum();
+        return emailAuthService.sendEmail(new EmailAuthRequestDto(SENDER.getValue())).getAuthNum();
     }
 
     @Test
