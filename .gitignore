@@ -1,3 +1,4 @@
 src/main/resources/application.yml
 out
-src/main/java/com/capstone/liveAloneCommunity/service/auth/EmailAuthComponent.java
+src/main/java/com/capstone/liveAloneCommunity/service/email/EmailAuthComponent.java
+build
