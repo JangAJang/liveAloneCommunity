@@ -9,6 +9,7 @@ import com.capstone.liveAloneCommunity.exception.member.MemberNotAllowedExceptio
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
 import com.capstone.liveAloneCommunity.service.post.PostService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -81,5 +82,9 @@ public class WriteCommentTest {
                 .andExpect(jsonPath("$.result.data.content").value("test"))
                 .andExpect(jsonPath("$.result.data.nickname").value("former"))
                 .andDo(print());
+    }
+
+    private String makeJson(Object object) throws JsonProcessingException {
+        return new ObjectMapper().writeValueAsString(object);
     }
 }
