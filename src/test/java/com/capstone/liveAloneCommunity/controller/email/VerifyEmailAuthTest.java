@@ -56,6 +56,23 @@ public class VerifyEmailAuthTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("인증번호를 전송한 적 없는 이메일로 인증요청을 할 경우, 인증요청을 다시 하도록 문구를 반환한다.")
+    public void verifyTest_Fail_Email_Not_Sent() throws Exception{
+        //given
+        EmailAuthValidateRequestDto emailAuthValidateRequestDto = new EmailAuthValidateRequestDto(SENDER.getValue(), "testtest");
+        //expected
+        mvc.perform(MockMvcRequestBuilders.post("/api/email/verify")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(emailAuthValidateRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(404))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage")
+                        .value("이메일 인증 요청을 한 적이 없습니다. 인증 요청해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private String makeJson(Object object) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(object);
     }
