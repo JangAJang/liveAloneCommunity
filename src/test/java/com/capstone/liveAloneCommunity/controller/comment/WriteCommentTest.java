@@ -7,10 +7,12 @@ import com.capstone.liveAloneCommunity.dto.post.WritePostRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotAllowedException;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
+import com.capstone.liveAloneCommunity.service.DatabaseCleanup;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
 import com.capstone.liveAloneCommunity.service.post.PostService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,6 +42,8 @@ public class WriteCommentTest {
     private AuthService authService;
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private DatabaseCleanup databaseCleanup;
 
     @BeforeEach
     void initDB(){
@@ -59,6 +63,11 @@ public class WriteCommentTest {
                 .content("content1")
                 .build();
         postService.writePost(member, writePostRequestDto);
+    }
+
+    @AfterEach
+    void afterTestCleanData() {
+        databaseCleanup.execute();
     }
 
     @Test
