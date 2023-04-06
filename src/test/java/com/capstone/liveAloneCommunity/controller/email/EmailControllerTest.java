@@ -1,6 +1,7 @@
 package com.capstone.liveAloneCommunity.controller.email;
 
 import com.capstone.liveAloneCommunity.dto.email.EmailAuthRequestDto;
+import com.capstone.liveAloneCommunity.exception.email.EmailNotSentException;
 import com.capstone.liveAloneCommunity.repository.email.EmailAuthRepository;
 import com.capstone.liveAloneCommunity.service.email.EmailAuthService;
 import com.capstone.liveAloneCommunity.service.email.EmailConstructor;
@@ -19,6 +20,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static com.capstone.liveAloneCommunity.service.email.EmailAuthComponent.SENDER;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -40,13 +44,30 @@ public class EmailControllerTest {
         //given
         EmailAuthRequestDto emailAuthRequestDto = new EmailAuthRequestDto(SENDER.getValue());
         //expected
-        mvc.perform(MockMvcRequestBuilders.post("/api/email/send")
+        mvc.perform(post("/api/email/send")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(makeJson(emailAuthRequestDto)))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
-                .andDo(MockMvcResultHandlers.print());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.result.data.authNum").isString())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("이메일 형식이 올바르지 않을 때, 400에러와 \"올바르지 않은 이메일 형식입니다.\"를 반환한다.")
+    public void sendEmailAuthTest_Email_Not_Format() throws Exception{
+        //given
+        EmailAuthRequestDto emailAuthRequestDto = new EmailAuthRequestDto("wrong");
+        //expected
+        mvc.perform(post("/api/email/send")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(makeJson(emailAuthRequestDto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value(400))
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.result.failMessage").value("올바르지 않은 이메일 형식입니다."))
+                .andDo(print());
     }
 
     private String makeJson(Object object) throws JsonProcessingException {
