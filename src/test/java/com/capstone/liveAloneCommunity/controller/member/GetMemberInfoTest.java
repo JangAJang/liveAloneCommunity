@@ -58,6 +58,20 @@ public class GetMemberInfoTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("Access Token이 없으면 401코드와 다시 로그인해야함을 알린다.")
+    public void getMemberInfoTest_No_Access_Token() throws Exception{
+        //given
+        Long id = 3L;
+        //expected
+        mvc.perform(MockMvcRequestBuilders.get("/api/member?id="+id))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(401))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private String getAccessToken(){
         authService.register(RegisterRequestDto.builder()
                 .username("test")
