@@ -5,10 +5,12 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Component;
 
 import static com.capstone.liveAloneCommunity.service.email.EmailAuthComponent.SENDER;
 import static com.capstone.liveAloneCommunity.service.email.EmailAuthComponent.TITLE;
 
+@Component
 @RequiredArgsConstructor
 public class EmailConstructor {
 

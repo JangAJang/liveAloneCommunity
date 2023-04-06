@@ -1,10 +1,13 @@
 package com.capstone.liveAloneCommunity.service.email;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Random;
 import java.util.stream.IntStream;
 
 import static com.capstone.liveAloneCommunity.service.email.EmailAuthComponentNumber.*;
 
+@Component
 public class EmailAuthConstructor {
 
     private StringBuilder authNum;
