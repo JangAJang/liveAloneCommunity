@@ -30,6 +30,7 @@ public class EmailAuthService {
     private final EmailConstructor emailConstructor;
 
     public void verifyEmailAuth(EmailAuthValidateRequestDto request){
+        memberValidator.validateEmail(request.getEmail());
         EmailAuth requested = getRequestedEmailAuth(request.getEmail());
         if(requested.isRightAuthNum(request.getAuthNum())) return;
         throw new EmailAuthNotEqualException();
