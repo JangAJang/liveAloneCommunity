@@ -57,23 +57,6 @@ public class VerifyEmailAuthTest {
     }
 
     @Test
-    @DisplayName("인증번호를 전송한 적 없는 이메일로 인증요청을 할 경우, 인증요청을 다시 하도록 문구를 반환한다.")
-    public void verifyTest_Fail_Email_Not_Sent() throws Exception{
-        //given
-        EmailAuthValidateRequestDto emailAuthValidateRequestDto = new EmailAuthValidateRequestDto(SENDER.getValue(), "testtest");
-        //expected
-        mvc.perform(MockMvcRequestBuilders.post("/api/email/verify")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(makeJson(emailAuthValidateRequestDto)))
-                .andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(404))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage")
-                        .value("이메일 인증 요청을 한 적이 없습니다. 인증 요청해주세요."))
-                .andDo(MockMvcResultHandlers.print());
-    }
-
-    @Test
     @DisplayName("올바르지 않은 이메일 형식으로 요청을 하면 이를 알려주고 400코드로 예외처리한다..")
     public void verifyTest_Fail_Email_Not_Format() throws Exception{
         //given
@@ -87,6 +70,40 @@ public class VerifyEmailAuthTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage")
                         .value("올바르지 않은 이메일 형식입니다."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("인증번호를 전송한 적 없는 이메일로 인증요청을 할 경우, 인증요청을 다시 하도록 문구를 반환한다.")
+    public void verifyTest_Fail_Email_Not_Sent() throws Exception{
+        //given
+        EmailAuthValidateRequestDto emailAuthValidateRequestDto = new EmailAuthValidateRequestDto(SENDER.getValue(), "testtest");
+        //expected
+        mvc.perform(MockMvcRequestBuilders.post("/api/email/verify")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(makeJson(emailAuthValidateRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(404))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage")
+                        .value("이메일 인증 요청을 한 적이 없습니다. 인증 요청해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("인증번호가 올바르지 않을 경우 400에러와 인증번호가 불일치함을 반환한다.")
+    public void verifyTest_Fail_AuthNum_Different() throws Exception{
+        //given
+        EmailAuthValidateRequestDto emailAuthValidateRequestDto = new EmailAuthValidateRequestDto(SENDER.getValue(), getEmailAuth()+"A");
+        //expected
+        mvc.perform(MockMvcRequestBuilders.post("/api/email/verify")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(makeJson(emailAuthValidateRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage")
+                        .value("인증번호가 일치하지 않습니다."))
                 .andDo(MockMvcResultHandlers.print());
     }
 
