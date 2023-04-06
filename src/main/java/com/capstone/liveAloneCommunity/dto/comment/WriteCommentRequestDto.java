@@ -14,8 +14,6 @@ import lombok.NoArgsConstructor;
 public class WriteCommentRequestDto {
     private long postId;
 
-    @NotEmpty(message = "댓글을 입력해주세요")
     @NotBlank(message = "댓글을 입력해주세요")
-    @NotNull(message = "댓글을 입력해주세요")
     private String content;
 }
