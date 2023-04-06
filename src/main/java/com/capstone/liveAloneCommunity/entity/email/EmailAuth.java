@@ -6,10 +6,12 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class EmailAuth {
 
     @EmbeddedId
@@ -28,5 +30,9 @@ public class EmailAuth {
 
     public void updateAuthNum(String authNum) {
         this.authenticationNumber = new AuthenticationNumber(authNum);
+    }
+
+    public String getAuthNum(){
+        return authenticationNumber.getAuthNum();
     }
 }
