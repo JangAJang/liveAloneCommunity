@@ -74,7 +74,6 @@ public class WriteCommentTest {
     @DisplayName("댓글을 작성했을 때 작성하고자 하는 member의 정보가 존재하면 상태코드 200을 출력한다.")
     public void writeTest() throws Exception {
         //given
-
         String token = logIn();
         WriteCommentRequestDto writeCommentRequestDto = new WriteCommentRequestDto(1L, "test");
 
@@ -103,6 +102,7 @@ public class WriteCommentTest {
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.code").value(401))
+                .andExpect(jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
                 .andDo(print());
     }
 
