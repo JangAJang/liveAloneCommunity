@@ -23,8 +23,13 @@ class CommentTest {
 
     @BeforeEach
     void initTestData() {
-        member = new Member(new Username("test1"), new Nickname("test2"), new Email("test@email.com"),
-                new Password("test3"), Role.USER);
+        member = Member.builder()
+                .username(new Username("test1"))
+                .nickname(new Nickname("test2"))
+                .email(new Email("test@email.com"))
+                .password(new Password("test3"))
+                .role(Role.USER)
+                .build();
          post = new Post(new Title("title"), new Content("content"), member, Category.COOKING);
     }
 
