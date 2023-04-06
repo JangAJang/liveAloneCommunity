@@ -4,7 +4,6 @@ import com.capstone.liveAloneCommunity.domain.member.Email;
 import com.capstone.liveAloneCommunity.domain.member.Nickname;
 import com.capstone.liveAloneCommunity.domain.member.Password;
 import com.capstone.liveAloneCommunity.domain.member.Username;
-import com.capstone.liveAloneCommunity.domain.post.Category;
 import com.capstone.liveAloneCommunity.domain.post.Content;
 import com.capstone.liveAloneCommunity.domain.post.Title;
 import com.capstone.liveAloneCommunity.entity.comment.Comment;
@@ -14,6 +13,7 @@ import com.capstone.liveAloneCommunity.entity.post.Post;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import static com.capstone.liveAloneCommunity.domain.post.Category.*;
 import static org.assertj.core.api.Assertions.*;
 
 class CommentTest {
@@ -30,7 +30,11 @@ class CommentTest {
                 .password(new Password("test3"))
                 .role(Role.USER)
                 .build();
-         post = new Post(new Title("title"), new Content("content"), member, Category.COOKING);
+        post = Post.builder()
+                .title(new Title("title"))
+                .content(new Content("contetn"))
+                .category(COOKING)
+                .build();
     }
 
     @Test
