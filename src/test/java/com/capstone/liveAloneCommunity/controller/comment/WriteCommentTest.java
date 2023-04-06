@@ -74,11 +74,8 @@ public class WriteCommentTest {
     @DisplayName("댓글을 작성했을 때 작성하고자 하는 member의 정보가 존재하면 상태코드 200을 출력한다.")
     public void writeTest() throws Exception {
         //given
-        LogInRequestDto logInRequestDto = LogInRequestDto.builder()
-                .username("former")
-                .password("former")
-                .build();
-        String token = authService.logIn(logInRequestDto).getAccessToken();
+
+        String token = logIn();
         WriteCommentRequestDto writeCommentRequestDto = new WriteCommentRequestDto(1L, "test");
 
         //when, then
@@ -111,5 +108,13 @@ public class WriteCommentTest {
 
     private String makeJson(Object object) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(object);
+    }
+
+    private String logIn() {
+        LogInRequestDto logInRequestDto = LogInRequestDto.builder()
+                .username("former")
+                .password("former")
+                .build();
+        return authService.logIn(logInRequestDto).getAccessToken();
     }
 }
