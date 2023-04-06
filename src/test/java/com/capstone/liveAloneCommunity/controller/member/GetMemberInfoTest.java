@@ -59,6 +59,21 @@ public class GetMemberInfoTest {
     }
 
     @Test
+    @DisplayName("존재하지 않는 id의 회원을 조회하면 404코드와 ")
+    public void getMemberInfoTest_No_Valid_ID() throws Exception{
+        //given
+        Long id = 12L;
+        //expected
+        mvc.perform(MockMvcRequestBuilders.get("/api/member?id="+id)
+                .header("Authorization", getAccessToken()))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(404))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("해당 사용자를 찾을 수 없습니다."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
     @DisplayName("Access Token이 없으면 401코드와 다시 로그인해야함을 알린다.")
     public void getMemberInfoTest_No_Access_Token() throws Exception{
         //given
