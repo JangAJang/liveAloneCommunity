@@ -1,10 +1,7 @@
 package com.capstone.liveAloneCommunity.controller.email;
 
 import com.capstone.liveAloneCommunity.dto.email.EmailAuthRequestDto;
-import com.capstone.liveAloneCommunity.exception.email.EmailNotSentException;
 import com.capstone.liveAloneCommunity.repository.email.EmailAuthRepository;
-import com.capstone.liveAloneCommunity.service.email.EmailAuthService;
-import com.capstone.liveAloneCommunity.service.email.EmailConstructor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,9 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static com.capstone.liveAloneCommunity.service.email.EmailAuthComponent.SENDER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -26,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class EmailControllerTest {
+public class SendEmailAuthTest {
 
     @Autowired
     private MockMvc mvc;
