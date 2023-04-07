@@ -1,0 +1,89 @@
+package com.capstone.liveAloneCommunity.controller.member;
+
+import com.capstone.liveAloneCommunity.DatabaseCleanup;
+import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
+import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
+import com.capstone.liveAloneCommunity.dto.member.MemberSearchType;
+import com.capstone.liveAloneCommunity.dto.member.SearchMemberDto;
+import com.capstone.liveAloneCommunity.service.auth.AuthService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.stream.IntStream;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+public class SearchMemberTest {
+
+    @Autowired
+    private MockMvc mvc;
+    @Autowired
+    private DatabaseCleanup databaseCleanup;
+    @Autowired
+    private AuthService authService;
+
+    @BeforeEach
+    void initData(){
+        IntStream.range(1, 501).forEach(i->
+                authService.register(RegisterRequestDto.builder()
+                        .username("test"+i)
+                        .nickname("test"+i)
+                        .email("test"+i+"@test.com")
+                        .password("test")
+                        .passwordCheck("test").build())
+        );
+    }
+
+    @Test
+    @DisplayName("회원 검색을 성공할 때, 200코드와 해당 회원들이 한 페이지당 size만큼 반환된다.")
+    public void searchMemberSuccess() throws Exception{
+        //given
+        SearchMemberDto searchMemberDto = SearchMemberDto.builder()
+                .memberSearchType(MemberSearchType.USERNAME)
+                .text("00")
+                .page(0)
+                .size(10).build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.get("/api/member/search")
+                .header("Authorization", getAccessTokenAfterLogIn())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(searchMemberDto)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.data.searchResult.totalElements").value(5))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    private String getAccessTokenAfterLogIn(){
+        authService.register(RegisterRequestDto.builder()
+                .username("user")
+                .nickname("nickname")
+                .email("email@email.com")
+                .password("pass")
+                .passwordCheck("pass").build());
+        return authService.logIn(LogInRequestDto.builder()
+                .username("user").password("pass").build()).getAccessToken();
+    }
+
+    private String makeJson(Object object) throws JsonProcessingException {
+        return new ObjectMapper().writeValueAsString(object);
+    }
+
+    @AfterEach
+    void cleanDB(){
+        databaseCleanup.execute();
+    }
+}
