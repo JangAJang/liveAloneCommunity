@@ -67,6 +67,26 @@ public class SearchMemberTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("회원 검색을 성공할 때, access token이 없으면 401에러 코드와 다시 로그인해야 함을 반환한다.")
+    public void searchMemberFail_No_Authentication() throws Exception{
+        //given
+        SearchMemberDto searchMemberDto = SearchMemberDto.builder()
+                .memberSearchType(MemberSearchType.USERNAME)
+                .text("00")
+                .page(0)
+                .size(10).build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.get("/api/member/search")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(searchMemberDto)))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(401))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private String getAccessTokenAfterLogIn(){
         authService.register(RegisterRequestDto.builder()
                 .username("user")
