@@ -1,9 +1,11 @@
 package com.capstone.liveAloneCommunity.controller.member;
 
+import com.capstone.liveAloneCommunity.DatabaseCleanup;
 import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,10 +29,11 @@ public class GetMemberInfoTest {
     private AuthService authService;
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private DatabaseCleanup databaseCleanup;
 
     @BeforeEach
     void initData(){
-        memberRepository.deleteAll();
         IntStream.range(1, 11).forEach(i ->
                 authService.register(RegisterRequestDto.builder()
                         .username("test"+i)
@@ -85,6 +88,11 @@ public class GetMemberInfoTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(401))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
                 .andDo(MockMvcResultHandlers.print());
+    }
+
+    @AfterEach
+    void clearDB(){
+        databaseCleanup.execute();
     }
 
     private String getAccessToken(){
