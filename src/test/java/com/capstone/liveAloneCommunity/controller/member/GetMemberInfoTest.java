@@ -28,8 +28,6 @@ public class GetMemberInfoTest {
     @Autowired
     private AuthService authService;
     @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
     private DatabaseCleanup databaseCleanup;
 
     @BeforeEach
