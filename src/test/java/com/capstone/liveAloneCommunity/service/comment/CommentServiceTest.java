@@ -10,7 +10,7 @@ import com.capstone.liveAloneCommunity.exception.post.PostNotFoundException;
 import com.capstone.liveAloneCommunity.repository.comment.CommentRepository;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
-import com.capstone.liveAloneCommunity.service.DatabaseCleanup;
+import com.capstone.liveAloneCommunity.DatabaseCleanup;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
 import com.capstone.liveAloneCommunity.service.post.PostService;
 import org.junit.jupiter.api.AfterEach;

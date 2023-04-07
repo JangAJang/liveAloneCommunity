@@ -7,7 +7,7 @@ import com.capstone.liveAloneCommunity.dto.post.WritePostRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotAllowedException;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
-import com.capstone.liveAloneCommunity.service.DatabaseCleanup;
+import com.capstone.liveAloneCommunity.DatabaseCleanup;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
 import com.capstone.liveAloneCommunity.service.post.PostService;
 import com.fasterxml.jackson.core.JsonProcessingException;
