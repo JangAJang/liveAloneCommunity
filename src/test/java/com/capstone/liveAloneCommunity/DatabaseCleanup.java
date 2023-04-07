@@ -1,4 +1,4 @@
-package com.capstone.liveAloneCommunity.service;
+package com.capstone.liveAloneCommunity;
 
 import com.google.common.base.CaseFormat;
 import jakarta.annotation.PostConstruct;
