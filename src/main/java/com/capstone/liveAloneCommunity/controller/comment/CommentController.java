@@ -1,5 +1,6 @@
 package com.capstone.liveAloneCommunity.controller.comment;
 
+import com.capstone.liveAloneCommunity.dto.comment.ReadCommentByPostRequestDto;
 import com.capstone.liveAloneCommunity.dto.comment.WriteCommentRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
@@ -36,6 +37,12 @@ public class CommentController {
         Member member = getMember();
         return Response.success(commentService.readCommentByMember(member));
 
+    }
+
+    @GetMapping("/post")
+    @Operation(summary = "게시물로 댓글 조회", description = "게시물 id로 회원이 작성한 댓글을 조회한다.")
+    public Response readCommentByPost(@Valid @RequestBody ReadCommentByPostRequestDto readCommentByPostRequestDto) {
+        return Response.success(commentService.readCommentByPost(readCommentByPostRequestDto));
     }
 
     private Member getMember() {
