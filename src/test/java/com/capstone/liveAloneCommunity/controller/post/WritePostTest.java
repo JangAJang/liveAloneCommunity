@@ -105,7 +105,27 @@ public class WritePostTest {
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("제목을 입력해주세요."))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("제목을 입력하세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("토큰이 있고, 제목이 빈 문자열일 때 400에러와 제목을 입력해야함을 알려준다.")
+    public void writePostTest_Fail_Empty_Title() throws Exception{
+        //given
+        WritePostRequestDto writePostRequestDto = WritePostRequestDto.builder()
+                .category(Category.COOKING)
+                .title("")
+                .content("내용").build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.post("/api/post/write")
+                        .header("Authorization", getAccessTokenAfterLogIn())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(makeJson(writePostRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("제목을 입력하세요."))
                 .andDo(MockMvcResultHandlers.print());
     }
 
