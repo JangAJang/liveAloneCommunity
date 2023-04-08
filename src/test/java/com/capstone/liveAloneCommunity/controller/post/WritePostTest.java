@@ -208,6 +208,25 @@ public class WritePostTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("토큰이 있고, 카테고리가 null일 때 400에러와 제목을 입력해야함을 알려준다.")
+    public void writePostTest_Null_Category() throws Exception{
+        //given
+        WritePostRequestDto writePostRequestDto = WritePostRequestDto.builder()
+                .title("제목")
+                .content("내용").build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.post("/api/post/write")
+                        .header("Authorization", getAccessTokenAfterLogIn())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(makeJson(writePostRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("카테고리를 선택해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private String getAccessTokenAfterLogIn(){
         return authService.logIn(LogInRequestDto.builder().username("test").password("test").build()).getAccessToken();
     }
