@@ -33,6 +33,11 @@ public class CommentService {
         return collectComment(findCommentByMember);
     }
 
+    public MultiReadCommentResponseDto readCommentByPost(ReadCommentByPostRequestDto readCommentByPostRequestDto) {
+        List<Comment> findCommentByPost = commentRepository.findCommentByPostId(readCommentByPostRequestDto.getPostId());
+        return collectComment(findCommentByPost);
+    }
+
     private Post getPost(WriteCommentRequestDto writeCommentRequestDto) {
         return postRepository.findById(writeCommentRequestDto.getPostId())
                 .orElseThrow(PostNotFoundException::new);
