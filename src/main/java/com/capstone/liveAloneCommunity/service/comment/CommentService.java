@@ -8,10 +8,19 @@ import com.capstone.liveAloneCommunity.exception.post.PostNotFoundException;
 import com.capstone.liveAloneCommunity.repository.comment.CommentRepository;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.support.PagedListHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springframework.data.domain.Sort.Direction.*;
 
 @Service
 @Transactional
@@ -28,14 +37,16 @@ public class CommentService {
         return CommentResponseDto.toDto(comment);
     }
 
-    public MultiReadCommentResponseDto readCommentByMember(Member member) {
-        List<Comment> findCommentByMember = commentRepository.findCommentByMember(member);
-        return collectComment(findCommentByMember);
+    public MultiReadCommentResponseDto readCommentByMember(CommentPageInfoRequestDto commentPageInfoRequestDto, Member member) {
+        List<Comment> commentByMember = commentRepository
+                .findCommentByMember(member, getPageRequestComment(commentPageInfoRequestDto)).getContent();
+        return collectComment(commentByMember);
     }
 
     public MultiReadCommentResponseDto readCommentByPost(ReadCommentByPostRequestDto readCommentByPostRequestDto) {
-        List<Comment> findCommentByPost = commentRepository.findCommentByPostId(readCommentByPostRequestDto.getPostId());
-        return collectComment(findCommentByPost);
+        List<Comment> commentByPostId = commentRepository.findCommentByPostId(readCommentByPostRequestDto.getPostId(),
+                getPageRequestComment(readCommentByPostRequestDto.getCommentPageInfoRequestDto())).getContent();
+        return collectComment(commentByPostId);
     }
 
     private Post getPost(WriteCommentRequestDto writeCommentRequestDto) {
@@ -47,5 +58,10 @@ public class CommentService {
         return new MultiReadCommentResponseDto(findComment.stream()
                 .map(ReadCommentResponseDto::toDto)
                 .collect(Collectors.toList()));
+    }
+
+    private Pageable getPageRequestComment(CommentPageInfoRequestDto commentPageInfoRequestDto) {
+        return PageRequest.of(commentPageInfoRequestDto.getPage(), commentPageInfoRequestDto.getSize(),
+                Sort.by(DESC, "createdDate"));
     }
 }
