@@ -47,11 +47,53 @@ public class SearchMemberTest {
     }
 
     @Test
-    @DisplayName("회원 검색을 성공할 때, 200코드와 해당 회원들이 한 페이지당 size만큼 반환된다.")
-    public void searchMemberSuccess() throws Exception{
+    @DisplayName("아이디 기준으로 회원 검색을 성공할 때, 200코드와 해당 회원들이 한 페이지당 size만큼 반환된다.")
+    public void searchMemberSuccess_USERNAME() throws Exception{
         //given
         SearchMemberDto searchMemberDto = SearchMemberDto.builder()
                 .memberSearchType(MemberSearchType.USERNAME)
+                .text("00")
+                .page(0)
+                .size(10).build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.get("/api/member/search")
+                .header("Authorization", getAccessTokenAfterLogIn())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(searchMemberDto)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.data.searchResult.totalElements").value(5))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("닉네임 기준으로 회원 검색을 성공할 때, 200코드와 해당 회원들이 한 페이지당 size만큼 반환된다.")
+    public void searchMemberSuccess_NICKNAME() throws Exception{
+        //given
+        SearchMemberDto searchMemberDto = SearchMemberDto.builder()
+                .memberSearchType(MemberSearchType.NICKNAME)
+                .text("00")
+                .page(0)
+                .size(10).build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.get("/api/member/search")
+                .header("Authorization", getAccessTokenAfterLogIn())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(searchMemberDto)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.data.searchResult.totalElements").value(5))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("이메일 기준으로 회원 검색을 성공할 때, 200코드와 해당 회원들이 한 페이지당 size만큼 반환된다.")
+    public void searchMemberSuccess_EMAIL() throws Exception{
+        //given
+        SearchMemberDto searchMemberDto = SearchMemberDto.builder()
+                .memberSearchType(MemberSearchType.EMAIL)
                 .text("00")
                 .page(0)
                 .size(10).build();
