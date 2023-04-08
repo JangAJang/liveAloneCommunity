@@ -41,8 +41,8 @@ public class MemberController {
     @PatchMapping("/edit")
     @Operation(summary = "회원 정보 수정", description = "회원의 이메일, 닉네임을 수정한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response editMemberInfo(@RequestBody EditNicknameDto editNicknameDto, @RequestParam Long id){
-        return Response.success(memberService.editNickname(id, editNicknameDto, getMember()));
+    public Response editMemberInfo(@RequestBody @Valid EditNicknameDto editNicknameDto){
+        return Response.success(memberService.editNickname(editNicknameDto, getMember()));
     }
 
     @PatchMapping("/changePassword")
@@ -56,8 +56,8 @@ public class MemberController {
     @DeleteMapping("/delete")
     @Operation(summary = "회원 삭제", description = "회원 삭제(회원 탈퇴)를 수행한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response deleteMember(@RequestParam Long id){
-        memberService.deleteMember(id, getMember());
+    public Response deleteMember(){
+        memberService.deleteMember(getMember());
         return Response.success();
     }
 

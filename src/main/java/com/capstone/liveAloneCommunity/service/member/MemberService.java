@@ -30,24 +30,19 @@ public class MemberService {
         return new MemberSearchResultDto(result);
     }
 
-    public MemberResponseDto editNickname(Long id, EditNicknameDto editNicknameDto, Member current){
-        Member member = findMemberById(id);
-        memberValidator.validateAuthorization(current, member);
+    public MemberResponseDto editNickname(EditNicknameDto editNicknameDto, Member current){
         memberValidator.validateNickname(editNicknameDto.getNickname());
-        member.editNickname(editNicknameDto.getNickname());
-        return MemberResponseDto.toDto(member);
+        current.editNickname(editNicknameDto.getNickname());
+        return MemberResponseDto.toDto(current);
     }
 
     public void changePassword(Member member, ChangePasswordRequestDto changePasswordRequestDto){
-        memberValidator.validateAuthorization(findMemberById(changePasswordRequestDto.getId()), member);
         memberValidator.validateChangePasswordRequest(member, changePasswordRequestDto);
         member.changePassword(changePasswordRequestDto.getNewPassword(), passwordEncoder);
     }
 
-    public void deleteMember(Long id, Member currentMember){
-        Member target = findMemberById(id);
-        memberValidator.validateAuthorization(currentMember, target);
-        memberRepository.delete(target);
+    public void deleteMember(Member currentMember){
+        memberRepository.delete(currentMember);
     }
 
     private Member findMemberById(Long id){
