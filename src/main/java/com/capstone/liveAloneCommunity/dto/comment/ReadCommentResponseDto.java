@@ -12,7 +12,7 @@ public class ReadCommentResponseDto {
 
     public static ReadCommentResponseDto toDto(Comment comment) {
         return ReadCommentResponseDto.builder()
-                .title(comment.getTitle())
+                .title(comment.getPostTitle())
                 .content(comment.getContent())
                 .build();
     }
