@@ -41,10 +41,8 @@ public class MemberService {
         member.changePassword(changePasswordRequestDto.getNewPassword(), passwordEncoder);
     }
 
-    public void deleteMember(Long id, Member currentMember){
-        Member target = findMemberById(id);
-        memberValidator.validateAuthorization(currentMember, target);
-        memberRepository.delete(target);
+    public void deleteMember(Member currentMember){
+        memberRepository.delete(currentMember);
     }
 
     private Member findMemberById(Long id){
