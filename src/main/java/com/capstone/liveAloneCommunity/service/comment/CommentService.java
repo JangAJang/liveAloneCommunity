@@ -30,13 +30,17 @@ public class CommentService {
 
     public MultiReadCommentResponseDto readCommentByMember(Member member) {
         List<Comment> findCommentByMember = commentRepository.findCommentByMember(member);
-        return new MultiReadCommentResponseDto(findCommentByMember.stream()
-                .map(ReadCommentResponseDto::toDto)
-                .collect(Collectors.toList()));
+        return collectComment(findCommentByMember);
     }
 
     private Post getPost(WriteCommentRequestDto writeCommentRequestDto) {
         return postRepository.findById(writeCommentRequestDto.getPostId())
                 .orElseThrow(PostNotFoundException::new);
+    }
+
+    private MultiReadCommentResponseDto collectComment(List<Comment> findComment) {
+        return new MultiReadCommentResponseDto(findComment.stream()
+                .map(ReadCommentResponseDto::toDto)
+                .collect(Collectors.toList()));
     }
 }
