@@ -30,7 +30,15 @@ public class CommentController {
         return Response.success(commentService.writeComment(writeCommentRequestDto, member));
     }
 
-    private Member getMember(){
+    @GetMapping("/member")
+    @Operation(summary = "멤버로 댓글 조회", description = "멤버 id로 멤버가 작성한 댓글을 조회한다.")
+    public Response readCommentByMember() {
+        Member member = getMember();
+        return Response.success(commentService.readCommentByMember(member));
+
+    }
+
+    private Member getMember() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return memberRepository.findByUsername_Username(authentication.getName())
                 .orElseThrow(MemberNotFoundException::new);
