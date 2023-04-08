@@ -100,6 +100,25 @@ public class EditMemberInfoTest {
     }
 
     @Test
+    @DisplayName("토큰을 가지고 있는 상태에서 닉네임을 공백 문자열로 수정하면 400코드와 닉네임을 입력해야함을 알려준다.")
+    public void editNicknameTest_Fail_Blank_Nickname() throws Exception{
+        //given
+        String accessToken = getAccessTokenAfterLogIn();
+        EditNicknameDto editNicknameDto = EditNicknameDto.builder()
+                .nickname("  ").build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.patch("/api/member/edit")
+                .header("Authorization", accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(editNicknameDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("닉네임을 입력해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
     @DisplayName("토큰이 없는 상태에서 닉네임을 수정하면 401코드와 다시 로그인해야 함을 알려준다.")
     public void editNicknameTest_Fail_Unauthorized() throws Exception{
         //given
