@@ -1,11 +1,9 @@
 package com.capstone.liveAloneCommunity.entity.comment;
 
 import com.capstone.liveAloneCommunity.domain.post.Content;
-import com.capstone.liveAloneCommunity.domain.post.Title;
 import com.capstone.liveAloneCommunity.entity.BaseTimeEntity;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.post.Post;
-import com.querydsl.core.types.dsl.TimeTemplate;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -45,5 +43,9 @@ public class Comment extends BaseTimeEntity {
 
     public String getWriterName() {
         return member.getNickname();
+    }
+
+    public String getTitle() {
+        return post.getTitle();
     }
 }
