@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class DeleteMemberTest {
+class DeleteMemberTest {
 
     @Autowired
     private MockMvc mvc;

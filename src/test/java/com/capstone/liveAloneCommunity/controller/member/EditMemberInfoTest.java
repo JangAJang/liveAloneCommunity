@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class EditMemberInfoTest {
+class EditMemberInfoTest {
 
     @Autowired
     private MockMvc mvc;

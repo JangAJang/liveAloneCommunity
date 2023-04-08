@@ -25,7 +25,7 @@ import java.util.stream.IntStream;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class SearchMemberTest {
+class SearchMemberTest {
 
     @Autowired
     private MockMvc mvc;

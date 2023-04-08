@@ -20,7 +20,7 @@ import java.util.stream.IntStream;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class GetMemberInfoTest {
+class GetMemberInfoTest {
 
     @Autowired
     private MockMvc mvc;
