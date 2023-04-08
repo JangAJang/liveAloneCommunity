@@ -41,7 +41,7 @@ public class MemberController {
     @PatchMapping("/edit")
     @Operation(summary = "회원 정보 수정", description = "회원의 이메일, 닉네임을 수정한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response editMemberInfo(@RequestBody EditNicknameDto editNicknameDto){
+    public Response editMemberInfo(@RequestBody @Valid EditNicknameDto editNicknameDto){
         return Response.success(memberService.editNickname(editNicknameDto, getMember()));
     }
 
