@@ -40,6 +40,11 @@ public class GetMemberInfoTest {
                         .passwordCheck("test").build()));
     }
 
+    @AfterEach
+    void clearDB(){
+        databaseCleanup.execute();
+    }
+
     @Test
     @DisplayName("회원정보를 성공적으로 불러오면, 200코드와 회원 정보를 반환한다.")
     public void getMemberInfoTest_Success() throws Exception{
@@ -85,11 +90,6 @@ public class GetMemberInfoTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(401))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
                 .andDo(MockMvcResultHandlers.print());
-    }
-
-    @AfterEach
-    void clearDB(){
-        databaseCleanup.execute();
     }
 
     private String getAccessToken(){

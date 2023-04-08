@@ -46,6 +46,11 @@ public class SearchMemberTest {
         );
     }
 
+    @AfterEach
+    void cleanDB(){
+        databaseCleanup.execute();
+    }
+
     @Test
     @DisplayName("아이디 기준으로 회원 검색을 성공할 때, 200코드와 해당 회원들이 한 페이지당 size만큼 반환된다.")
     public void searchMemberSuccess_USERNAME() throws Exception{
@@ -204,10 +209,5 @@ public class SearchMemberTest {
 
     private String makeJson(Object object) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(object);
-    }
-
-    @AfterEach
-    void cleanDB(){
-        databaseCleanup.execute();
     }
 }

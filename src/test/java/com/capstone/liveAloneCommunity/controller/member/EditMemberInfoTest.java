@@ -40,6 +40,11 @@ public class EditMemberInfoTest {
                 .passwordCheck("test").build());
     }
 
+    @AfterEach
+    void clearDB(){
+        databaseCleanup.execute();
+    }
+
     @Test
     @DisplayName("토큰을 가지고 있는 상태에서 닉네임을 수정하면 200코드와 정상적으로 수정됨을 반환한다.")
     public void editNicknameTest_Success() throws Exception{
@@ -143,10 +148,5 @@ public class EditMemberInfoTest {
                         .password("test")
                         .build())
                 .getAccessToken();
-    }
-
-    @AfterEach
-    void clearDB(){
-        databaseCleanup.execute();
     }
 }

@@ -30,6 +30,21 @@ public class ChangePasswordTest {
     @Autowired
     private DatabaseCleanup databaseCleanup;
 
+    @BeforeEach
+    void initData(){
+        authService.register(RegisterRequestDto.builder()
+                .username("test")
+                .nickname("test")
+                .email("test@test.com")
+                .password("test")
+                .passwordCheck("test").build());
+    }
+
+    @AfterEach
+    void clearDB(){
+        databaseCleanup.execute();
+    }
+
     @Test
     @DisplayName("토큰이 있는 상태에서 현재 비밀번호, 새 비밀번호, 새 비밀번호 재입력을 올바르게 입력하면 200코드와 비밀번호 변경이 성공함을 반환한다.")
     public void changePasswordTest_Success() throws Exception{
@@ -297,16 +312,6 @@ public class ChangePasswordTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
-    @BeforeEach
-    void initData(){
-        authService.register(RegisterRequestDto.builder()
-                .username("test")
-                .nickname("test")
-                .email("test@test.com")
-                .password("test")
-                .passwordCheck("test").build());
-    }
-
     private String getAccessTokenAfterLogIn(){
         return authService.logIn(LogInRequestDto
                 .builder().username("test").password("test").build())
@@ -315,10 +320,5 @@ public class ChangePasswordTest {
 
     private String makeJson(Object object)throws Exception{
         return new ObjectMapper().writeValueAsString(object);
-    }
-
-    @AfterEach
-    void clearDB(){
-        databaseCleanup.execute();
     }
 }

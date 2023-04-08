@@ -37,6 +37,11 @@ public class DeleteMemberTest {
                 .email("test@test.com").build());
     }
 
+    @AfterEach
+    void clearDB(){
+        databaseCleanup.execute();
+    }
+
     @Test
     @DisplayName("회원을 삭제할 때 토큰이 있으면 200코드와 함꼐 성공적으로 회원이 삭제됨을 반환한다.")
     public void deleteMemberTest_Success() throws Exception{
@@ -64,10 +69,5 @@ public class DeleteMemberTest {
 
     private String getAccessTokenAfterLogIn(){
         return authService.logIn(LogInRequestDto.builder().username("test").password("test").build()).getAccessToken();
-    }
-
-    @AfterEach
-    void clearDB(){
-        databaseCleanup.execute();
     }
 }
