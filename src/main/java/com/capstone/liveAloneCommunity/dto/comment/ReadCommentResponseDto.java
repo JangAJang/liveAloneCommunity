@@ -2,6 +2,7 @@ package com.capstone.liveAloneCommunity.dto.comment;
 
 import com.capstone.liveAloneCommunity.entity.comment.Comment;
 import lombok.*;
+
 @Builder
 @Getter
 public class ReadCommentResponseDto {
