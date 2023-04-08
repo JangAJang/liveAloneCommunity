@@ -71,6 +71,25 @@ public class WritePostTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("토큰이 없을 때, 401코드와 다시 로그인해야함을 알려준다.")
+    public void writePostTest_Fail_Unauthorized() throws Exception{
+        //given
+        WritePostRequestDto writePostRequestDto = WritePostRequestDto.builder()
+                .category(Category.COOKING)
+                .title("제목")
+                .content("내용").build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.post("/api/post/write")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(writePostRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(401))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private String getAccessTokenAfterLogIn(){
         return authService.logIn(LogInRequestDto.builder().username("test").password("test").build()).getAccessToken();
     }
