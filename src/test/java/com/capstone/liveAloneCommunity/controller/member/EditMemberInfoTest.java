@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
@@ -51,7 +52,14 @@ public class EditMemberInfoTest {
                 .header("Authorization", accessToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(makeJson(editNicknameDto)))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.data.id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.data.username").value("test"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.data.nickname").value("newNick"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.data.email").value("test@test.com"))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     private String makeJson(Object object)throws Exception{
