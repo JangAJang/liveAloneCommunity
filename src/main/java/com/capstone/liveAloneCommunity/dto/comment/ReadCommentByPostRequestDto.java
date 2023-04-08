@@ -11,4 +11,6 @@ import lombok.NoArgsConstructor;
 public class ReadCommentByPostRequestDto {
     @NotNull(message = "게시물의 id를 입력해주세요.")
     private Long postId;
+
+    private CommentPageInfoRequestDto commentPageInfoRequestDto;
 }
