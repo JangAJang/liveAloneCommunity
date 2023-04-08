@@ -57,7 +57,7 @@ public class PostController {
     @PostMapping("/write")
     @Operation(summary = "게시글 작성", description = "게시글을 새로 작성한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response writePost(@RequestBody WritePostRequestDto writePostRequestDto){
+    public Response writePost(@RequestBody @Valid WritePostRequestDto writePostRequestDto){
         Member member = memberRepository.findByUsername_Username(SecurityContextHolder.getContext()
                 .getAuthentication().getName()).orElseThrow(MemberNotFoundException::new);
         return Response.success(postService.writePost(member, writePostRequestDto));
