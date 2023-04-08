@@ -37,12 +37,14 @@ public class CommentService {
         return CommentResponseDto.toDto(comment);
     }
 
+    @Transactional(readOnly = true)
     public MultiReadCommentResponseDto readCommentByMember(CommentPageInfoRequestDto commentPageInfoRequestDto, Member member) {
         List<Comment> commentByMember = commentRepository
                 .findCommentByMember(member, getPageRequestComment(commentPageInfoRequestDto)).getContent();
         return collectComment(commentByMember);
     }
 
+    @Transactional(readOnly = true)
     public MultiReadCommentResponseDto readCommentByPost(ReadCommentByPostRequestDto readCommentByPostRequestDto) {
         List<Comment> commentByPostId = commentRepository.findCommentByPostId(readCommentByPostRequestDto.getPostId(),
                 getPageRequestComment(readCommentByPostRequestDto.getCommentPageInfoRequestDto())).getContent();
