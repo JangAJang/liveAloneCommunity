@@ -37,7 +37,6 @@ public class MemberService {
     }
 
     public void changePassword(Member member, ChangePasswordRequestDto changePasswordRequestDto){
-        memberValidator.validateAuthorization(findMemberById(changePasswordRequestDto.getId()), member);
         memberValidator.validateChangePasswordRequest(member, changePasswordRequestDto);
         member.changePassword(changePasswordRequestDto.getNewPassword(), passwordEncoder);
     }
