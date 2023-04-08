@@ -35,9 +35,9 @@ public class CommentController {
     @GetMapping("/member")
     @Operation(summary = "멤버로 댓글 조회", description = "멤버 id로 회원이 작성한 댓글을 조회한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response readCommentByMember() {
+    public Response readCommentByMember(@Valid @RequestBody CommentPageInfoRequestDto commentPageInfoRequestDto) {
         Member member = getMember();
-        return Response.success(commentService.readCommentByMember(member));
+        return Response.success(commentService.readCommentByMember(commentPageInfoRequestDto, member));
     }
 
     @GetMapping("/post")
