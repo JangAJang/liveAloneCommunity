@@ -104,37 +104,9 @@ public class MemberServiceTest {
                 .passwordCheck("test").build());
         Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
         //when
-        memberService.editNickname(member.getId(), editNicknameDto, member);
+        memberService.editNickname(editNicknameDto, member);
         //then
         Assertions.assertThat(member.getNickname()).isEqualTo("newNick");
-        Assertions.assertThat(member.getEmail()).isEqualTo("new@e.com");
-    }
-
-    @Test
-    @DisplayName("자신이 아닌 다른 멤버의 게시물을 수정하려 하면, 예외처리한다.")
-    public void editFail_NotAllowed() throws Exception{
-        //given
-        EditNicknameDto editNicknameDto = EditNicknameDto.builder()
-                .nickname("newNick").build();
-        authService.register(RegisterRequestDto.builder()
-                .username("test")
-                .nickname("test")
-                .email("test@test.com")
-                .password("test")
-                .passwordCheck("test").build());
-        authService.register(RegisterRequestDto.builder()
-                .username("testA")
-                .nickname("testA")
-                .email("testa@test.com")
-                .password("test1")
-                .passwordCheck("test1").build());
-        Member member = memberRepository.findByUsername_Username("test").orElseThrow(MemberNotFoundException::new);
-        Member member1 = memberRepository.findByUsername_Username("test1").orElseThrow(MemberNotFoundException::new);
-        //when
-
-        //then
-        Assertions.assertThatThrownBy(() -> memberService.editNickname(member1.getId(), editNicknameDto, member))
-                .isInstanceOf(MemberNotAllowedException.class);
     }
 
     @Test

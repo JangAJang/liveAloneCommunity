@@ -30,12 +30,10 @@ public class MemberService {
         return new MemberSearchResultDto(result);
     }
 
-    public MemberResponseDto editNickname(Long id, EditNicknameDto editNicknameDto, Member current){
-        Member member = findMemberById(id);
-        memberValidator.validateAuthorization(current, member);
+    public MemberResponseDto editNickname(EditNicknameDto editNicknameDto, Member current){
         memberValidator.validateNickname(editNicknameDto.getNickname());
-        member.editNickname(editNicknameDto.getNickname());
-        return MemberResponseDto.toDto(member);
+        current.editNickname(editNicknameDto.getNickname());
+        return MemberResponseDto.toDto(current);
     }
 
     public void changePassword(Member member, ChangePasswordRequestDto changePasswordRequestDto){
