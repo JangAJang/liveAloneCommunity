@@ -39,16 +39,15 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public MultiReadCommentResponseDto readCommentByMember(CommentPageInfoRequestDto commentPageInfoRequestDto, Member member) {
-        List<Comment> commentByMember = commentRepository
-                .findCommentByMember(member, getPageRequestComment(commentPageInfoRequestDto)).getContent();
-        return collectComment(commentByMember);
+        Page<Comment> commentByMember = commentRepository.findCommentByMember(member, getPageRequestComment(commentPageInfoRequestDto));
+        return collectComment(commentByMember.getContent());
     }
 
     @Transactional(readOnly = true)
     public MultiReadCommentResponseDto readCommentByPost(ReadCommentByPostRequestDto readCommentByPostRequestDto) {
-        List<Comment> commentByPostId = commentRepository.findCommentByPostId(readCommentByPostRequestDto.getPostId(),
-                getPageRequestComment(readCommentByPostRequestDto.getCommentPageInfoRequestDto())).getContent();
-        return collectComment(commentByPostId);
+        Page<Comment> commentByPostId = commentRepository.findCommentByPostId(readCommentByPostRequestDto.getPostId(),
+                getPageRequestComment(readCommentByPostRequestDto.getCommentPageInfoRequestDto()));
+        return collectComment(commentByPostId.getContent());
     }
 
     private Post getPost(WriteCommentRequestDto writeCommentRequestDto) {
