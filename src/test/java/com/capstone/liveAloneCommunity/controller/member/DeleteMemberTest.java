@@ -50,7 +50,7 @@ public class DeleteMemberTest {
     }
 
     @Test
-    @DisplayName("회원을 삭제할 때 토큰이 있으면 200코드와 함꼐 성공적으로 회원이 삭제됨을 반환한다.")
+    @DisplayName("회원을 삭제할 때 토큰이 없으면 401코드와 다시 로그인해야함을 알려준다.")
     public void deleteMemberTest_Fail_Unauthorized() throws Exception{
         //given
         //expected
