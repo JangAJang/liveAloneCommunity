@@ -45,7 +45,7 @@ public class Comment extends BaseTimeEntity {
         return member.getNickname();
     }
 
-    public String getTitle() {
+    public String getPostTitle() {
         return post.getTitle();
     }
 }
