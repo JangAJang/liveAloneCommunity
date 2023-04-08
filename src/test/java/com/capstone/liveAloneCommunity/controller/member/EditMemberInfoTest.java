@@ -62,6 +62,22 @@ public class EditMemberInfoTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("토큰이 없는 상태에서 닉네임을 수정하면 401코드와 다시 로그인해야 함을 알려준다.")
+    public void editNicknameTest_Fail_Unauthorized() throws Exception{
+        //given
+        EditNicknameDto editNicknameDto = new EditNicknameDto("newNick");
+        //expected
+        mvc.perform(MockMvcRequestBuilders.patch("/api/member/edit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(editNicknameDto)))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(401))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private String makeJson(Object object)throws Exception{
         return new ObjectMapper().writeValueAsString(object);
     }
