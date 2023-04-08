@@ -87,6 +87,26 @@ public class SearchMemberTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("회원 검색을 할 때, 아무 값도 입력하지 않으면 400에러와 검색 문구를 입력해야함을 반환한다.")
+    public void searchMemberFail_Null_Input() throws Exception{
+        //given
+        SearchMemberDto searchMemberDto = SearchMemberDto.builder()
+                .memberSearchType(MemberSearchType.USERNAME)
+                .page(0)
+                .size(10).build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.get("/api/member/search")
+                        .header("Authorization", getAccessTokenAfterLogIn())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(makeJson(searchMemberDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("검색 문구를 입력하세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private String getAccessTokenAfterLogIn(){
         authService.register(RegisterRequestDto.builder()
                 .username("user")
