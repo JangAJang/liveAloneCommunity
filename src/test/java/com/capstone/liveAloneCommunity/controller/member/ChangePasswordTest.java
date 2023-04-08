@@ -276,6 +276,27 @@ public class ChangePasswordTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("토큰이 있는 상태에서 새 비밀번호와 새 비밀번호 재입력이 일치하지 않으면 400코드와 비밀번호가 일치하지 않음을 알려준다.")
+    public void changePasswordTest_Fail_PasswordNotEqual() throws Exception{
+        //given
+        ChangePasswordRequestDto changePasswordRequestDto = ChangePasswordRequestDto.builder()
+                .currentPassword("test")
+                .newPassword("test")
+                .newPasswordCheck("test1").build();
+        String accessToken = getAccessTokenAfterLogIn();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.patch("/api/member/changePassword")
+                .header("Authorization", accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(changePasswordRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("비밀번호가 일치하지 않습니다."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     @BeforeEach
     void initData(){
         authService.register(RegisterRequestDto.builder()
