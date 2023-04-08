@@ -13,8 +13,6 @@ public class SearchMemberDto {
 
     private int page;
     private int size;
-    @NotNull(message = "검색 문구를 입력하세요.")
-    @NotEmpty(message = "검색 문구를 입력하세요.")
     @NotBlank(message = "검색 문구를 입력하세요.")
     private String text;
     private MemberSearchType memberSearchType;
