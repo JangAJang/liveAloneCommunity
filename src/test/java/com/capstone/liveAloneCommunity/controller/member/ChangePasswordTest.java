@@ -152,6 +152,26 @@ public class ChangePasswordTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("토큰이 있는 상태에서 새 비밀번호가 null이면 400코드와 새 비밀번호를 입력해야함을 알려준다.")
+    public void changePasswordTest_Fail_Null_New_Password() throws Exception{
+        //given
+        ChangePasswordRequestDto changePasswordRequestDto = ChangePasswordRequestDto.builder()
+                .currentPassword("test")
+                .newPasswordCheck("test").build();
+        String accessToken = getAccessTokenAfterLogIn();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.patch("/api/member/changePassword")
+                .header("Authorization", accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(changePasswordRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("새 비밀번호를 입력해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     @BeforeEach
     void initData(){
         authService.register(RegisterRequestDto.builder()
