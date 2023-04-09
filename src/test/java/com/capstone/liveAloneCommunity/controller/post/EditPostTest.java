@@ -85,6 +85,26 @@ public class EditPostTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("토큰이 존재하지 않을 때, 401에러와 다시 로그인해야함을 알려준다.")
+    public void editPostTest_Fail_Unauthorized() throws Exception{
+        //given
+        EditPostRequestDto editPostRequestDto =  EditPostRequestDto.builder()
+                .title("newTitle")
+                .content("newContent")
+                .id(3L).build();
+        String accessToken = getAccessTokenAfterLogIn(1);
+        //expected
+        mvc.perform(MockMvcRequestBuilders.patch("/api/post/edit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(editPostRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(401))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private String makeJson(Object object)throws Exception{
         return new ObjectMapper().writeValueAsString(object);
     }
