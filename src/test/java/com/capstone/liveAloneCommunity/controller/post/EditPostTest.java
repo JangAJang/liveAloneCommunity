@@ -229,6 +229,27 @@ public class EditPostTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("다른 사람의 게시물을 수정하려 할 때, 401에러와 다시 로그인해야함을 알려준다.")
+    public void editPostTest_Fail_NotMyPost() throws Exception{
+        //given
+        EditPostRequestDto editPostRequestDto =  EditPostRequestDto.builder()
+                .title("newTitle")
+                .content("newContent")
+                .id(3L).build();
+        String accessToken = getAccessTokenAfterLogIn(3);
+        //expected
+        mvc.perform(MockMvcRequestBuilders.patch("/api/post/edit")
+                .header("Authorization", accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(editPostRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(401))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("권한이 없습니다."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private String makeJson(Object object)throws Exception{
         return new ObjectMapper().writeValueAsString(object);
     }
