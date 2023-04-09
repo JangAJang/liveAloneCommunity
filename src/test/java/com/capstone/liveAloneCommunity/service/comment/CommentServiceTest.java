@@ -97,6 +97,33 @@ class CommentServiceTest {
         assertThat(multiReadCommentResponseDto.getReadCommentResponseDto().size()).isEqualTo( 999);
     }
 
+    @Test
+    @DisplayName("게시물의 id로 회원의 댓글을 조회한다.")
+    void readCommentByPost() {
+        //given
+        Member member = createMember(1);
+        Post post1 = createPost(member, 1);
+        Post post2 = createPost(member, 2);
+        List<Comment> comments = new ArrayList<>();
+        IntStream.range(0, 50).forEach(i -> {
+            comments.add(createComment(member, post1, i));
+            comments.add(createComment(member, post2, i));
+        });
+        CommentPageInfoRequestDto commentPageInfoRequestDto = new CommentPageInfoRequestDto(0, 10);
+        ReadCommentByPostRequestDto readCommentByPostRequestDto = new ReadCommentByPostRequestDto(1L, commentPageInfoRequestDto);
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(DESC,"createdDate"));
+        List<Comment> readCommentByPost = comments.stream().filter(comment -> comment.getPost().equals(post1)).collect(Collectors.toList());
+        Page<Comment> commentPage = new PageImpl<>(readCommentByPost);
+        given(commentRepository.findCommentByPostId(readCommentByPostRequestDto.getPostId(), pageRequest)).willReturn(commentPage);
+
+        //when
+        MultiReadCommentResponseDto multiReadCommentResponseDto = commentService.readCommentByPost(readCommentByPostRequestDto);
+
+        //then
+        assertThat(multiReadCommentResponseDto.getReadCommentResponseDto().get(0).getTitle()).isEqualTo(post1.getTitle());
+        assertThat(multiReadCommentResponseDto.getReadCommentResponseDto().size()).isEqualTo(50);
+    }
+
     private Member createMember(int id) {
         return Member.builder()
                 .username(new Username("test" + id))
@@ -115,6 +142,7 @@ class CommentServiceTest {
                 .member(member)
                 .build();
     }
+
     private Comment createComment(Member member, Post post, int id) {
         return new Comment("comment" + id, post, member);
     }
