@@ -73,6 +73,21 @@ public class DeletePostTest {
         Assertions.assertThat(postRepository.findById(1L).isPresent()).isFalse();
     }
 
+    @Test
+    @DisplayName("토큰이 없는 상태로, 자신의 게시물을 삭제요청하면 401코드와 다시 로그인해야함을 알려주며 게시물을 삭제되지 않는다.")
+    public void deletePostTest_Fail_Unauthorized() throws Exception{
+        //given
+        String accessToken = getAccessTokenAfterLogIn(1);
+        //expected
+        mvc.perform(MockMvcRequestBuilders.delete("/api/post/delete?id=1"))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(401))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+        Assertions.assertThat(postRepository.findById(1L).isPresent()).isTrue();
+    }
+
     private String getAccessTokenAfterLogIn(int i){
         return authService.logIn(LogInRequestDto.builder()
                 .username("test"+i).password("test").build()).getAccessToken();
