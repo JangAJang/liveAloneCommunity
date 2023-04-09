@@ -37,7 +37,7 @@ public class CommentController {
     @ResponseStatus(HttpStatus.OK)
     public Response readCommentByMember(@Valid @RequestBody CommentPageInfoRequestDto commentPageInfoRequestDto) {
         Member member = getMember();
-        return Response.success(commentService.readCommentByMember(commentPageInfoRequestDto, member));
+        return Response.success(commentService.readCommentByMember(member, commentPageInfoRequestDto));
     }
 
     @GetMapping("/post")
