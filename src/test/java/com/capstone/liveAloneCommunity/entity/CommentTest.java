@@ -60,4 +60,17 @@ class CommentTest {
         //then
         assertThat(comment.getWriterName()).isEqualTo(member.getNickname());
     }
+
+    @Test
+    @DisplayName("댓글을 작성했을 때 댓글이 적힌 게시판의 이름을 반환할 수 있다.")
+    void getPostTitleTest (){
+        //given
+        Comment comment = new Comment("test", post, member);
+
+        //when
+        String postTitle = comment.getPostTitle();
+
+        //then
+        assertThat(postTitle).isEqualTo(post.getTitle());
+    }
 }
