@@ -88,6 +88,22 @@ public class DeletePostTest {
         Assertions.assertThat(postRepository.findById(1L).isPresent()).isTrue();
     }
 
+    @Test
+    @DisplayName("토큰이 있는 상태로, 존재하지 않는 게시물을 삭제요청하면 404에러와 존재하지 않는 게시물임을 알려준다..")
+    public void deletePostTest_Fail_Post_Not_Found() throws Exception{
+        //given
+        String accessToken = getAccessTokenAfterLogIn(1);
+        //expected
+        mvc.perform(MockMvcRequestBuilders.delete("/api/post/delete?id=10000")
+                        .header("Authorization", accessToken))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(404))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("해당 게시물을 찾을 수 없습니다."))
+                .andDo(MockMvcResultHandlers.print());
+        Assertions.assertThat(postRepository.findById(10000L).isPresent()).isFalse();
+    }
+
     private String getAccessTokenAfterLogIn(int i){
         return authService.logIn(LogInRequestDto.builder()
                 .username("test"+i).password("test").build()).getAccessToken();
