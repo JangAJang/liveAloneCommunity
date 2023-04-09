@@ -89,7 +89,7 @@ public class DeletePostTest {
     }
 
     @Test
-    @DisplayName("토큰이 있는 상태로, 존재하지 않는 게시물을 삭제요청하면 404에러와 존재하지 않는 게시물임을 알려준다..")
+    @DisplayName("토큰이 있는 상태로, 존재하지 않는 게시물을 삭제요청하면 404에러와 존재하지 않는 게시물임을 알려준다.")
     public void deletePostTest_Fail_Post_Not_Found() throws Exception{
         //given
         String accessToken = getAccessTokenAfterLogIn(1);
@@ -102,6 +102,22 @@ public class DeletePostTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("해당 게시물을 찾을 수 없습니다."))
                 .andDo(MockMvcResultHandlers.print());
         Assertions.assertThat(postRepository.findById(10000L).isPresent()).isFalse();
+    }
+
+    @Test
+    @DisplayName("토큰이 있는 상태로, 다른 사람의 게시물을 삭제요청하면 401에러와 권한이 없음을 알려준다.")
+    public void deletePostTest_Fail_Not_My_Post() throws Exception{
+        //given
+        String accessToken = getAccessTokenAfterLogIn(1);
+        //expected
+        mvc.perform(MockMvcRequestBuilders.delete("/api/post/delete?id=20")
+                        .header("Authorization", accessToken))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(401))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("권한이 없습니다."))
+                .andDo(MockMvcResultHandlers.print());
+        Assertions.assertThat(postRepository.findById(20L).isPresent()).isTrue();
     }
 
     private String getAccessTokenAfterLogIn(int i){
