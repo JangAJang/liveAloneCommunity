@@ -66,7 +66,7 @@ public class PostController {
     @PatchMapping("/edit")
     @Operation(summary = "게시글 수정", description = "존재하는 게시물을 수정한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response editPost(@RequestBody EditPostRequestDto editPostRequestDto){
+    public Response editPost(@RequestBody @Valid EditPostRequestDto editPostRequestDto){
         Member member = memberRepository.findByUsername_Username(SecurityContextHolder.getContext()
                 .getAuthentication().getName()).orElseThrow(MemberNotFoundException::new);
         return Response.success(postService.editPost(editPostRequestDto, member));
