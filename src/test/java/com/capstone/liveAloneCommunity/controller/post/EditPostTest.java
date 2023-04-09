@@ -148,6 +148,68 @@ public class EditPostTest {
     }
 
     @Test
+    @DisplayName("토큰이 존재할 때, 내용을 null값으로 입력하면 400에러와 제목을 입력해야함을 알려준다.")
+    public void editPostTest_Null_Content() throws Exception{
+        //given
+        EditPostRequestDto editPostRequestDto =  EditPostRequestDto.builder()
+                .title("newTitle")
+                .id(3L).build();
+        String accessToken = getAccessTokenAfterLogIn(1);
+        //expected
+        mvc.perform(MockMvcRequestBuilders.patch("/api/post/edit")
+                .header("Authorization", accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(editPostRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("내용을 입력해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("토큰이 존재할 때, 내용을 빈 문자열로 입력하면 400에러와 제목을 입력해야함을 알려준다.")
+    public void editPostTest_Empty_Content() throws Exception{
+        //given
+        EditPostRequestDto editPostRequestDto =  EditPostRequestDto.builder()
+                .content("")
+                .title("newTitle")
+                .id(3L).build();
+        String accessToken = getAccessTokenAfterLogIn(1);
+        //expected
+        mvc.perform(MockMvcRequestBuilders.patch("/api/post/edit")
+                .header("Authorization", accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(editPostRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("내용을 입력해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("토큰이 존재할 때, 내용을 공백 문자열로 입력하면 400에러와 제목을 입력해야함을 알려준다.")
+    public void editPostTest_Blank_Content() throws Exception{
+        //given
+        EditPostRequestDto editPostRequestDto =  EditPostRequestDto.builder()
+                .content("  ")
+                .title("newTitle")
+                .id(3L).build();
+        String accessToken = getAccessTokenAfterLogIn(1);
+        //expected
+        mvc.perform(MockMvcRequestBuilders.patch("/api/post/edit")
+                .header("Authorization", accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(editPostRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("내용을 입력해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
     @DisplayName("토큰이 존재하지 않을 때, 401에러와 다시 로그인해야함을 알려준다.")
     public void editPostTest_Fail_Unauthorized() throws Exception{
         //given
