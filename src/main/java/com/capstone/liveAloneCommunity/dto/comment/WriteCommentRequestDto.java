@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class WriteCommentRequestDto {
+
     private long postId;
 
     @NotBlank(message = "댓글을 입력해주세요")
