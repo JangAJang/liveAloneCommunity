@@ -35,7 +35,7 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public MultiReadCommentResponseDto readCommentByMember(CommentPageInfoRequestDto commentPageInfoRequestDto, Member member) {
+    public MultiReadCommentResponseDto readCommentByMember(Member member, CommentPageInfoRequestDto commentPageInfoRequestDto) {
         Page<Comment> commentByMember = commentRepository.findCommentByMember(member, getPageRequestComment(commentPageInfoRequestDto));
         return collectComment(commentByMember.getContent());
     }
