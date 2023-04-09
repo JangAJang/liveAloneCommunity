@@ -8,6 +8,7 @@ import com.capstone.liveAloneCommunity.domain.post.Category;
 import com.capstone.liveAloneCommunity.domain.post.Content;
 import com.capstone.liveAloneCommunity.domain.post.Title;
 import com.capstone.liveAloneCommunity.dto.comment.*;
+import com.capstone.liveAloneCommunity.entity.comment.Comment;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.member.Role;
 import com.capstone.liveAloneCommunity.entity.post.Post;
@@ -79,5 +80,8 @@ class CommentServiceTest {
                 .category(Category.COOKING)
                 .member(member)
                 .build();
+    }
+    private Comment createComment(Member member, Post post, int id) {
+        return new Comment("comment" + id, post, member);
     }
 }
