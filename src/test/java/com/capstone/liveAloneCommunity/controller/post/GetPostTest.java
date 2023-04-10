@@ -54,6 +54,20 @@ public class GetPostTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("토큰이 있는 상태로 존재하는 게시물을 조회할 때 200코드와 해당 게시물의 정보가 반환된다.")
+    public void getPostTest_Fail_Unauthorized() throws Exception{
+        //given
+        String accessToken = getAccessTokenAfterLogIn(1);
+        //expected
+        mvc.perform(MockMvcRequestBuilders.get("/api/post?id=1"))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(401))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     @BeforeEach
     void initData(){
         IntStream.range(1, 11).forEach(i -> {
