@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class WritePostTest {
+class WritePostTest {
 
     @Autowired
     private MockMvc mvc;

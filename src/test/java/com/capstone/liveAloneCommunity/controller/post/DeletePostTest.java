@@ -28,7 +28,7 @@ import java.util.stream.IntStream;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class DeletePostTest {
+class DeletePostTest {
 
     @Autowired
     private MockMvc mvc;

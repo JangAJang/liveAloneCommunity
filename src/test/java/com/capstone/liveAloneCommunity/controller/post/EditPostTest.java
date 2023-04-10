@@ -29,7 +29,7 @@ import java.util.stream.IntStream;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class EditPostTest {
+class EditPostTest {
 
     @Autowired
     private MockMvc mvc;
