@@ -55,7 +55,7 @@ public class GetPostTest {
     }
 
     @Test
-    @DisplayName("토큰이 있는 상태로 존재하는 게시물을 조회할 때 200코드와 해당 게시물의 정보가 반환된다.")
+    @DisplayName("토큰이 없는 상태로 존재하는 게시물을 조회할 때 401코드와 다시 로그인해야 함을 알려준다.")
     public void getPostTest_Fail_Unauthorized() throws Exception{
         //given
         String accessToken = getAccessTokenAfterLogIn(1);
@@ -65,6 +65,21 @@ public class GetPostTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(401))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("토큰이 있는 상태로 존재하지 않는 게시물을 조회할 때 404코드와 해당 게시물이 없음을 알려준다..")
+    public void getPostTest_Fail_Not_Found() throws Exception{
+        //given
+        String accessToken = getAccessTokenAfterLogIn(1);
+        //expected
+        mvc.perform(MockMvcRequestBuilders.get("/api/post?id=1000")
+                        .header("Authorization", accessToken))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(404))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("해당 게시물을 찾을 수 없습니다."))
                 .andDo(MockMvcResultHandlers.print());
     }
 
