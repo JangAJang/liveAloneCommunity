@@ -26,7 +26,7 @@ public class PostController {
     private final PostService postService;
     private final MemberRepository memberRepository;
 
-    @GetMapping("/")
+    @GetMapping("")
     @Operation(summary = "게시물 단건 조회", description = "게시물 단건을 조회한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response getPost(@RequestParam("id") Long id){
