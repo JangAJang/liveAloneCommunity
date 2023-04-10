@@ -26,7 +26,7 @@ import java.util.stream.IntStream;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class GetPostTest {
+class GetPostTest {
 
     @Autowired
     private MockMvc mvc;
