@@ -51,13 +51,28 @@ class CommentTest {
     }
 
     @Test
-    @DisplayName("댓글을 작성했을 때 댓글 작성자를 반환한다.")
+    @DisplayName("댓글을 작성했을 때 댓글 작성자를 반환할 수 있다.")
     void getWriteNameTest() {
         //given
-        //when
         Comment comment = new Comment("test", post, member);
 
+        //when
+        String writerName = comment.getWriterName();
+
         //then
-        assertThat(comment.getWriterName()).isEqualTo(member.getNickname());
+        assertThat(writerName).isEqualTo(member.getNickname());
+    }
+
+    @Test
+    @DisplayName("댓글을 작성했을 때 댓글이 적힌 게시판의 이름을 반환할 수 있다.")
+    void getPostTitleTest (){
+        //given
+        Comment comment = new Comment("test", post, member);
+
+        //when
+        String postTitle = comment.getPostTitle();
+
+        //then
+        assertThat(postTitle).isEqualTo(post.getTitle());
     }
 }

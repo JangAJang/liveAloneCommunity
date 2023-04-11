@@ -1,128 +1,149 @@
 package com.capstone.liveAloneCommunity.service.comment;
 
-import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
-import com.capstone.liveAloneCommunity.dto.comment.WriteCommentRequestDto;
-import com.capstone.liveAloneCommunity.dto.post.WritePostRequestDto;
+import com.capstone.liveAloneCommunity.domain.member.Email;
+import com.capstone.liveAloneCommunity.domain.member.Nickname;
+import com.capstone.liveAloneCommunity.domain.member.Password;
+import com.capstone.liveAloneCommunity.domain.member.Username;
+import com.capstone.liveAloneCommunity.domain.post.Category;
+import com.capstone.liveAloneCommunity.domain.post.Content;
+import com.capstone.liveAloneCommunity.domain.post.Title;
+import com.capstone.liveAloneCommunity.dto.comment.*;
+import com.capstone.liveAloneCommunity.entity.comment.Comment;
 import com.capstone.liveAloneCommunity.entity.member.Member;
+import com.capstone.liveAloneCommunity.entity.member.Role;
 import com.capstone.liveAloneCommunity.entity.post.Post;
-import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneCommunity.exception.post.PostNotFoundException;
 import com.capstone.liveAloneCommunity.repository.comment.CommentRepository;
-import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
-import com.capstone.liveAloneCommunity.DatabaseCleanup;
-import com.capstone.liveAloneCommunity.service.auth.AuthService;
-import com.capstone.liveAloneCommunity.service.post.PostService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import java.util.Random;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import static com.capstone.liveAloneCommunity.domain.post.Category.COOKING;
-import static com.capstone.liveAloneCommunity.domain.post.Category.HOBBY_SHARE;
+
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
-    @Autowired
-    private AuthService authService;
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private PostService postService;
-    @Autowired
-    private PostRepository postRepository;
-    @Autowired
+    @InjectMocks
     private CommentService commentService;
-    @Autowired
+    @Mock
     private CommentRepository commentRepository;
-    @Autowired
-    private DatabaseCleanup databaseCleanup;
-
-    @BeforeEach
-    void initTestData() {
-        IntStream.range(0, 10).forEach(i -> {
-            authService.register(RegisterRequestDto.builder()
-                    .username("test" + i)
-                    .nickname("test" + i)
-                    .email("test" + i + "@test.com")
-                    .password("test")
-                    .passwordCheck("test")
-                    .build());
-            Member member = memberRepository.findByUsername_Username("test" + i).orElseThrow(MemberNotFoundException::new);
-            IntStream.range(i * 10, i * 10 + 5).forEach(index ->
-            {
-                postService.writePost(member, WritePostRequestDto.builder()
-                        .category(COOKING)
-                        .title("title" + index)
-                        .content("content" + index).build());
-                Post post = postRepository.findByTitle_Title("title" + index)
-                        .orElseThrow(PostNotFoundException::new);
-                IntStream.range(0, 100).forEach(comment ->
-                {
-                    commentService.writeComment(new WriteCommentRequestDto(post.getId(), "commentTest" + comment), member);
-                });
-            });
-            IntStream.range(i * 10 + 5, i * 10 + 10).forEach(index ->
-            {
-                postService.writePost(member, WritePostRequestDto.builder()
-                        .category(HOBBY_SHARE)
-                        .title("title" + index)
-                        .content("content" + index).build());
-                Post post = postRepository.findByTitle_Title("title" + index)
-                        .orElseThrow(PostNotFoundException::new);
-                IntStream.range(0, 100).forEach(comment ->
-                {
-                    commentService.writeComment(new WriteCommentRequestDto(post.getId(), "commentTest" + comment), member);
-                });
-            });
-        });
-    }
-
-    @AfterEach
-    void afterTestCleanData() {
-        databaseCleanup.execute();
-    }
+    @Mock
+    private PostRepository postRepository;
 
     @Test
-    @DisplayName("게시물의 id와 댓글 내용으로 댓글을 생성한다. ")
-    void createComment() {
+    @DisplayName("댓글을 작성한다.")
+    void writeCommentTest(){
         //given
-        Member member = createMember();
-        Random random = new Random();
-        Post post = postRepository.findById(random.nextLong(1, 101))
-                .orElseThrow(PostNotFoundException::new);
-        WriteCommentRequestDto writeCommentRequestDto = new WriteCommentRequestDto(post.getId(), "testCase~~!!");
+        Member member = createMember(1);
+        Post post = createPost(member, 1);
+        WriteCommentRequestDto writeCommentRequestDto = new WriteCommentRequestDto(1L, "title");
+        given(postRepository.findById(1L)).willReturn(Optional.of(post));
 
         //when
-        commentService.writeComment(writeCommentRequestDto, member);
+        CommentResponseDto commentResponseDto = commentService.writeComment(writeCommentRequestDto, member);
 
         //then
-        assertThat(commentRepository.searchCommentByPostId(post.getId()).size()).as("test")
-                .isEqualTo(101);
+        assertThat(commentResponseDto.getNickname()).isEqualTo("test1");
+        assertThat(commentResponseDto.getContent()).isEqualTo("title");
     }
 
     @Test
     @DisplayName("작성한 댓글의 게시물을 찾지 못하면 에러를 발생시킨다.")
-    void postNotFoundExceptionTest () {
+    void postNotFoundExceptionTest() {
         //given
-        WriteCommentRequestDto writeCommentRequestDto = new WriteCommentRequestDto(101L, "testComment");
-        Member member = createMember();
+        Member member = createMember(1);
+        WriteCommentRequestDto writeCommentRequestDto = new WriteCommentRequestDto(1L, "comment");
 
         //when //then
-        assertThatThrownBy(() -> commentService.writeComment(writeCommentRequestDto, member)).isExactlyInstanceOf(PostNotFoundException.class);
+        assertThatThrownBy(() -> commentService.writeComment(writeCommentRequestDto, member))
+                .isInstanceOf(PostNotFoundException.class);
     }
 
-    private Member createMember() {
-        authService.register(RegisterRequestDto.builder()
-                .username("t")
-                .nickname("t")
-                .email("t@test.com")
-                .password("t")
-                .passwordCheck("t").build());
-        return memberRepository.findByUsername_Username("t").orElseThrow(MemberNotFoundException::new);
+    @Test
+    @DisplayName("member의 id로 회원의 댓글을 조회한다.")
+    void readCommentByMemberTest() {
+        //given
+        Member member1 = createMember(1);
+        Member member2 = createMember(2);
+        Post post = createPost(member2, 1);
+        List<Comment> comments = new ArrayList<>();
+        IntStream.range(0, 999).forEach(i -> comments.add(createComment(member1, post, i)));
+        IntStream.range(0, 888).forEach(i -> comments.add(createComment(member2, post, i)));
+        CommentPageInfoRequestDto commentPageInfoRequestDto = new CommentPageInfoRequestDto(0, 10);
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(DESC,"createdDate"));
+        Page<Comment> readCommentByMember = new PageImpl<>(comments.stream().filter(comment ->
+                comment.getMember().equals(member1)).collect(Collectors.toList()));
+        given(commentRepository.findCommentByMember(member1, pageRequest)).willReturn(readCommentByMember);
+
+        //when
+        MultiReadCommentResponseDto multiReadCommentResponseDto = commentService.readCommentByMember(member1, commentPageInfoRequestDto);
+
+        //then
+        assertThat(multiReadCommentResponseDto.getReadCommentResponseDto().size()).isEqualTo( 999);
+    }
+
+    @Test
+    @DisplayName("게시물의 id로 회원의 댓글을 조회한다.")
+    void readCommentByPost() {
+        //given
+        Member member = createMember(1);
+        Post post1 = createPost(member, 1);
+        Post post2 = createPost(member, 2);
+        List<Comment> comments = new ArrayList<>();
+        IntStream.range(0, 50).forEach(i -> {
+            comments.add(createComment(member, post1, i));
+            comments.add(createComment(member, post2, i));
+        });
+        CommentPageInfoRequestDto commentPageInfoRequestDto = new CommentPageInfoRequestDto(0, 10);
+        ReadCommentByPostRequestDto readCommentByPostRequestDto = new ReadCommentByPostRequestDto(1L, commentPageInfoRequestDto);
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(DESC,"createdDate"));
+        List<Comment> readCommentByPost = comments.stream().filter(comment -> comment.getPost().equals(post1)).collect(Collectors.toList());
+        Page<Comment> commentPage = new PageImpl<>(readCommentByPost);
+        given(commentRepository.findCommentByPostId(readCommentByPostRequestDto.getPostId(), pageRequest)).willReturn(commentPage);
+
+        //when
+        MultiReadCommentResponseDto multiReadCommentResponseDto = commentService.readCommentByPost(readCommentByPostRequestDto);
+
+        //then
+        assertThat(multiReadCommentResponseDto.getReadCommentResponseDto().get(0).getTitle()).isEqualTo(post1.getTitle());
+        assertThat(multiReadCommentResponseDto.getReadCommentResponseDto().size()).isEqualTo(50);
+    }
+
+    private Member createMember(int id) {
+        return Member.builder()
+                .username(new Username("test" + id))
+                .nickname(new Nickname("test" + id))
+                .email(new Email("test" + id + "@email.com"))
+                .password(new Password("test" + id))
+                .role(Role.USER)
+                .build();
+    }
+
+    private Post createPost(Member member, int id) {
+        return Post.builder()
+                .title(new Title("title" + id))
+                .content(new Content("content" + id))
+                .category(Category.COOKING)
+                .member(member)
+                .build();
+    }
+
+    private Comment createComment(Member member, Post post, int id) {
+        return new Comment("comment" + id, post, member);
     }
 }
