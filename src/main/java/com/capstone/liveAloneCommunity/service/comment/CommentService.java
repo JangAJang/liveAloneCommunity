@@ -1,9 +1,12 @@
 package com.capstone.liveAloneCommunity.service.comment;
 
+import com.capstone.liveAloneCommunity.domain.post.Content;
 import com.capstone.liveAloneCommunity.dto.comment.*;
 import com.capstone.liveAloneCommunity.entity.comment.Comment;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.post.Post;
+import com.capstone.liveAloneCommunity.exception.comment.CommentNotEqualsException;
+import com.capstone.liveAloneCommunity.exception.comment.CommentNotFoundException;
 import com.capstone.liveAloneCommunity.exception.post.PostNotFoundException;
 import com.capstone.liveAloneCommunity.repository.comment.CommentRepository;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
@@ -61,5 +64,11 @@ public class CommentService {
     private Pageable getPageRequestComment(CommentPageInfoRequestDto commentPageInfoRequestDto) {
         return PageRequest.of(commentPageInfoRequestDto.getPage(), commentPageInfoRequestDto.getSize(),
                 Sort.by(DESC, "createdDate"));
+    }
+
+    private void validateCommentAuthority(Member member, Comment comment) {
+        if (!member.equals(comment.getMember())) {
+            throw new CommentNotEqualsException();
+        }
     }
 }
