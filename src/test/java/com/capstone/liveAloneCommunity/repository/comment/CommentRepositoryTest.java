@@ -24,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 import static com.capstone.liveAloneCommunity.domain.post.Category.*;
@@ -128,6 +129,28 @@ class CommentRepositoryTest {
         //then
         assertThat(comments.size()).isEqualTo(100);
         assertThat(comments.get(0).getContent()).isEqualTo("post1 comment0");
+    }
+
+    @Test
+    @DisplayName("댓글을 삭제한다.")
+    public void deleteCommentTest (){
+        //given
+        Member member = createMember();
+        Post post = createPost(member);
+        Comment comment = new Comment("comment", post, member);
+        commentRepository.save(comment);
+        List<Comment> comments = new ArrayList<>();
+        IntStream.range(1, 10).forEach(i -> {
+            Comment c = new Comment("comment" + i, post, member);
+            comments.add(c);
+            commentRepository.save(c);
+        });
+
+        //when
+        commentRepository.delete(comment);
+
+        //then
+        assertThat(commentRepository.findAll().size()).isEqualTo(comments.size());
     }
 
     private Member createMember() {
