@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
@@ -122,6 +123,23 @@ class CommentServiceTest {
         //then
         assertThat(multiReadCommentResponseDto.getReadCommentResponseDto().get(0).getTitle()).isEqualTo(post1.getTitle());
         assertThat(multiReadCommentResponseDto.getReadCommentResponseDto().size()).isEqualTo(50);
+    }
+
+    @Test
+    @DisplayName("댓글을 수정하는 사람과 댓글을 작성한 사람이 일치하면 댓글을 수정한다.")
+    void editCommentTest() {
+        //given
+        Member member = createMember(1);
+        Post post = createPost(member, 1);
+        Comment comment = createComment(member, post, 1);
+        given(commentRepository.findById(anyLong())).willReturn(Optional.of(comment));
+        EditCommentRequestDto editCommentRequestDto = new EditCommentRequestDto(anyLong(), "modifyContent");
+
+        //when
+        CommentResponseDto commentResponseDto = commentService.editComment(member, editCommentRequestDto);
+
+        //then
+        assertThat(commentResponseDto.getContent()).isEqualTo("modifyContent");
     }
 
     private Member createMember(int id) {
