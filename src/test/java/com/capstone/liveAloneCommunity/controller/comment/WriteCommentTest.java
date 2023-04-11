@@ -2,6 +2,8 @@ package com.capstone.liveAloneCommunity.controller.comment;
 
 import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
+import com.capstone.liveAloneCommunity.dto.comment.CommentPageInfoRequestDto;
+import com.capstone.liveAloneCommunity.dto.comment.ReadCommentByPostRequestDto;
 import com.capstone.liveAloneCommunity.dto.comment.WriteCommentRequestDto;
 import com.capstone.liveAloneCommunity.dto.post.WritePostRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
@@ -70,11 +72,11 @@ public class WriteCommentTest {
     @DisplayName("댓글을 작성했을 때 작성하고자 하는 member의 정보가 존재하면 상태코드 200을 출력한다.")
     public void writeTest() throws Exception {
         //given
-        String token = logIn();
+        String accessToken = logIn();
         WriteCommentRequestDto writeCommentRequestDto = new WriteCommentRequestDto(1L, "test");
 
         //when, then
-        mockMvc.perform(post("/api/comment").header("Authorization", token)
+        mockMvc.perform(post("/api/comment").header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(writeCommentRequestDto)))
                 .andExpect(status().isOk())
