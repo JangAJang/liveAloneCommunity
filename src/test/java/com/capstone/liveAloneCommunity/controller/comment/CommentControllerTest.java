@@ -152,7 +152,7 @@ public class CommentControllerTest {
 
     @Test
     @DisplayName("댓글을 수정하려는 사람과 댓글을 작성한 사람이 일치할 경우 댓글을 변경한다.")
-    public void editCommentTest () throws Exception{
+    public void editCommentTest() throws Exception{
         //given
         String accessToken = logIn();
         EditCommentRequestDto editCommentRequestDto = new EditCommentRequestDto(1L, "modifyContent");
@@ -171,7 +171,7 @@ public class CommentControllerTest {
 
     @Test
     @DisplayName("댓글을 작성한 사람과 삭제하려는 사람이 같으면 댓글을 삭제한다.")
-    void deleteCommentTest () throws Exception{
+    void deleteCommentTest() throws Exception{
         //given
         String accessToken = logIn();
         DeleteCommentRequestDto deleteCommentRequestDto = new DeleteCommentRequestDto(1L);

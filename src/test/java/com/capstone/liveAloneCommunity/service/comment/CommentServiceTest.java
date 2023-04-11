@@ -16,7 +16,6 @@ import com.capstone.liveAloneCommunity.exception.comment.CommentNotFoundExceptio
 import com.capstone.liveAloneCommunity.exception.comment.NotMyCommentException;
 import com.capstone.liveAloneCommunity.exception.post.PostNotFoundException;
 import com.capstone.liveAloneCommunity.repository.comment.CommentRepository;
-import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,16 +27,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
@@ -49,8 +45,6 @@ class CommentServiceTest {
     private CommentRepository commentRepository;
     @Mock
     private PostRepository postRepository;
-    @Mock
-    private MemberRepository memberRepository;
 
     @Test
     @DisplayName("댓글을 작성한다.")
@@ -106,7 +100,7 @@ class CommentServiceTest {
 
     @Test
     @DisplayName("게시물의 id로 회원의 댓글을 조회한다.")
-    void readCommentByPost() {
+    void readCommentByPostTest() {
         //given
         Member member = createMember(1);
         Post post1 = createPost(member, 1);
