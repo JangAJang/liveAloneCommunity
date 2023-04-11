@@ -61,6 +61,7 @@ class CommentRepositoryTest {
         //then
         assertThat(comment.getPost()).isEqualTo(save.getPost());
         assertThat(comment.getMember()).isEqualTo(save.getMember());
+        assertThat(comment.getContent()).isEqualTo("comment");
     }
 
     @Test
