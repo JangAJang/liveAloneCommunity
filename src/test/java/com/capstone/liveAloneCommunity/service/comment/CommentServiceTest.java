@@ -16,6 +16,7 @@ import com.capstone.liveAloneCommunity.exception.comment.CommentNotFoundExceptio
 import com.capstone.liveAloneCommunity.exception.comment.NotMyCommentException;
 import com.capstone.liveAloneCommunity.exception.post.PostNotFoundException;
 import com.capstone.liveAloneCommunity.repository.comment.CommentRepository;
+import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,6 +48,8 @@ class CommentServiceTest {
     private CommentRepository commentRepository;
     @Mock
     private PostRepository postRepository;
+    @Mock
+    private MemberRepository memberRepository;
 
     @Test
     @DisplayName("댓글을 작성한다.")
