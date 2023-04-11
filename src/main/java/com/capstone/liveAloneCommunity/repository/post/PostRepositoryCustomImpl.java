@@ -1,9 +1,6 @@
 package com.capstone.liveAloneCommunity.repository.post;
 
-import com.capstone.liveAloneCommunity.dto.post.MembersPostRequestDto;
-import com.capstone.liveAloneCommunity.dto.post.PostResponseDto;
-import com.capstone.liveAloneCommunity.dto.post.QPostResponseDto;
-import com.capstone.liveAloneCommunity.dto.post.SearchPostRequestDto;
+import com.capstone.liveAloneCommunity.dto.post.*;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -30,6 +27,22 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
                 .from(post)
                 .leftJoin(post.member, member)
                 .where(makeConditionQuery(searchPostRequestDto.getText(), searchPostRequestDto.getSearchPostType()))
+                .orderBy(post.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
+    }
+
+    @Override
+    public Page<PostResponseDto> getPostByCategory(PostByCategoryRequestDto postByCategoryRequestDto) {
+        Pageable pageable = PageRequest.of(postByCategoryRequestDto.getPage(), postByCategoryRequestDto.getSize());
+        QueryResults<PostResponseDto> result = queryFactory
+                .select(new QPostResponseDto(post.id, member.nickname.nickname.as("writer"),
+                        post.title.title, post.content.content, post.category, post.createdDate))
+                .from(post)
+                .leftJoin(post.member, member)
+                .where(post.category.eq(postByCategoryRequestDto.getCategory()))
                 .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

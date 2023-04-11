@@ -59,10 +59,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public MultiPostResponseDto getPostByCategory(PostByCategoryRequestDto postByCategoryRequestDto){
-        List<PostResponseDto> postByCategory = postRepository
-                .findAllByCategoryOrderByCreatedDateDesc(postByCategoryRequestDto.getCategory(),
-                        getPageRequestOfPostByCategory(postByCategoryRequestDto)).getContent()
-                .stream().map(PostResponseDto::toDto).collect(Collectors.toList());
+        List<PostResponseDto> postByCategory = postRepository.getPostByCategory(postByCategoryRequestDto).getContent();
         return new MultiPostResponseDto(postByCategory);
     }
 
