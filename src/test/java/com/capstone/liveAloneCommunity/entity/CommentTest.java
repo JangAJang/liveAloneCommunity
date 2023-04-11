@@ -75,4 +75,18 @@ class CommentTest {
         //then
         assertThat(postTitle).isEqualTo(post.getTitle());
     }
+
+    @Test
+    @DisplayName("수정할 댓글로 댓글의 내용을 수정한다.")
+    void editContentTest() {
+        //given
+        Comment comment = new Comment("test", post, member);
+        Content modifyContent = new Content("modifyContent");
+
+        //when
+        comment.editContent(modifyContent);
+
+        //then
+        assertThat(comment.getContent()).isEqualTo("modifyContent");
+    }
 }
