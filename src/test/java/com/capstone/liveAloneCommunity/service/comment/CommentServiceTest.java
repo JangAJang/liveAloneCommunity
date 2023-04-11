@@ -12,6 +12,7 @@ import com.capstone.liveAloneCommunity.entity.comment.Comment;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.member.Role;
 import com.capstone.liveAloneCommunity.entity.post.Post;
+import com.capstone.liveAloneCommunity.exception.comment.CommentNotFoundException;
 import com.capstone.liveAloneCommunity.exception.post.PostNotFoundException;
 import com.capstone.liveAloneCommunity.repository.comment.CommentRepository;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
@@ -140,6 +141,18 @@ class CommentServiceTest {
 
         //then
         assertThat(commentResponseDto.getContent()).isEqualTo("modifyContent");
+    }
+
+    @Test
+    @DisplayName("댓글을 변경하려 할 때 댓글을 찾지 못하면 예외를 발생시킨다.")
+    void commentNotFoundException(){
+        //given
+        Member member = createMember(1);
+        EditCommentRequestDto editCommentRequestDto = new EditCommentRequestDto(anyLong(), "modifyContent");
+
+        //when //then
+        assertThatThrownBy(() -> commentService.editComment(member, editCommentRequestDto))
+                .isInstanceOf(CommentNotFoundException.class);
     }
 
     private Member createMember(int id) {
