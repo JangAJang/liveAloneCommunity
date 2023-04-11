@@ -65,7 +65,7 @@ class CommentRepositoryTest {
     }
 
     @Test
-    @DisplayName("member 정보로 회원이 작성한 댓글들을 조회한다.")
+    @DisplayName("member id로 회원이 작성한 댓글들을 조회한다.")
     void findCommentByMember (){
         //given
         Member member1 = createMember();
@@ -78,7 +78,7 @@ class CommentRepositoryTest {
         PageRequest pageRequest = PageRequest.of(1, 10, Sort.by(DESC, "createdDate"));
 
         //when
-        Page<Comment> commentByMember = commentRepository.findCommentByMember(member1, pageRequest);
+        Page<Comment> commentByMember = commentRepository.findCommentByMemberId(member1.getId(), pageRequest);
 
         //then
         assertThat(commentByMember.getContent().size()).isEqualTo(2);

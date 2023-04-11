@@ -1,15 +1,21 @@
 package com.capstone.liveAloneCommunity.controller.comment;
 
+import com.capstone.liveAloneCommunity.domain.post.Content;
+import com.capstone.liveAloneCommunity.domain.post.Title;
 import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
+import com.capstone.liveAloneCommunity.dto.comment.CommentPageInfoRequestDto;
+import com.capstone.liveAloneCommunity.dto.comment.ReadCommentByPostRequestDto;
 import com.capstone.liveAloneCommunity.dto.comment.WriteCommentRequestDto;
-import com.capstone.liveAloneCommunity.dto.post.WritePostRequestDto;
+import com.capstone.liveAloneCommunity.entity.comment.Comment;
 import com.capstone.liveAloneCommunity.entity.member.Member;
+import com.capstone.liveAloneCommunity.entity.post.Post;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotAllowedException;
+import com.capstone.liveAloneCommunity.repository.comment.CommentRepository;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.DatabaseCleanup;
+import com.capstone.liveAloneCommunity.repository.post.PostRepository;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
-import com.capstone.liveAloneCommunity.service.post.PostService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -33,32 +39,37 @@ public class WriteCommentTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private PostService postService;
-    @Autowired
     private AuthService authService;
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    private PostRepository postRepository;
     @Autowired
     private DatabaseCleanup databaseCleanup;
 
     @BeforeEach
     void initDB(){
         RegisterRequestDto registerRequestDto = RegisterRequestDto.builder()
-                .username("former")
-                .nickname("former")
-                .email("former@email.com")
-                .password("former")
-                .passwordCheck("former")
+                .username("test")
+                .nickname("test")
+                .email("test@email.com")
+                .password("test")
+                .passwordCheck("test")
                 .build();
         authService.register(registerRequestDto);
-        Member member = memberRepository.findByUsername_Username("former")
+        Member member = memberRepository.findByUsername_Username("test")
                 .orElseThrow(MemberNotAllowedException::new);
-        WritePostRequestDto writePostRequestDto = WritePostRequestDto.builder()
+        Post post = Post.builder()
+                .title(new Title("title"))
+                .content(new Content("content"))
                 .category(COOKING)
-                .title("title 1")
-                .content("content1")
+                .member(member)
                 .build();
-        postService.writePost(member, writePostRequestDto);
+        postRepository.save(post);
+        Comment comment = new Comment("testComment", post, member);
+        commentRepository.save(comment);
     }
 
     @AfterEach
@@ -70,18 +81,18 @@ public class WriteCommentTest {
     @DisplayName("댓글을 작성했을 때 작성하고자 하는 member의 정보가 존재하면 상태코드 200을 출력한다.")
     public void writeTest() throws Exception {
         //given
-        String token = logIn();
+        String accessToken = logIn();
         WriteCommentRequestDto writeCommentRequestDto = new WriteCommentRequestDto(1L, "test");
 
         //when, then
-        mockMvc.perform(post("/api/comment").header("Authorization", token)
+        mockMvc.perform(post("/api/comment").header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(writeCommentRequestDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.result.data.content").value("test"))
-                .andExpect(jsonPath("$.result.data.nickname").value("former"))
+                .andExpect(jsonPath("$.result.data.nickname").value("test"))
                 .andDo(print());
     }
 
@@ -102,14 +113,53 @@ public class WriteCommentTest {
                 .andDo(print());
     }
 
+    @Test
+    @DisplayName("memberId로 회원이 작성한 댓글을 조회한다.")
+    public void readCommentByMemberIdTest() throws Exception {
+        //given
+        String accessToken = logIn();
+        CommentPageInfoRequestDto commentPageInfoRequestDto = new CommentPageInfoRequestDto(0, 10);
+
+        //when //then
+        mockMvc.perform(get("/api/comment/member").header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(makeJson(commentPageInfoRequestDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.result.data.readCommentResponseDto[0].title").value("title"))
+                .andExpect(jsonPath("$.result.data.readCommentResponseDto[0].content").value("testComment"))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("게시물의 id로 회원이 작성한 댓글을 조회한다.")
+    public void readCommentByPostIdTest() throws Exception {
+        //given
+        String accessToken = logIn();
+        CommentPageInfoRequestDto commentPageInfoRequestDto = new CommentPageInfoRequestDto(0, 10);
+        ReadCommentByPostRequestDto readCommentByPostRequestDto = new ReadCommentByPostRequestDto(1L, commentPageInfoRequestDto);
+
+        //when //then
+        mockMvc.perform(get("/api/comment/post").header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(makeJson(readCommentByPostRequestDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.result.data.readCommentResponseDto[0].title").value("title"))
+                .andExpect(jsonPath("$.result.data.readCommentResponseDto[0].content").value("testComment"))
+                .andDo(print());
+    }
+
     private String makeJson(Object object) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(object);
     }
 
     private String logIn() {
         LogInRequestDto logInRequestDto = LogInRequestDto.builder()
-                .username("former")
-                .password("former")
+                .username("test")
+                .password("test")
                 .build();
         return authService.logIn(logInRequestDto).getAccessToken();
     }
