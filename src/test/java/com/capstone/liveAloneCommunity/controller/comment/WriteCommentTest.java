@@ -5,6 +5,7 @@ import com.capstone.liveAloneCommunity.domain.post.Title;
 import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneCommunity.dto.comment.CommentPageInfoRequestDto;
+import com.capstone.liveAloneCommunity.dto.comment.ReadCommentByPostRequestDto;
 import com.capstone.liveAloneCommunity.dto.comment.WriteCommentRequestDto;
 import com.capstone.liveAloneCommunity.entity.comment.Comment;
 import com.capstone.liveAloneCommunity.entity.member.Member;
@@ -113,7 +114,7 @@ public class WriteCommentTest {
     }
 
     @Test
-    @DisplayName("memberId로 댓글을 조회한다.")
+    @DisplayName("memberId로 회원이 작성한 댓글을 조회한다.")
     public void readCommentByMemberIdTest() throws Exception {
         //given
         String accessToken = logIn();
@@ -123,6 +124,26 @@ public class WriteCommentTest {
         mockMvc.perform(get("/api/comment/member").header("Authorization", accessToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(makeJson(commentPageInfoRequestDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.result.data.readCommentResponseDto[0].title").value("title"))
+                .andExpect(jsonPath("$.result.data.readCommentResponseDto[0].content").value("testComment"))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("게시물의 id로 회원이 작성한 댓글을 조회한다.")
+    public void readCommentByPostIdTest() throws Exception {
+        //given
+        String accessToken = logIn();
+        CommentPageInfoRequestDto commentPageInfoRequestDto = new CommentPageInfoRequestDto(0, 10);
+        ReadCommentByPostRequestDto readCommentByPostRequestDto = new ReadCommentByPostRequestDto(1L, commentPageInfoRequestDto);
+
+        //when //then
+        mockMvc.perform(get("/api/comment/post").header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(makeJson(readCommentByPostRequestDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.code").value(200))
