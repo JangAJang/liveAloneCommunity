@@ -5,6 +5,7 @@ import com.capstone.liveAloneCommunity.domain.post.Title;
 import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneCommunity.dto.comment.CommentPageInfoRequestDto;
+import com.capstone.liveAloneCommunity.dto.comment.EditCommentRequestDto;
 import com.capstone.liveAloneCommunity.dto.comment.ReadCommentByPostRequestDto;
 import com.capstone.liveAloneCommunity.dto.comment.WriteCommentRequestDto;
 import com.capstone.liveAloneCommunity.entity.comment.Comment;
@@ -35,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class WriteCommentTest {
+public class CommentControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -150,6 +151,25 @@ public class WriteCommentTest {
                 .andExpect(jsonPath("$.result.data.readCommentResponseDto[0].title").value("title"))
                 .andExpect(jsonPath("$.result.data.readCommentResponseDto[0].content").value("testComment"))
                 .andDo(print());
+    }
+
+    @Test
+    @DisplayName("댓글을 수정하려는 사람과 댓글을 작성한 사람이 일치할 경우 댓글을 변경한다.")
+    public void editCommentTest () throws Exception{
+        //given
+        String accessToken = logIn();
+        EditCommentRequestDto editCommentRequestDto = new EditCommentRequestDto(1L, "modifyContent");
+
+        //when //then
+        mockMvc.perform(patch("/api/comment/edit").header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(makeJson(editCommentRequestDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.result.data.id").value(1))
+                .andExpect(jsonPath("$.result.data.content").value("modifyContent"))
+                .andExpect(jsonPath("$.result.data.nickname").value("test"));
     }
 
     private String makeJson(Object object) throws JsonProcessingException {

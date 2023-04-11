@@ -23,6 +23,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+
+import java.util.List;
 import java.util.stream.IntStream;
 import static com.capstone.liveAloneCommunity.domain.post.Category.*;
 import static com.capstone.liveAloneCommunity.entity.member.Role.*;
@@ -66,7 +68,7 @@ class CommentRepositoryTest {
 
     @Test
     @DisplayName("member id로 회원이 작성한 댓글들을 조회한다.")
-    void findCommentByMember (){
+    void findCommentByMemberIdTest(){
         //given
         Member member1 = createMember();
         Member member2 = createMember();
@@ -88,7 +90,7 @@ class CommentRepositoryTest {
 
     @Test
     @DisplayName("게시물의 id로 회원이 작성한 댓글을 조회한다.")
-    public void findCommentByPostId (){
+    public void findCommentByPostIdTest(){
         //given
         Member member = createMember();
         Post post1 = createPost(member);
@@ -106,6 +108,26 @@ class CommentRepositoryTest {
         assertThat(commentByPostId.getContent().size()).isEqualTo(5);
         assertThat(commentByPostId.getContent().get(0).getContent()).isEqualTo("test4");
         assertThat(commentByPostId.getContent().get(4).getContent()).isEqualTo("test0");
+    }
+
+    @Test
+    @DisplayName("게시물의 id로 게시물의 댓글들을 모두 조회한다.")
+    void searchCommentByPostIdTest() {
+        //given
+        Member member = createMember();
+        Post post1 = createPost(member);
+        Post post2 = createPost(member);
+        IntStream.range(0, 100).forEach(i -> {
+            commentRepository.save(new Comment("post1 comment" + i, post1, member));
+            commentRepository.save(new Comment("post2 comment" + i, post2, member));
+        });
+
+        //when
+        List<Comment> comments = commentRepository.searchCommentByPostId(1L);
+
+        //then
+        assertThat(comments.size()).isEqualTo(100);
+        assertThat(comments.get(0).getContent()).isEqualTo("post1 comment0");
     }
 
     private Member createMember() {

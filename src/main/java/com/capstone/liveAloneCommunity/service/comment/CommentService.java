@@ -1,9 +1,12 @@
 package com.capstone.liveAloneCommunity.service.comment;
 
+import com.capstone.liveAloneCommunity.domain.post.Content;
 import com.capstone.liveAloneCommunity.dto.comment.*;
 import com.capstone.liveAloneCommunity.entity.comment.Comment;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.post.Post;
+import com.capstone.liveAloneCommunity.exception.comment.NotMyCommentException;
+import com.capstone.liveAloneCommunity.exception.comment.CommentNotFoundException;
 import com.capstone.liveAloneCommunity.exception.post.PostNotFoundException;
 import com.capstone.liveAloneCommunity.repository.comment.CommentRepository;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
@@ -47,6 +50,13 @@ public class CommentService {
         return collectComment(commentByPostId.getContent());
     }
 
+    public CommentResponseDto editComment(Member member, EditCommentRequestDto editCommentRequestDto) {
+        Comment comment = getCommentById(editCommentRequestDto);
+        validateCommentAuthority(member, comment);
+        comment.editContent(new Content(editCommentRequestDto.getModifyContent()));
+        return CommentResponseDto.toDto(comment);
+    }
+
     private Post getPost(WriteCommentRequestDto writeCommentRequestDto) {
         return postRepository.findById(writeCommentRequestDto.getPostId())
                 .orElseThrow(PostNotFoundException::new);
@@ -61,5 +71,16 @@ public class CommentService {
     private Pageable getPageRequestComment(CommentPageInfoRequestDto commentPageInfoRequestDto) {
         return PageRequest.of(commentPageInfoRequestDto.getPage(), commentPageInfoRequestDto.getSize(),
                 Sort.by(DESC, "createdDate"));
+    }
+
+    private Comment getCommentById(EditCommentRequestDto editCommentRequestDto) {
+        return commentRepository.findById(editCommentRequestDto.getCommentId())
+                .orElseThrow(CommentNotFoundException::new);
+    }
+
+    private void validateCommentAuthority(Member member, Comment comment) {
+        if (!comment.isEqualsMember(member)) {
+            throw new NotMyCommentException();
+        }
     }
 }

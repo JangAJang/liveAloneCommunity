@@ -12,8 +12,11 @@ import com.capstone.liveAloneCommunity.entity.comment.Comment;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.member.Role;
 import com.capstone.liveAloneCommunity.entity.post.Post;
+import com.capstone.liveAloneCommunity.exception.comment.CommentNotFoundException;
+import com.capstone.liveAloneCommunity.exception.comment.NotMyCommentException;
 import com.capstone.liveAloneCommunity.exception.post.PostNotFoundException;
 import com.capstone.liveAloneCommunity.repository.comment.CommentRepository;
+import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +36,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
@@ -44,6 +48,8 @@ class CommentServiceTest {
     private CommentRepository commentRepository;
     @Mock
     private PostRepository postRepository;
+    @Mock
+    private MemberRepository memberRepository;
 
     @Test
     @DisplayName("댓글을 작성한다.")
@@ -122,6 +128,51 @@ class CommentServiceTest {
         //then
         assertThat(multiReadCommentResponseDto.getReadCommentResponseDto().get(0).getTitle()).isEqualTo(post1.getTitle());
         assertThat(multiReadCommentResponseDto.getReadCommentResponseDto().size()).isEqualTo(50);
+    }
+
+    @Test
+    @DisplayName("댓글을 수정하는 사람과 댓글을 작성한 사람이 일치하면 댓글을 수정한다.")
+    void editCommentTest() {
+        //given
+        Member member = createMember(1);
+        Post post = createPost(member, 1);
+        Comment comment = createComment(member, post, 1);
+        given(commentRepository.findById(anyLong())).willReturn(Optional.of(comment));
+        EditCommentRequestDto editCommentRequestDto = new EditCommentRequestDto(anyLong(), "modifyContent");
+
+        //when
+        CommentResponseDto commentResponseDto = commentService.editComment(member, editCommentRequestDto);
+
+        //then
+        assertThat(commentResponseDto.getContent()).isEqualTo("modifyContent");
+    }
+
+    @Test
+    @DisplayName("댓글을 변경하려 할 때 댓글을 찾지 못하면 예외를 발생시킨다.")
+    void commentNotFoundException(){
+        //given
+        Member member = createMember(1);
+        EditCommentRequestDto editCommentRequestDto = new EditCommentRequestDto(anyLong(), "modifyContent");
+
+        //when //then
+        assertThatThrownBy(() -> commentService.editComment(member, editCommentRequestDto))
+                .isInstanceOf(CommentNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("댓글을 변경하려고 하는 회원이 댓글을 작성한 회원이 아닐 경우 예외를 발생시킨다.")
+    void notMyCommentExceptionTest (){
+        //given
+        Member member1 = createMember(1);
+        Member member2 = createMember(2);
+        Post post = createPost(member1, 1);
+        Comment comment1 = createComment(member1, post, 1);
+        given(commentRepository.findById(anyLong())).willReturn(Optional.of(comment1));
+        EditCommentRequestDto editCommentRequestDto = new EditCommentRequestDto(anyLong(), "modifyContent");
+
+        //when //then
+        assertThatThrownBy(() -> commentService.editComment(member2, editCommentRequestDto))
+                .isInstanceOf(NotMyCommentException.class);
     }
 
     private Member createMember(int id) {

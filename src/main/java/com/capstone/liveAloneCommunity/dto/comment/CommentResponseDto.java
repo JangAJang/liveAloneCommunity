@@ -15,6 +15,7 @@ public class CommentResponseDto {
 
     public static CommentResponseDto toDto(Comment comment) {
         return CommentResponseDto.builder()
+                .id(comment.getId())
                 .content(comment.getContent())
                 .nickname(comment.getWriterName())
                 .createTime(comment.getCreatedDate())

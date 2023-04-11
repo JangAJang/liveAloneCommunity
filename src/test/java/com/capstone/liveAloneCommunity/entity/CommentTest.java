@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static com.capstone.liveAloneCommunity.domain.post.Category.*;
+import static com.capstone.liveAloneCommunity.entity.member.Role.*;
 import static org.assertj.core.api.Assertions.*;
 
 class CommentTest {
@@ -28,7 +29,7 @@ class CommentTest {
                 .nickname(new Nickname("test2"))
                 .email(new Email("test@email.com"))
                 .password(new Password("test3"))
-                .role(Role.USER)
+                .role(USER)
                 .build();
         post = Post.builder()
                 .title(new Title("title"))
@@ -48,6 +49,19 @@ class CommentTest {
         assertThat(comment.getContent()).isEqualTo("test");
         assertThat(comment.getPost()).isEqualTo(post);
         assertThat(comment.getMember()).isEqualTo(member);
+    }
+
+    @Test
+    @DisplayName("Comment 엔티티의 content 타입을 Content -> String으로 변환해준다.")
+    void getContentTest(){
+        //given
+        Comment comment = new Comment("test", post, member);
+
+        //when
+        String content = comment.getContent();
+
+        //then
+        assertThat(content).isEqualTo("test");
     }
 
     @Test
@@ -74,5 +88,41 @@ class CommentTest {
 
         //then
         assertThat(postTitle).isEqualTo(post.getTitle());
+    }
+
+    @Test
+    @DisplayName("수정할 댓글로 댓글의 내용을 수정한다.")
+    void editContentTest() {
+        //given
+        Comment comment = new Comment("test", post, member);
+        Content modifyContent = new Content("modifyContent");
+
+        //when
+        comment.editContent(modifyContent);
+
+        //then
+        assertThat(comment.getContent()).isEqualTo("modifyContent");
+    }
+
+    @Test
+    @DisplayName("댓글을 작성한 member 정보가 파라미터로 넘어온 member와 같은지 확인한다.")
+    void isEqualsMemberTest (){
+        //given
+        Comment comment = new Comment("test", post, member);
+        Member member1 = Member.builder()
+                .username(new Username("member"))
+                .nickname(new Nickname("member"))
+                .email(new Email("member@email.com"))
+                .password(new Password("member"))
+                .role(USER)
+                .build();
+
+        //when
+        boolean result1 = comment.isEqualsMember(member);
+        boolean result2 = comment.isEqualsMember(member1);
+
+        //then
+        assertThat(result1).isTrue();
+        assertThat(result2).isFalse();
     }
 }

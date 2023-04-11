@@ -1,6 +1,7 @@
 package com.capstone.liveAloneCommunity.controller.comment;
 
 import com.capstone.liveAloneCommunity.dto.comment.CommentPageInfoRequestDto;
+import com.capstone.liveAloneCommunity.dto.comment.EditCommentRequestDto;
 import com.capstone.liveAloneCommunity.dto.comment.ReadCommentByPostRequestDto;
 import com.capstone.liveAloneCommunity.dto.comment.WriteCommentRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
@@ -45,6 +46,14 @@ public class CommentController {
     @ResponseStatus(HttpStatus.OK)
     public Response readCommentByPostId(@Valid @RequestBody ReadCommentByPostRequestDto readCommentByPostRequestDto) {
         return Response.success(commentService.readCommentByPostId(readCommentByPostRequestDto));
+    }
+
+    @PatchMapping("/edit")
+    @Operation(summary = "댓글 수정", description = "댓글 작성자는 자신의 댓글을 삭제할 수 있다.")
+    @ResponseStatus(HttpStatus.OK)
+    public Response editComment(@Valid @RequestBody EditCommentRequestDto editCommentRequestDto) {
+        Member member = getMember();
+        return Response.success(commentService.editComment(member, editCommentRequestDto));
     }
 
     private Member getMember() {
