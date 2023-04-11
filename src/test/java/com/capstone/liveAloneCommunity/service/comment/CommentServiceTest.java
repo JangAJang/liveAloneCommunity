@@ -37,6 +37,7 @@ import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
@@ -173,6 +174,23 @@ class CommentServiceTest {
         //when //then
         assertThatThrownBy(() -> commentService.editComment(member2, editCommentRequestDto))
                 .isInstanceOf(NotMyCommentException.class);
+    }
+
+    @Test
+    @DisplayName("댓글을 작성한 회원과 댓글을 삭제하는 회원과 같으면 댓글을 삭제한다.")
+    void deleteCommentTest(){
+        //given
+        Member member = createMember(1);
+        Post post = createPost(member, 1);
+        Comment comment = createComment(member, post, 1);
+        given(commentRepository.findById(anyLong())).willReturn(Optional.of(comment));
+        DeleteCommentRequestDto deleteCommentRequestDto = new DeleteCommentRequestDto(anyLong());
+
+        //when
+        commentService.deleteComment(member, deleteCommentRequestDto);
+
+        //then
+        assertThat(commentRepository.findAll().size()).isEqualTo(0);
     }
 
     private Member createMember(int id) {
