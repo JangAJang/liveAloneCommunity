@@ -66,7 +66,7 @@ class CommentRepositoryTest {
 
     @Test
     @DisplayName("member id로 회원이 작성한 댓글들을 조회한다.")
-    void findCommentByMemberId(){
+    void findCommentByMemberIdTest(){
         //given
         Member member1 = createMember();
         Member member2 = createMember();
@@ -88,7 +88,7 @@ class CommentRepositoryTest {
 
     @Test
     @DisplayName("게시물의 id로 회원이 작성한 댓글을 조회한다.")
-    public void findCommentByPostId (){
+    public void findCommentByPostIdTest(){
         //given
         Member member = createMember();
         Post post1 = createPost(member);
