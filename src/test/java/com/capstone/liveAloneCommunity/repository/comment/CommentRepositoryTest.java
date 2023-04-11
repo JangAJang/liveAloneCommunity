@@ -6,8 +6,12 @@ import com.capstone.liveAloneCommunity.domain.member.Email;
 import com.capstone.liveAloneCommunity.domain.member.Nickname;
 import com.capstone.liveAloneCommunity.domain.member.Password;
 import com.capstone.liveAloneCommunity.domain.member.Username;
+import com.capstone.liveAloneCommunity.domain.post.Category;
+import com.capstone.liveAloneCommunity.domain.post.Content;
+import com.capstone.liveAloneCommunity.domain.post.Title;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.member.Role;
+import com.capstone.liveAloneCommunity.entity.post.Post;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -18,6 +22,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.*;
 import org.springframework.context.annotation.Import;
 
+import static com.capstone.liveAloneCommunity.domain.post.Category.*;
 import static com.capstone.liveAloneCommunity.entity.member.Role.*;
 
 @Import({QuerydslConfig.class, DatabaseCleanup.class})
@@ -45,6 +50,15 @@ class CommentRepositoryTest {
                 .email(new Email("test@email.com"))
                 .password(new Password("test"))
                 .role(USER)
+                .build();
+    }
+
+    private Post createPost(Member member) {
+        return Post.builder()
+                .title(new Title("title"))
+                .content(new Content("content"))
+                .category(COOKING)
+                .member(member)
                 .build();
     }
 }
