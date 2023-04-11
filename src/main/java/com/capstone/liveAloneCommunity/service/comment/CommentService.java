@@ -5,7 +5,7 @@ import com.capstone.liveAloneCommunity.dto.comment.*;
 import com.capstone.liveAloneCommunity.entity.comment.Comment;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.post.Post;
-import com.capstone.liveAloneCommunity.exception.comment.CommentNotEqualsException;
+import com.capstone.liveAloneCommunity.exception.comment.NotMyCommentException;
 import com.capstone.liveAloneCommunity.exception.comment.CommentNotFoundException;
 import com.capstone.liveAloneCommunity.exception.post.PostNotFoundException;
 import com.capstone.liveAloneCommunity.repository.comment.CommentRepository;
@@ -80,7 +80,7 @@ public class CommentService {
 
     private void validateCommentAuthority(Member member, Comment comment) {
         if (!member.equals(comment.getMember())) {
-            throw new CommentNotEqualsException();
+            throw new NotMyCommentException();
         }
     }
 }
