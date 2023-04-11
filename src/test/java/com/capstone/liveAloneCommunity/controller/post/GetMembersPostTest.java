@@ -105,6 +105,27 @@ class GetMembersPostTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("토큰이 있는 상태로 존재하지 않는 회원의 게시물을 조회하면 404코드와 해당 회원이 존재하지 않음을 알린다.")
+    public void getMembersPost_Fail_Member_Not_Found() throws Exception{
+        //given
+        String accessToken = getAccessTokenAfterLogIn();
+        MembersPostRequestDto membersPostRequestDto = MembersPostRequestDto.builder()
+                .page(0)
+                .size(10)
+                .id(100L).build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.get("/api/post/of")
+                .header("Authorization", accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(membersPostRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(404))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("해당 사용자를 찾을 수 없습니다."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private String makeJson(Object object)throws Exception{
         return new ObjectMapper().writeValueAsString(object);
     }
