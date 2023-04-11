@@ -47,4 +47,8 @@ public class Comment extends BaseTimeEntity {
     public String getPostTitle() {
         return post.getTitle();
     }
+
+    public void editContent(Content modifyContent) {
+        this.content = modifyContent;
+    }
 }
