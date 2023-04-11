@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static com.capstone.liveAloneCommunity.domain.post.Category.*;
+import static com.capstone.liveAloneCommunity.entity.member.Role.*;
 import static org.assertj.core.api.Assertions.*;
 
 class CommentTest {
@@ -28,7 +29,7 @@ class CommentTest {
                 .nickname(new Nickname("test2"))
                 .email(new Email("test@email.com"))
                 .password(new Password("test3"))
-                .role(Role.USER)
+                .role(USER)
                 .build();
         post = Post.builder()
                 .title(new Title("title"))
@@ -101,5 +102,27 @@ class CommentTest {
 
         //then
         assertThat(comment.getContent()).isEqualTo("modifyContent");
+    }
+
+    @Test
+    @DisplayName("댓글을 작성한 member 정보가 파라미터로 넘어온 member와 같은지 확인한다.")
+    void isEqualsMemberTest (){
+        //given
+        Comment comment = new Comment("test", post, member);
+        Member member1 = Member.builder()
+                .username(new Username("member"))
+                .nickname(new Nickname("member"))
+                .email(new Email("member@email.com"))
+                .password(new Password("member"))
+                .role(USER)
+                .build();
+
+        //when
+        boolean result1 = comment.isEqualsMember(member);
+        boolean result2 = comment.isEqualsMember(member1);
+
+        //then
+        assertThat(result1).isTrue();
+        assertThat(result2).isFalse();
     }
 }
