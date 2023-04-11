@@ -95,6 +95,31 @@ class CommentRepositoryTest {
         assertThat(commentByMember.getContent().get(1).getContent()).isEqualTo("test0");
     }
 
+    @Test
+    @DisplayName("게시물의 id로 회원이 작성한 댓글을 조회한다.")
+    public void findCommentByPostId (){
+        //given
+        Member member = createMember();
+        memberRepository.save(member);
+        Post post1 = createPost(member);
+        Post post2 = createPost(member);
+        postRepository.save(post1);
+        postRepository.save(post2);
+        IntStream.range(0, 15).forEach(i -> {
+            commentRepository.save(new Comment("test" + i, post1, member));
+            commentRepository.save(new Comment("Test" + i, post2, member));
+        });
+        PageRequest pageRequest = PageRequest.of(1, 10, Sort.by(DESC, "createdDate"));
+
+        //when
+        Page<Comment> commentByPostId = commentRepository.findCommentByPostId(1L, pageRequest);
+
+        //then
+        assertThat(commentByPostId.getContent().size()).isEqualTo(5);
+        assertThat(commentByPostId.getContent().get(0).getContent()).isEqualTo("test4");
+        assertThat(commentByPostId.getContent().get(4).getContent()).isEqualTo("test0");
+    }
+
     private Member createMember() {
         return Member.builder()
                 .username(new Username("test"))
