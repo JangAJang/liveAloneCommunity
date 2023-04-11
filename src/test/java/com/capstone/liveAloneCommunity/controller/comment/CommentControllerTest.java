@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class WriteCommentTest {
+public class CommentControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
