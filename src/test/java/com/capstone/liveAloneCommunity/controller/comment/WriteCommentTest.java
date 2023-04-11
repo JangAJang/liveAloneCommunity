@@ -4,6 +4,7 @@ import com.capstone.liveAloneCommunity.domain.post.Content;
 import com.capstone.liveAloneCommunity.domain.post.Title;
 import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
+import com.capstone.liveAloneCommunity.dto.comment.CommentPageInfoRequestDto;
 import com.capstone.liveAloneCommunity.dto.comment.WriteCommentRequestDto;
 import com.capstone.liveAloneCommunity.entity.comment.Comment;
 import com.capstone.liveAloneCommunity.entity.member.Member;
@@ -108,6 +109,25 @@ public class WriteCommentTest {
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.code").value(401))
                 .andExpect(jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("member 정보로 댓글을 조회한다.")
+    public void readCommentByMemberTest() throws Exception {
+        //given
+        String accessToken = logIn();
+        CommentPageInfoRequestDto commentPageInfoRequestDto = new CommentPageInfoRequestDto(0, 10);
+
+        //when //then
+        mockMvc.perform(get("/api/comment/member").header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(makeJson(commentPageInfoRequestDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.result.data.readCommentResponseDto[0].title").value("title"))
+                .andExpect(jsonPath("$.result.data.readCommentResponseDto[0].content").value("testComment"))
                 .andDo(print());
     }
 
