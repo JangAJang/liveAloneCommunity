@@ -66,6 +66,11 @@ public class CommentService {
                 Sort.by(DESC, "createdDate"));
     }
 
+    private Comment getCommentById(EditCommentRequestDto editCommentRequestDto) {
+        return commentRepository.findById(editCommentRequestDto.getCommentId())
+                .orElseThrow(CommentNotFoundException::new);
+    }
+
     private void validateCommentAuthority(Member member, Comment comment) {
         if (!member.equals(comment.getMember())) {
             throw new CommentNotEqualsException();
