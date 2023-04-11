@@ -36,16 +36,16 @@ public class CommentController {
     @GetMapping("/member")
     @Operation(summary = "멤버로 댓글 조회", description = "멤버 id로 회원이 작성한 댓글을 조회한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response readCommentByMember(@Valid @RequestBody CommentPageInfoRequestDto commentPageInfoRequestDto) {
+    public Response readCommentByMemberId(@Valid @RequestBody CommentPageInfoRequestDto commentPageInfoRequestDto) {
         Member member = getMember();
-        return Response.success(commentService.readCommentByMember(member, commentPageInfoRequestDto));
+        return Response.success(commentService.readCommentByMemberId(member, commentPageInfoRequestDto));
     }
 
     @GetMapping("/post")
     @Operation(summary = "게시물로 댓글 조회", description = "게시물 id로 회원이 작성한 댓글을 조회한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response readCommentByPost(@Valid @RequestBody ReadCommentByPostRequestDto readCommentByPostRequestDto) {
-        return Response.success(commentService.readCommentByPost(readCommentByPostRequestDto));
+    public Response readCommentByPostId(@Valid @RequestBody ReadCommentByPostRequestDto readCommentByPostRequestDto) {
+        return Response.success(commentService.readCommentByPostId(readCommentByPostRequestDto));
     }
 
     @PatchMapping("/edit")
