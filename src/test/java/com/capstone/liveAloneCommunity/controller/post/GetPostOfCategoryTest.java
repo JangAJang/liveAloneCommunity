@@ -77,6 +77,31 @@ class GetPostOfCategoryTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.data.result[0].title").value("COOKING By test5"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.data.result[1].title").value("COOKING By test4"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.data.result[2].title").value("COOKING By test3"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.data.result[3].title").value("COOKING By test2"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.data.result[4].title").value("COOKING By test1"))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    @DisplayName("토큰이 없는 상태로 조회할 때 401코드와 다시 로그인해야함을 알려준다.")
+    public void getPostOfCategory_Fail_Unauthorized() throws Exception{
+        //given
+        String accessToken = getAccessTokenAfterLogIn();
+        PostByCategoryRequestDto postByCategoryRequestDto = PostByCategoryRequestDto.builder()
+                .page(0)
+                .size(10)
+                .category(Category.COOKING).build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.get("/api/post/category")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(postByCategoryRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(401))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
                 .andDo(MockMvcResultHandlers.print());
     }
 
