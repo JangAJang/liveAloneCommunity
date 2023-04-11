@@ -8,12 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
-public class WriteCommentRequestDto {
-    @NotNull(message = "게시물의 id를 입력해주세요")
-    private Long postId;
-
-    @NotBlank(message = "댓글을 입력해주세요")
-    private String content;
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class EditCommentRequestDto {
+    @NotNull(message = "댓글의 id를 입력해주세요.")
+    private Long commentId;
+    @NotBlank(message = "변경할 댓글의 내용을 입력해주세요.")
+    private String modifyContent;
 }
