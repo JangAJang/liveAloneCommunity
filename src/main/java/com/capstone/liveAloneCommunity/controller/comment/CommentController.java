@@ -1,9 +1,6 @@
 package com.capstone.liveAloneCommunity.controller.comment;
 
-import com.capstone.liveAloneCommunity.dto.comment.CommentPageInfoRequestDto;
-import com.capstone.liveAloneCommunity.dto.comment.EditCommentRequestDto;
-import com.capstone.liveAloneCommunity.dto.comment.ReadCommentByPostRequestDto;
-import com.capstone.liveAloneCommunity.dto.comment.WriteCommentRequestDto;
+import com.capstone.liveAloneCommunity.dto.comment.*;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
@@ -54,6 +51,15 @@ public class CommentController {
     public Response editComment(@Valid @RequestBody EditCommentRequestDto editCommentRequestDto) {
         Member member = getMember();
         return Response.success(commentService.editComment(member, editCommentRequestDto));
+    }
+
+    @DeleteMapping("")
+    @Operation(summary = "댓글 삭제", description = "댓글 작성자는 자신의 댓글을 삭제할 수 있다.")
+    @ResponseStatus(HttpStatus.OK)
+    public Response deleteComment(@Valid @RequestBody DeleteCommentRequestDto deleteCommentRequestDto) {
+        Member member = getMember();
+        commentService.deleteComment(member, deleteCommentRequestDto);
+        return Response.success("삭제 완료");
     }
 
     private Member getMember() {
