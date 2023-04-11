@@ -113,8 +113,8 @@ public class WriteCommentTest {
     }
 
     @Test
-    @DisplayName("member 정보로 댓글을 조회한다.")
-    public void readCommentByMemberTest() throws Exception {
+    @DisplayName("memberId로 댓글을 조회한다.")
+    public void readCommentByMemberIdTest() throws Exception {
         //given
         String accessToken = logIn();
         CommentPageInfoRequestDto commentPageInfoRequestDto = new CommentPageInfoRequestDto(0, 10);
@@ -129,16 +129,6 @@ public class WriteCommentTest {
                 .andExpect(jsonPath("$.result.data.readCommentResponseDto[0].title").value("title"))
                 .andExpect(jsonPath("$.result.data.readCommentResponseDto[0].content").value("testComment"))
                 .andDo(print());
-    }
-
-    @Test
-    public void readCommentByPostIdTest (){
-        //given
-
-        //when
-
-        //then
-
     }
 
     private String makeJson(Object object) throws JsonProcessingException {
