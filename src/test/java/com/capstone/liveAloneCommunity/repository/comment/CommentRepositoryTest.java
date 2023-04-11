@@ -6,16 +6,13 @@ import com.capstone.liveAloneCommunity.domain.member.Email;
 import com.capstone.liveAloneCommunity.domain.member.Nickname;
 import com.capstone.liveAloneCommunity.domain.member.Password;
 import com.capstone.liveAloneCommunity.domain.member.Username;
-import com.capstone.liveAloneCommunity.domain.post.Category;
 import com.capstone.liveAloneCommunity.domain.post.Content;
 import com.capstone.liveAloneCommunity.domain.post.Title;
 import com.capstone.liveAloneCommunity.entity.comment.Comment;
 import com.capstone.liveAloneCommunity.entity.member.Member;
-import com.capstone.liveAloneCommunity.entity.member.Role;
 import com.capstone.liveAloneCommunity.entity.post.Post;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,9 +23,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-
 import java.util.stream.IntStream;
-
 import static com.capstone.liveAloneCommunity.domain.post.Category.*;
 import static com.capstone.liveAloneCommunity.entity.member.Role.*;
 import static org.assertj.core.api.Assertions.assertThat;
