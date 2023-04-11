@@ -131,6 +131,16 @@ public class WriteCommentTest {
                 .andDo(print());
     }
 
+    @Test
+    public void readCommentByPostIdTest (){
+        //given
+
+        //when
+
+        //then
+
+    }
+
     private String makeJson(Object object) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(object);
     }
