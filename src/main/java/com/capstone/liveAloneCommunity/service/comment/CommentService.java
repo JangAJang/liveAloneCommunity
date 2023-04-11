@@ -79,7 +79,7 @@ public class CommentService {
     }
 
     private void validateCommentAuthority(Member member, Comment comment) {
-        if (comment.isEqualsMember(member)) {
+        if (!comment.isEqualsMember(member)) {
             throw new NotMyCommentException();
         }
     }
