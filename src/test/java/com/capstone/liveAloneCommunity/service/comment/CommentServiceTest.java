@@ -13,6 +13,7 @@ import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.member.Role;
 import com.capstone.liveAloneCommunity.entity.post.Post;
 import com.capstone.liveAloneCommunity.exception.comment.CommentNotFoundException;
+import com.capstone.liveAloneCommunity.exception.comment.NotMyCommentException;
 import com.capstone.liveAloneCommunity.exception.post.PostNotFoundException;
 import com.capstone.liveAloneCommunity.repository.comment.CommentRepository;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
@@ -153,6 +154,22 @@ class CommentServiceTest {
         //when //then
         assertThatThrownBy(() -> commentService.editComment(member, editCommentRequestDto))
                 .isInstanceOf(CommentNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("댓글을 변경하려고 하는 회원이 댓글을 작성한 회원이 아닐 경우 예외를 발생시킨다.")
+    void notMyCommentExceptionTest (){
+        //given
+        Member member1 = createMember(1);
+        Member member2 = createMember(2);
+        Post post = createPost(member1, 1);
+        Comment comment1 = createComment(member1, post, 1);
+        given(commentRepository.findById(anyLong())).willReturn(Optional.of(comment1));
+        EditCommentRequestDto editCommentRequestDto = new EditCommentRequestDto(anyLong(), "modifyContent");
+
+        //when //then
+        assertThatThrownBy(() -> commentService.editComment(member2, editCommentRequestDto))
+                .isInstanceOf(NotMyCommentException.class);
     }
 
     private Member createMember(int id) {
