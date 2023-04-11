@@ -78,7 +78,7 @@ class CommentRepositoryTest {
         PageRequest pageRequest = PageRequest.of(1, 10, Sort.by(DESC, "createdDate"));
 
         //when
-        Page<Comment> commentByMember = commentRepository.findCommentByMember(member1, pageRequest);
+        Page<Comment> commentByMember = commentRepository.findCommentByMemberId(member1.getId(), pageRequest);
 
         //then
         assertThat(commentByMember.getContent().size()).isEqualTo(2);

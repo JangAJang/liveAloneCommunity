@@ -88,7 +88,7 @@ class CommentServiceTest {
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(DESC,"createdDate"));
         Page<Comment> readCommentByMember = new PageImpl<>(comments.stream().filter(comment ->
                 comment.getMember().equals(member1)).collect(Collectors.toList()));
-        given(commentRepository.findCommentByMember(member1, pageRequest)).willReturn(readCommentByMember);
+        given(commentRepository.findCommentByMemberId(member1.getId(), pageRequest)).willReturn(readCommentByMember);
 
         //when
         MultiReadCommentResponseDto multiReadCommentResponseDto = commentService.readCommentByMember(member1, commentPageInfoRequestDto);
