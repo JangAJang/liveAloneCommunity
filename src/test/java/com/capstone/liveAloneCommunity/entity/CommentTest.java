@@ -51,6 +51,19 @@ class CommentTest {
     }
 
     @Test
+    @DisplayName("Comment 엔티티의 content 타입을 Content -> String으로 변환해준다.")
+    void getContentTest(){
+        //given
+        Comment comment = new Comment("test", post, member);
+
+        //when
+        String content = comment.getContent();
+
+        //then
+        assertThat(content).isEqualTo("test");
+    }
+
+    @Test
     @DisplayName("댓글을 작성했을 때 댓글 작성자를 반환할 수 있다.")
     void getWriteNameTest() {
         //given
