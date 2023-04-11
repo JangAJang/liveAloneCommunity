@@ -56,20 +56,4 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
             return post.content.content.contains(text);
         return post.title.title.contains(text).or(post.content.content.contains(text));
     }
-
-    @Override
-    public Page<PostResponseDto> getMembersPost(MembersPostRequestDto membersPostRequestDto) {
-        Pageable pageable = PageRequest.of(membersPostRequestDto.getPage(), membersPostRequestDto.getSize());
-        QueryResults<PostResponseDto> result = queryFactory
-                .select(new QPostResponseDto(post.id, member.nickname.nickname.as("writer"),
-                        post.title.title, post.content.content, post.category, post.createdDate))
-                .from(post)
-                .leftJoin(post.member, member)
-                .where(member.id.eq(membersPostRequestDto.getId()))
-                .orderBy(post.createdDate.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetchResults();
-        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
-    }
 }

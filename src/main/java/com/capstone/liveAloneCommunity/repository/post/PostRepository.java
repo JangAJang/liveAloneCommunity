@@ -1,6 +1,7 @@
 package com.capstone.liveAloneCommunity.repository.post;
 
 import com.capstone.liveAloneCommunity.domain.post.Category;
+import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.post.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,4 +14,5 @@ public interface PostRepository extends JpaRepository<Post, Long>, PostRepositor
     Optional<Post> findByTitle_Title(String title);
 
     Page<Post> findAllByCategoryOrderByCreatedDateDesc(Category category, Pageable pageable);
+    Page<Post> findAllByMemberOrderByCreatedDateDesc(Member member, Pageable pageable);
 }

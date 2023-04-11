@@ -9,6 +9,4 @@ import org.springframework.data.domain.Pageable;
 public interface PostRepositoryCustom {
 
     Page<PostResponseDto> searchPost(SearchPostRequestDto searchPostRequestDto);
-
-    Page<PostResponseDto> getMembersPost(MembersPostRequestDto membersPostRequestDto);
 }

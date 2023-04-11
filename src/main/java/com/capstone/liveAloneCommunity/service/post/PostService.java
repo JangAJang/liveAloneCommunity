@@ -1,13 +1,14 @@
 package com.capstone.liveAloneCommunity.service.post;
 
-import com.capstone.liveAloneCommunity.domain.post.Category;
 import com.capstone.liveAloneCommunity.domain.post.Content;
 import com.capstone.liveAloneCommunity.domain.post.Title;
 import com.capstone.liveAloneCommunity.dto.post.*;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.post.Post;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotAllowedException;
+import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneCommunity.exception.post.PostNotFoundException;
+import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,7 +18,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
 
     public PostResponseDto writePost(Member member, WritePostRequestDto writePostRequestDto){
         Post post = Post.builder()
@@ -47,8 +48,13 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public MultiPostResponseDto getMembersPost(MembersPostRequestDto membersPostRequestDto){
-        Page<PostResponseDto> membersPost = postRepository.getMembersPost(membersPostRequestDto);
-        return new MultiPostResponseDto(membersPost.getContent());
+        Member member = memberRepository.findMemberById(membersPostRequestDto.getId())
+                .orElseThrow(MemberNotFoundException::new);
+        Page<Post> membersPost = postRepository
+                .findAllByMemberOrderByCreatedDateDesc(member, PageRequest.of(membersPostRequestDto.getPage(), membersPostRequestDto.getSize()));
+        List<PostResponseDto> result = membersPost.getContent()
+                .stream().map(i-> PostResponseDto.toDto(i, member)).toList();
+        return new MultiPostResponseDto(result);
     }
 
     @Transactional(readOnly = true)
