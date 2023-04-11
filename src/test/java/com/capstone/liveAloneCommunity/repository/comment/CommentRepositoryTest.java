@@ -52,9 +52,7 @@ class CommentRepositoryTest {
     void saveCommentTest() {
         //given
         Member member = createMember();
-        memberRepository.save(member);
         Post post = createPost(member);
-        postRepository.save(post);
         Comment comment = new Comment("comment", post, member);
 
         //when
@@ -71,10 +69,7 @@ class CommentRepositoryTest {
         //given
         Member member1 = createMember();
         Member member2 = createMember();
-        memberRepository.save(member1);
-        memberRepository.save(member2);
         Post post = createPost(member1);
-        postRepository.save(post);
         IntStream.range(0, 12).forEach(i -> {
             commentRepository.save(new Comment("test" + i, post, member1));
             commentRepository.save(new Comment("Test" + i, post, member2));
@@ -95,11 +90,8 @@ class CommentRepositoryTest {
     public void findCommentByPostId (){
         //given
         Member member = createMember();
-        memberRepository.save(member);
         Post post1 = createPost(member);
         Post post2 = createPost(member);
-        postRepository.save(post1);
-        postRepository.save(post2);
         IntStream.range(0, 15).forEach(i -> {
             commentRepository.save(new Comment("test" + i, post1, member));
             commentRepository.save(new Comment("Test" + i, post2, member));
@@ -116,21 +108,21 @@ class CommentRepositoryTest {
     }
 
     private Member createMember() {
-        return Member.builder()
+        return memberRepository.save(Member.builder()
                 .username(new Username("test"))
                 .nickname(new Nickname("test"))
                 .email(new Email("test@email.com"))
                 .password(new Password("test"))
                 .role(USER)
-                .build();
+                .build());
     }
 
     private Post createPost(Member member) {
-        return Post.builder()
+        return postRepository.save(Post.builder()
                 .title(new Title("title"))
                 .content(new Content("content"))
                 .category(COOKING)
                 .member(member)
-                .build();
+                .build());
     }
 }
