@@ -85,6 +85,26 @@ class GetMembersPostTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("토큰이 없는 상태로 회원의 게시물을 조회하면 401코드와 다시 로그인해야함을 알린다.")
+    public void getMembersPost_Fail_Unauthorized() throws Exception{
+        //given
+        String accessToken = getAccessTokenAfterLogIn();
+        MembersPostRequestDto membersPostRequestDto = MembersPostRequestDto.builder()
+                .page(0)
+                .size(10)
+                .id(1L).build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.get("/api/post/of")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(makeJson(membersPostRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(401))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private String makeJson(Object object)throws Exception{
         return new ObjectMapper().writeValueAsString(object);
     }
