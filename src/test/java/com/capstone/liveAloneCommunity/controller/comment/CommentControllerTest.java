@@ -4,10 +4,7 @@ import com.capstone.liveAloneCommunity.domain.post.Content;
 import com.capstone.liveAloneCommunity.domain.post.Title;
 import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
-import com.capstone.liveAloneCommunity.dto.comment.CommentPageInfoRequestDto;
-import com.capstone.liveAloneCommunity.dto.comment.EditCommentRequestDto;
-import com.capstone.liveAloneCommunity.dto.comment.ReadCommentByPostRequestDto;
-import com.capstone.liveAloneCommunity.dto.comment.WriteCommentRequestDto;
+import com.capstone.liveAloneCommunity.dto.comment.*;
 import com.capstone.liveAloneCommunity.entity.comment.Comment;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.post.Post;
@@ -170,6 +167,24 @@ public class CommentControllerTest {
                 .andExpect(jsonPath("$.result.data.id").value(1))
                 .andExpect(jsonPath("$.result.data.content").value("modifyContent"))
                 .andExpect(jsonPath("$.result.data.nickname").value("test"));
+    }
+
+    @Test
+    @DisplayName("댓글을 작성한 사람과 삭제하려는 사람이 같으면 댓글을 삭제한다.")
+    void deleteCommentTest () throws Exception{
+        //given
+        String accessToken = logIn();
+        DeleteCommentRequestDto deleteCommentRequestDto = new DeleteCommentRequestDto(1L);
+
+        //when //then
+        mockMvc.perform(delete("/api/comment").header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(makeJson(deleteCommentRequestDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.result.data").value("삭제 완료"))
+                .andDo(print());
     }
 
     private String makeJson(Object object) throws JsonProcessingException {
