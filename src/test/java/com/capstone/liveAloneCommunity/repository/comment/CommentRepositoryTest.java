@@ -23,10 +23,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.*;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+
+import java.util.stream.IntStream;
 
 import static com.capstone.liveAloneCommunity.domain.post.Category.*;
 import static com.capstone.liveAloneCommunity.entity.member.Role.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @Import({QuerydslConfig.class, DatabaseCleanup.class})
 @DataJpaTest
@@ -62,6 +68,31 @@ class CommentRepositoryTest {
         //then
         assertThat(comment.getPost()).isEqualTo(save.getPost());
         assertThat(comment.getMember()).isEqualTo(save.getMember());
+    }
+
+    @Test
+    @DisplayName("member 정보로 회원이 작성한 댓글들을 조회한다.")
+    void findCommentById (){
+        //given
+        Member member1 = createMember();
+        Member member2 = createMember();
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        Post post = createPost(member1);
+        postRepository.save(post);
+        IntStream.range(0, 12).forEach(i -> {
+            commentRepository.save(new Comment("test" + i, post, member1));
+            commentRepository.save(new Comment("Test" + i, post, member2));
+        });
+        PageRequest pageRequest = PageRequest.of(1, 10, Sort.by(DESC, "createdDate"));
+
+        //when
+        Page<Comment> commentByMember = commentRepository.findCommentByMember(member1, pageRequest);
+
+        //then
+        assertThat(commentByMember.getContent().size()).isEqualTo(2);
+        assertThat(commentByMember.getContent().get(0).getContent()).isEqualTo("test1");
+        assertThat(commentByMember.getContent().get(1).getContent()).isEqualTo("test0");
     }
 
     private Member createMember() {
