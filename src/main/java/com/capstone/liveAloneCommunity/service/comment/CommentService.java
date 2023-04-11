@@ -57,6 +57,13 @@ public class CommentService {
         return CommentResponseDto.toDto(comment);
     }
 
+    public void deleteComment(Member member, DeleteCommentRequestDto deleteCommentRequestDto) {
+        Comment comment = getCommentById(deleteCommentRequestDto.getCommentId());
+        validateCommentAuthority(member, comment);
+        commentRepository.delete(comment);
+    }
+
+
     private Post getPost(WriteCommentRequestDto writeCommentRequestDto) {
         return postRepository.findById(writeCommentRequestDto.getPostId())
                 .orElseThrow(PostNotFoundException::new);
