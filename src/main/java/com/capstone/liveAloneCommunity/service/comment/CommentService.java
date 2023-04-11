@@ -51,7 +51,7 @@ public class CommentService {
     }
 
     public CommentResponseDto editComment(Member member, EditCommentRequestDto editCommentRequestDto) {
-        Comment comment = getCommentById(editCommentRequestDto);
+        Comment comment = getCommentById(editCommentRequestDto.getCommentId());
         validateCommentAuthority(member, comment);
         comment.editContent(new Content(editCommentRequestDto.getModifyContent()));
         return CommentResponseDto.toDto(comment);
@@ -73,8 +73,8 @@ public class CommentService {
                 Sort.by(DESC, "createdDate"));
     }
 
-    private Comment getCommentById(EditCommentRequestDto editCommentRequestDto) {
-        return commentRepository.findById(editCommentRequestDto.getCommentId())
+    private Comment getCommentById(Long commentId) {
+        return commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
     }
 
