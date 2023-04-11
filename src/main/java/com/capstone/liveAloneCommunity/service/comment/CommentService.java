@@ -50,6 +50,13 @@ public class CommentService {
         return collectComment(commentByPostId.getContent());
     }
 
+    public CommentResponseDto editComment(Member member, EditCommentRequestDto editCommentRequestDto) {
+        Comment comment = getCommentById(editCommentRequestDto);
+        validateCommentAuthority(member, comment);
+        comment.editContent(new Content(editCommentRequestDto.getModifyContent()));
+        return CommentResponseDto.toDto(comment);
+    }
+
     private Post getPost(WriteCommentRequestDto writeCommentRequestDto) {
         return postRepository.findById(writeCommentRequestDto.getPostId())
                 .orElseThrow(PostNotFoundException::new);
