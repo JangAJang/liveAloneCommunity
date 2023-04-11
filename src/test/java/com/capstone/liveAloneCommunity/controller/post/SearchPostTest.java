@@ -156,6 +156,28 @@ class SearchPostTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("토큰이 있는 상태로 검색값을 공백 문자열로 입력하면 400코드와 검색할 내용을 입력해야함을 알려준다.")
+    public void searchPostTest_Fail_Blank_Text() throws Exception{
+        //given
+        String accessToken = getAccessTokenAfterLogIn();
+        SearchPostRequestDto searchPostRequestDto = SearchPostRequestDto.builder()
+                .searchPostType(SearchPostType.WRITER)
+                .text("   ")
+                .page(0)
+                .size(10).build();
+        //expected
+        mvc.perform(MockMvcRequestBuilders.get("/api/post/search")
+                        .header("Authorization", accessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(makeJson(searchPostRequestDto)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.success").value(false))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(400))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.failMessage").value("검색할 내용을 입력해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private String makeJson(Object object)throws Exception{
         return new ObjectMapper().writeValueAsString(object);
     }
