@@ -14,9 +14,7 @@ public class SearchPostRequestDto {
 
     private int page;
     private int size;
-    @NotNull(message = "검색할 내용을 입력해주세요.")
     @NotBlank(message = "검색할 내용을 입력해주세요.")
-    @NotEmpty(message = "검색할 내용을 입력해주세요.")
     private String text;
     private SearchPostType searchPostType;
 }

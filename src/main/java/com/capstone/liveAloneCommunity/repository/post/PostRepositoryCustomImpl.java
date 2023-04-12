@@ -1,9 +1,6 @@
 package com.capstone.liveAloneCommunity.repository.post;
 
-import com.capstone.liveAloneCommunity.dto.post.MembersPostRequestDto;
-import com.capstone.liveAloneCommunity.dto.post.PostResponseDto;
-import com.capstone.liveAloneCommunity.dto.post.QPostResponseDto;
-import com.capstone.liveAloneCommunity.dto.post.SearchPostRequestDto;
+import com.capstone.liveAloneCommunity.dto.post.*;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -37,6 +34,22 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
         return new PageImpl<>(result.getResults(), pageable, result.getTotal());
     }
 
+    @Override
+    public Page<PostResponseDto> getPostByCategory(PostByCategoryRequestDto postByCategoryRequestDto) {
+        Pageable pageable = PageRequest.of(postByCategoryRequestDto.getPage(), postByCategoryRequestDto.getSize());
+        QueryResults<PostResponseDto> result = queryFactory
+                .select(new QPostResponseDto(post.id, member.nickname.nickname.as("writer"),
+                        post.title.title, post.content.content, post.category, post.createdDate))
+                .from(post)
+                .leftJoin(post.member, member)
+                .where(post.category.eq(postByCategoryRequestDto.getCategory()))
+                .orderBy(post.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
+    }
+
     private BooleanExpression makeConditionQuery(String text, SearchPostType searchPostType){
         if(searchPostType.equals(SearchPostType.WRITER) || searchPostType.equals(SearchPostType.WRITER_AND_TITLE))
             return makeConditionQueryWithMember(text, searchPostType);
@@ -55,21 +68,5 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
         if(searchPostType.equals(SearchPostType.CONTENT))
             return post.content.content.contains(text);
         return post.title.title.contains(text).or(post.content.content.contains(text));
-    }
-
-    @Override
-    public Page<PostResponseDto> getMembersPost(MembersPostRequestDto membersPostRequestDto) {
-        Pageable pageable = PageRequest.of(membersPostRequestDto.getPage(), membersPostRequestDto.getSize());
-        QueryResults<PostResponseDto> result = queryFactory
-                .select(new QPostResponseDto(post.id, member.nickname.nickname.as("writer"),
-                        post.title.title, post.content.content, post.category, post.createdDate))
-                .from(post)
-                .leftJoin(post.member, member)
-                .where(member.id.eq(membersPostRequestDto.getId()))
-                .orderBy(post.createdDate.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetchResults();
-        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
     }
 }

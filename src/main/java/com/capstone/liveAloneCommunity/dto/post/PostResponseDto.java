@@ -1,6 +1,7 @@
 package com.capstone.liveAloneCommunity.dto.post;
 
 import com.capstone.liveAloneCommunity.domain.post.Category;
+import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.post.Post;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AccessLevel;
@@ -41,6 +42,17 @@ public class PostResponseDto {
                 .id(post.getId())
                 .category(post.getCategory())
                 .writer(post.getWritersName())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .createdDate(post.getCreatedDate())
+                .build();
+    }
+
+    public static PostResponseDto toDto(Post post, Member member){
+        return PostResponseDto.builder()
+                .id(post.getId())
+                .category(post.getCategory())
+                .writer(member.getNickname())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .createdDate(post.getCreatedDate())

@@ -26,7 +26,7 @@ public class PostController {
     private final PostService postService;
     private final MemberRepository memberRepository;
 
-    @GetMapping("/")
+    @GetMapping("")
     @Operation(summary = "게시물 단건 조회", description = "게시물 단건을 조회한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response getPost(@RequestParam("id") Long id){
@@ -36,7 +36,7 @@ public class PostController {
     @GetMapping("/category")
     @Operation(summary = "카테고리별 게시물 조회", description = "게시물을 카테고리별로 페이징처리해 조회한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response getPostOfCategory(PostByCategoryRequestDto postByCategoryRequestDto){
+    public Response getPostOfCategory(@RequestBody PostByCategoryRequestDto postByCategoryRequestDto){
         return Response.success(postService.getPostByCategory(postByCategoryRequestDto));
     }
 
@@ -57,7 +57,7 @@ public class PostController {
     @PostMapping("/write")
     @Operation(summary = "게시글 작성", description = "게시글을 새로 작성한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response writePost(@RequestBody WritePostRequestDto writePostRequestDto){
+    public Response writePost(@RequestBody @Valid WritePostRequestDto writePostRequestDto){
         Member member = memberRepository.findByUsername_Username(SecurityContextHolder.getContext()
                 .getAuthentication().getName()).orElseThrow(MemberNotFoundException::new);
         return Response.success(postService.writePost(member, writePostRequestDto));
@@ -66,7 +66,7 @@ public class PostController {
     @PatchMapping("/edit")
     @Operation(summary = "게시글 수정", description = "존재하는 게시물을 수정한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response editPost(@RequestBody EditPostRequestDto editPostRequestDto){
+    public Response editPost(@RequestBody @Valid EditPostRequestDto editPostRequestDto){
         Member member = memberRepository.findByUsername_Username(SecurityContextHolder.getContext()
                 .getAuthentication().getName()).orElseThrow(MemberNotFoundException::new);
         return Response.success(postService.editPost(editPostRequestDto, member));
