@@ -17,15 +17,12 @@ public class Comment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Embedded
     private Content content;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POST_ID")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Post post;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -36,6 +33,7 @@ public class Comment extends BaseTimeEntity {
         this.post = post;
         this.member = member;
     }
+
     public String getContent() {
         return content.getContent();
     }

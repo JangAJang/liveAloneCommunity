@@ -8,7 +8,6 @@ import com.capstone.liveAloneCommunity.domain.post.Content;
 import com.capstone.liveAloneCommunity.domain.post.Title;
 import com.capstone.liveAloneCommunity.entity.comment.Comment;
 import com.capstone.liveAloneCommunity.entity.member.Member;
-import com.capstone.liveAloneCommunity.entity.member.Role;
 import com.capstone.liveAloneCommunity.entity.post.Post;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +39,7 @@ class CommentTest {
 
     @Test
     @DisplayName("댓글을 생성했을 때 댓글의 필드가 초기화된다.")
-    void createComment() {
+    void createCommentTest() {
         //given
         //when
         Comment comment = new Comment("test", post, member);

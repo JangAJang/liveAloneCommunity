@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static org.springframework.data.domain.Sort.Direction.*;
 
 @Service
@@ -51,10 +50,16 @@ public class CommentService {
     }
 
     public CommentResponseDto editComment(Member member, EditCommentRequestDto editCommentRequestDto) {
-        Comment comment = getCommentById(editCommentRequestDto);
+        Comment comment = getCommentById(editCommentRequestDto.getCommentId());
         validateCommentAuthority(member, comment);
         comment.editContent(new Content(editCommentRequestDto.getModifyContent()));
         return CommentResponseDto.toDto(comment);
+    }
+
+    public void deleteComment(Member member, DeleteCommentRequestDto deleteCommentRequestDto) {
+        Comment comment = getCommentById(deleteCommentRequestDto.getCommentId());
+        validateCommentAuthority(member, comment);
+        commentRepository.delete(comment);
     }
 
     private Post getPost(WriteCommentRequestDto writeCommentRequestDto) {
@@ -73,8 +78,8 @@ public class CommentService {
                 Sort.by(DESC, "createdDate"));
     }
 
-    private Comment getCommentById(EditCommentRequestDto editCommentRequestDto) {
-        return commentRepository.findById(editCommentRequestDto.getCommentId())
+    private Comment getCommentById(Long commentId) {
+        return commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
     }
 
