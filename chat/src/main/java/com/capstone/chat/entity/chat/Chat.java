@@ -1,5 +1,6 @@
-package com.capstone.chat.entity;
+package com.capstone.chat.entity.chat;
 
+import com.capstone.chat.entity.chatRoom.ChatRoom;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

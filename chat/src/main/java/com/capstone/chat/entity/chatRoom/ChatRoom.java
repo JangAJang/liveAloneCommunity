@@ -1,4 +1,4 @@
-package com.capstone.chat.entity;
+package com.capstone.chat.entity.chatRoom;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
