@@ -1,6 +1,7 @@
 package com.capstone.chat.entity.chat;
 
 import com.capstone.chat.entity.chatRoom.ChatRoom;
+import com.capstone.chat.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,8 +18,10 @@ public class Chat {
     private Long id;
     @Lob
     private String msg;
-    private String sender;
-    private String receiver;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member sender;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member receiver;
     @ManyToOne(fetch = FetchType.LAZY)
     private ChatRoom chatRoom;
     private LocalDateTime sentAt;
