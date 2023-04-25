@@ -27,6 +27,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
+    implementation 'org.springframework.data:spring-data-r2dbc:3.0.4'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.32'
 }
 
 tasks.named('test') {

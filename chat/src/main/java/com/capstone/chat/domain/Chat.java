@@ -1,20 +1,24 @@
 package com.capstone.chat.domain;
 
-import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Data
-@Document(collection = "chat")
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Chat {
 
     @Id
-    private String id;
+    private Long id;
+    @Lob
     private String msg;
     private String sender;
     private String receiver;
-    private Long chattingRoomNumber;
-    private LocalDateTime createdAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ChatRoom chatRoom;
+    private LocalDateTime sentAt;
 }
