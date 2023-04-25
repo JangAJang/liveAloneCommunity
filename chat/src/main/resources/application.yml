@@ -1,6 +1,8 @@
 spring:
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-      database: chatDB
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/livealone?serverTimezone=Asia/Seoul
+    username: jangstudy
+    password: wk135790
+server:
+  port: 8081
