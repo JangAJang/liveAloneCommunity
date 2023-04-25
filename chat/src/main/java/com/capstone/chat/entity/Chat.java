@@ -1,4 +1,4 @@
-package com.capstone.chat.domain;
+package com.capstone.chat.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
