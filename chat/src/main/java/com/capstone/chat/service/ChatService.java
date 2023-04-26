@@ -1,6 +1,7 @@
 package com.capstone.chat.service;
 
 import com.capstone.chat.dto.chat.ChatResponseDto;
+import com.capstone.chat.dto.chat.IntoRoomRequestDto;
 import com.capstone.chat.dto.chat.SendChatRequestDto;
 import com.capstone.chat.entity.chat.Chat;
 import com.capstone.chat.entity.chatRoom.ChatRoom;
@@ -8,6 +9,7 @@ import com.capstone.chat.entity.member.Member;
 import com.capstone.chat.entity.memberInRoom.MemberInRoom;
 import com.capstone.chat.exception.member.MemberNotFoundException;
 import com.capstone.chat.repository.chat.ChatRepository;
+import com.capstone.chat.repository.chatRoom.ChatRoomRepository;
 import com.capstone.chat.repository.member.MemberRepository;
 import com.capstone.chat.repository.memberInRoom.MemberInRoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class ChatService {
 
     private final MemberRepository memberRepository;
     private final ChatRepository chatRepository;
+    private final ChatRoomRepository chatRoomRepository;
     private final MemberInRoomRepository memberInRoomRepository;
 
     public Mono<ChatResponseDto> sendMessage(SendChatRequestDto sendChatRequestDto){
@@ -43,6 +46,11 @@ public class ChatService {
                 .sentAt(LocalDateTime.now())
                 .build();
         return chatRepository.save(chat).map(ChatResponseDto::toDto);
+    }
+
+    public Flux<ChatResponseDto> getIntoRoom(IntoRoomRequestDto intoRoomRequestDto){
+        Mono<ChatRoom> chatRoom = chatRoomRepository.findById(intoRoomRequestDto.getRoomId());
+        return chatRepository.findByChatRoomOrderBySentAtAsc(chatRoom.block()).map(ChatResponseDto::toDto);
     }
 
     private String createRoomNameByMembers(Member sender, Member receiver){

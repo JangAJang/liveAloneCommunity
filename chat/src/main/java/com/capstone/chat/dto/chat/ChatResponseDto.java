@@ -10,7 +10,6 @@ import java.time.format.DateTimeFormatter;
 public class ChatResponseDto {
 
     private String sender;
-    private String receiver;
     private String message;
     private String sentDate;
 
