@@ -7,12 +7,10 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class MemberInRoom {
@@ -23,4 +21,9 @@ public class MemberInRoom {
     private ChatRoom chatRoom;
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
+
+    public MemberInRoom(ChatRoom chatRoom, Member member) {
+        this.chatRoom = chatRoom;
+        this.member = member;
+    }
 }

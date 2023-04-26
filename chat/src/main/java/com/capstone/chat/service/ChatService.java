@@ -33,6 +33,8 @@ public class ChatService {
         if(chatRoom == null){
             String roomName = createRoomNameByMembers(sender, receiver);
             chatRoom = new ChatRoom(roomName);
+            memberInRoomRepository.save(new MemberInRoom(chatRoom, sender));
+            memberInRoomRepository.save(new MemberInRoom(chatRoom, receiver));
         }
         Chat chat = Chat.builder()
                 .message(sendChatRequestDto.getMessage())
