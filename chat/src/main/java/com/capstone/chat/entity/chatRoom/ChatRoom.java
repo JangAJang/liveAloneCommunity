@@ -12,4 +12,8 @@ public class ChatRoom {
     @Id
     private Long id;
     private String name;
+
+    public ChatRoom(String name) {
+        this.name = name;
+    }
 }
