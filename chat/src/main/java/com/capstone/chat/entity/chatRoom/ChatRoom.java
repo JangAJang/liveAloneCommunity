@@ -16,4 +16,8 @@ public class ChatRoom {
     public ChatRoom(String name) {
         this.name = name;
     }
+
+    public boolean hasText(String text){
+        return name.contains(text);
+    }
 }

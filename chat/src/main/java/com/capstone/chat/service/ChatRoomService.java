@@ -1,6 +1,7 @@
 package com.capstone.chat.service;
 
 import com.capstone.chat.dto.chatRoom.MyChatRoomRequestDto;
+import com.capstone.chat.dto.chatRoom.SearchChatRoomRequestDto;
 import com.capstone.chat.entity.chatRoom.ChatRoom;
 import com.capstone.chat.entity.member.Member;
 import com.capstone.chat.entity.memberInRoom.MemberInRoom;
@@ -25,5 +26,10 @@ public class ChatRoomService {
                 .orElseThrow(MemberNotFoundException::new);
         Flux<MemberInRoom> myRooms = memberInRoomRepository.findFluxByMember(member);
         return myRooms.map(MemberInRoom::getChatRoom);
+    }
+
+    public Flux<ChatRoom> searchMyChatRooms(SearchChatRoomRequestDto searchChatRoomRequestDto){
+        return findMyChatRooms(new MyChatRoomRequestDto(searchChatRoomRequestDto.getMyName()))
+                .filter(i -> i.hasText(searchChatRoomRequestDto.getName()));
     }
 }
