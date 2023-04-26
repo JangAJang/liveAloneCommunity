@@ -17,7 +17,6 @@ import reactor.core.publisher.Flux;
 @RequiredArgsConstructor
 public class ChatRoomService {
 
-    private final ChatRoomRepository chatRoomRepository;
     private final MemberInRoomRepository memberInRoomRepository;
     private final MemberRepository memberRepository;
 
