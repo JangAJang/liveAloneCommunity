@@ -1,5 +1,6 @@
 package com.capstone.chat.service;
 
+import com.capstone.chat.dto.chat.ChatResponseDto;
 import com.capstone.chat.dto.chat.SendChatRequestDto;
 import com.capstone.chat.entity.chat.Chat;
 import com.capstone.chat.entity.chatRoom.ChatRoom;
@@ -11,6 +12,7 @@ import com.capstone.chat.repository.member.MemberRepository;
 import com.capstone.chat.repository.memberInRoom.MemberInRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
@@ -26,7 +28,7 @@ public class ChatService {
     private final ChatRepository chatRepository;
     private final MemberInRoomRepository memberInRoomRepository;
 
-    public Mono<Chat> sendMessage(SendChatRequestDto sendChatRequestDto){
+    public Mono<ChatResponseDto> sendMessage(SendChatRequestDto sendChatRequestDto){
         Member sender = memberRepository.findByNickname_Nickname(sendChatRequestDto.getSenderName()).orElseThrow(MemberNotFoundException::new);
         Member receiver = memberRepository.findByNickname_Nickname(sendChatRequestDto.getReceiverName()).orElseThrow(MemberNotFoundException::new);
         ChatRoom chatRoom = findChatRoomInCommon(sender, receiver);
@@ -40,7 +42,7 @@ public class ChatService {
                 .chatRoom(chatRoom)
                 .sentAt(LocalDateTime.now())
                 .build();
-        return chatRepository.save(chat);
+        return chatRepository.save(chat).map(ChatResponseDto::toDto);
     }
 
     private String createRoomNameByMembers(Member sender, Member receiver){
