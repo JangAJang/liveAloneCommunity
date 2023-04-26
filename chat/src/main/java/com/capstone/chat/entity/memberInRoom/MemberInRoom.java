@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 public class MemberInRoom {
 
     @Id
+    private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     private ChatRoom chatRoom;
     @ManyToOne(fetch = FetchType.LAZY)

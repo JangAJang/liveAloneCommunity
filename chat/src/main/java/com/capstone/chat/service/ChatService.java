@@ -1,8 +1,6 @@
 package com.capstone.chat.service;
 
-import com.capstone.chat.dto.chat.ChatResponseDto;
-import com.capstone.chat.dto.chat.IntoRoomRequestDto;
-import com.capstone.chat.dto.chat.SendChatRequestDto;
+import com.capstone.chat.dto.chat.*;
 import com.capstone.chat.entity.chat.Chat;
 import com.capstone.chat.entity.chatRoom.ChatRoom;
 import com.capstone.chat.entity.member.Member;
@@ -14,13 +12,10 @@ import com.capstone.chat.repository.member.MemberRepository;
 import com.capstone.chat.repository.memberInRoom.MemberInRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -64,10 +59,8 @@ public class ChatService {
     private ChatRoom findChatRoomInCommon(Member sender, Member receiver){
         List<MemberInRoom> senderRooms = memberInRoomRepository.findByMember(sender);
         List<MemberInRoom> receiverRooms = memberInRoomRepository.findByMember(receiver);
-        for(MemberInRoom receiverRoomEach : receiverRooms){
-            if(senderRooms.stream().map(MemberInRoom::getChatRoom).toList().contains(receiverRoomEach)){
-                return receiverRoomEach.getChatRoom();
-            }
+        for(MemberInRoom receiverRoom : receiverRooms){
+            if(senderRooms.contains(receiverRoom)) return receiverRoom.getChatRoom();
         }
         return null;
     }

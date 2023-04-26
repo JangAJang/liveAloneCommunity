@@ -23,7 +23,7 @@ public class ChatRoomService {
     public Flux<ChatRoom> findMyChatRooms(MyChatRoomRequestDto myChatRoomRequestDto){
         Member member = memberRepository.findByNickname_Nickname(myChatRoomRequestDto.getNickname())
                 .orElseThrow(MemberNotFoundException::new);
-        Flux<MemberInRoom> myRooms = memberInRoomRepository.findByMember(member);
+        Flux<MemberInRoom> myRooms = memberInRoomRepository.findFluxByMember(member);
         return myRooms.map(MemberInRoom::getChatRoom);
     }
 }
