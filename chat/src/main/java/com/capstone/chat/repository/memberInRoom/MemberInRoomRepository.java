@@ -9,7 +9,6 @@ import reactor.core.publisher.Flux;
 
 import java.util.List;
 
-@NoRepositoryBean
 public interface MemberInRoomRepository extends ReactiveCrudRepository<MemberInRoom, Long> {
 
     Flux<MemberInRoom> findMemberInRoomByChatRoom(ChatRoom chatRoom);

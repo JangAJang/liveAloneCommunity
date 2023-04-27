@@ -1,11 +1,11 @@
 package com.capstone.chat.entity.chatRoom;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Entity
+@Table
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChatRoom {
 

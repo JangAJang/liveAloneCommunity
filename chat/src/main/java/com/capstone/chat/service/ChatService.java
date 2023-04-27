@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.*;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -27,8 +26,8 @@ public class ChatService {
     private final MemberInRoomRepository memberInRoomRepository;
 
     public Mono<ChatResponseDto> sendMessage(SendChatRequestDto sendChatRequestDto){
-        Member sender = memberRepository.findByNickname_Nickname(sendChatRequestDto.getSenderName()).orElseThrow(MemberNotFoundException::new);
-        Member receiver = memberRepository.findByNickname_Nickname(sendChatRequestDto.getReceiverName()).orElseThrow(MemberNotFoundException::new);
+        Member sender = memberRepository.findByNickname(sendChatRequestDto.getSenderName()).orElseThrow(MemberNotFoundException::new);
+        Member receiver = memberRepository.findByNickname(sendChatRequestDto.getReceiverName()).orElseThrow(MemberNotFoundException::new);
         ChatRoom chatRoom = findChatRoomInCommon(sender, receiver);
         if(chatRoom == null){
             String roomName = createRoomNameByMembers(sender, receiver);
@@ -40,7 +39,6 @@ public class ChatService {
                 .message(sendChatRequestDto.getMessage())
                 .sender(sender)
                 .chatRoom(chatRoom)
-                .sentAt(LocalDateTime.now())
                 .build();
         return chatRepository.save(chat).map(ChatResponseDto::toDto);
     }

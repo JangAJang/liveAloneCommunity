@@ -1,12 +1,10 @@
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/livealone?serverTimezone=Asia/Seoul
+  r2dbc:
+    url: r2dbc:mysql://localhost:3306/livealone?serverTimezone=Asia/Seoul
     username: jangstudy
     password: wk135790
-  jpa:
-    hibernate:
-      ddl-auto: update #create update none
-    show-sql: true
 server:
   port: 8081
+logging:
+  level:
+    org.springframework.r2dbc.core: debug

@@ -4,6 +4,5 @@ import com.capstone.chat.entity.chatRoom.ChatRoom;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 
-@NoRepositoryBean
 public interface ChatRoomRepository extends ReactiveCrudRepository<ChatRoom, Long> {
 }

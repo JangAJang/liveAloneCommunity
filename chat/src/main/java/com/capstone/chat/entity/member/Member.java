@@ -1,35 +1,30 @@
 package com.capstone.chat.entity.member;
 
-import com.capstone.chat.domain.member.Email;
-import com.capstone.chat.domain.member.Nickname;
-import com.capstone.chat.domain.member.Password;
-import com.capstone.chat.domain.member.Username;
-import jakarta.persistence.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Entity
+@Table
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Member {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Embedded
-    private Username username;
-    @Embedded
-    private Nickname nickname;
-    @Embedded
-    private Email email;
-    @Embedded
-    private Password password;
-    @Column(name = "MEMBER_ROLE")
+    private String username;
+    private String nickname;
+    private String email;
+    private String password;
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
     public String getNickname(){
-        return nickname.getNickname();
+        return nickname;
     }
 }

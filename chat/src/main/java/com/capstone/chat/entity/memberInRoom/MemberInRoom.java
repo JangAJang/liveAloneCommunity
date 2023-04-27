@@ -2,24 +2,20 @@ package com.capstone.chat.entity.memberInRoom;
 
 import com.capstone.chat.entity.chatRoom.ChatRoom;
 import com.capstone.chat.entity.member.Member;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Entity
+@Table
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class MemberInRoom {
 
     @Id
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
     private ChatRoom chatRoom;
-    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
     public MemberInRoom(ChatRoom chatRoom, Member member) {
