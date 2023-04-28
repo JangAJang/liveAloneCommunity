@@ -8,7 +8,7 @@ import com.capstone.chat.entity.memberInRoom.MemberInRoom;
 import com.capstone.chat.exception.member.MemberNotFoundException;
 import com.capstone.chat.repository.chat.ChatRepository;
 import com.capstone.chat.repository.chatRoom.ChatRoomRepository;
-import com.capstone.chat.repository.member.MemberRepository;
+import com.capstone.chat.repository.member.MemberChatRepository;
 import com.capstone.chat.repository.memberInRoom.MemberInRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,14 +20,14 @@ import java.util.*;
 @Service
 public class ChatService {
 
-    private final MemberRepository memberRepository;
+    private final MemberChatRepository memberChatRepository;
     private final ChatRepository chatRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final MemberInRoomRepository memberInRoomRepository;
 
     public Mono<ChatResponseDto> sendMessage(SendChatRequestDto sendChatRequestDto){
-        Member sender = memberRepository.findByNickname(sendChatRequestDto.getSenderName()).orElseThrow(MemberNotFoundException::new);
-        Member receiver = memberRepository.findByNickname(sendChatRequestDto.getReceiverName()).orElseThrow(MemberNotFoundException::new);
+        Member sender = memberChatRepository.findByNickname(sendChatRequestDto.getSenderName()).orElseThrow(MemberNotFoundException::new);
+        Member receiver = memberChatRepository.findByNickname(sendChatRequestDto.getReceiverName()).orElseThrow(MemberNotFoundException::new);
         ChatRoom chatRoom = findChatRoomInCommon(sender, receiver);
         if(chatRoom == null){
             String roomName = createRoomNameByMembers(sender, receiver);

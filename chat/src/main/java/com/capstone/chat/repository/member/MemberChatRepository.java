@@ -6,8 +6,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
-public interface MemberRepository extends ReactiveCrudRepository<Member, Long> {
+public interface MemberChatRepository extends ReactiveCrudRepository<Member, Long>{
 
     Optional<Member> findByNickname(String nickname);
-    Mono<Member> findByUsername_Username(String username);
+    Mono<Member> findByUsername(String username);
 }

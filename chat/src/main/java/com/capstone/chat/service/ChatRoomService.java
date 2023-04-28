@@ -6,7 +6,7 @@ import com.capstone.chat.entity.chatRoom.ChatRoom;
 import com.capstone.chat.entity.member.Member;
 import com.capstone.chat.entity.memberInRoom.MemberInRoom;
 import com.capstone.chat.exception.member.MemberNotFoundException;
-import com.capstone.chat.repository.member.MemberRepository;
+import com.capstone.chat.repository.member.MemberChatRepository;
 import com.capstone.chat.repository.memberInRoom.MemberInRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,10 +17,10 @@ import reactor.core.publisher.Flux;
 public class ChatRoomService {
 
     private final MemberInRoomRepository memberInRoomRepository;
-    private final MemberRepository memberRepository;
+    private final MemberChatRepository memberChatRepository;
 
     public Flux<ChatRoom> findMyChatRooms(MyChatRoomRequestDto myChatRoomRequestDto){
-        Member member = memberRepository.findByNickname(myChatRoomRequestDto.getNickname())
+        Member member = memberChatRepository.findByNickname(myChatRoomRequestDto.getNickname())
                 .orElseThrow(MemberNotFoundException::new);
         Flux<MemberInRoom> myRooms = memberInRoomRepository.findFluxByMember(member);
         return myRooms.map(MemberInRoom::getChatRoom);
