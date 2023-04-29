@@ -59,7 +59,7 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.google.guava/guava
 	implementation group: 'com.google.guava', name: 'guava', version: '30.0-jre'
 	//chat server
-	implementation project(':chat')
+//	implementation project(':chat')
 	implementation 'org.springframework.boot:spring-boot-starter-websocket:3.0.4'
 }
 

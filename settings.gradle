@@ -1,4 +1,4 @@
 rootProject.name = 'liveAloneCommunity'
-
-include 'liveAloneCommunity'
-include 'chat'
+//
+//include 'liveAloneCommunity'
+//include 'chat'
