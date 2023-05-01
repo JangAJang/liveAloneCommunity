@@ -21,12 +21,8 @@ public class Chat {
     private Long id;
     @Lob
     private String message;
-    private Member sender;
-    private ChatRoom chatRoom;
+    private Long senderId;
+    private Long chatRoomId;
     @CreatedDate
     private LocalDateTime sentAt;
-
-    public String getSenderName(){
-        return this.sender.getNickname();
-    }
 }

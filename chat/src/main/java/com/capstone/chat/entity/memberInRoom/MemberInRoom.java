@@ -15,11 +15,11 @@ public class MemberInRoom {
 
     @Id
     private Long id;
-    private ChatRoom chatRoom;
-    private Member member;
+    private Long chatRoomId;
+    private Long memberId;
 
     public MemberInRoom(ChatRoom chatRoom, Member member) {
-        this.chatRoom = chatRoom;
-        this.member = member;
+        this.chatRoomId = chatRoom.getId();
+        this.memberId = member.getId();
     }
 }

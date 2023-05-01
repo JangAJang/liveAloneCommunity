@@ -1,12 +1,14 @@
 package com.capstone.chat.entity.chatRoom;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class ChatRoom {
 
     @Id
