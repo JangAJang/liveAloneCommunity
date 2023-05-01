@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface MemberInRoomRepository extends ReactiveCrudRepository<MemberInRoom, Long> {
 
-    Flux<MemberInRoom> findMemberInRoomByChatRoom(ChatRoom chatRoom);
-    List<MemberInRoom> findByMember(Member member);
-    Flux<MemberInRoom> findFluxByMember(Member member);
+    Flux<MemberInRoom> findMemberInRoomByChatRoomId(Long chatRoomId);
+    List<MemberInRoom> findByMemberId(Member member);
+    Flux<MemberInRoom> findFluxByMemberId(Long memberId);
 }

@@ -8,5 +8,5 @@ import reactor.core.publisher.Flux;
 
 public interface ChatRepository extends ReactiveCrudRepository<Chat, Long> {
 
-    Flux<Chat> findByChatRoomOrderBySentAtAsc(ChatRoom chatRoom);
+    Flux<Chat> findByChatRoomIdOrderBySentAtDesc(Long chatRoomId);
 }
