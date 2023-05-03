@@ -3,8 +3,10 @@ package com.capstone.chat.controller;
 import com.capstone.chat.dto.chat.ChatResponseDto;
 import com.capstone.chat.dto.chat.IntoRoomRequestDto;
 import com.capstone.chat.dto.chat.SendChatRequestDto;
+import com.capstone.chat.dto.chatRoom.CreateRoomRequestDto;
 import com.capstone.chat.dto.chatRoom.MyChatRoomRequestDto;
 import com.capstone.chat.dto.chatRoom.SearchChatRoomRequestDto;
+import com.capstone.chat.entity.chat.Chat;
 import com.capstone.chat.entity.chatRoom.ChatRoom;
 import com.capstone.chat.service.ChatRoomService;
 import com.capstone.chat.service.ChatService;
@@ -25,7 +27,7 @@ public class ChatController {
 
     @CrossOrigin
     @PostMapping(value = "/", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Mono<ChatResponseDto> sendMessage(@RequestBody @Validated SendChatRequestDto sendChatRequestDto){
+    public Mono<Chat> sendMessage(@RequestBody @Validated SendChatRequestDto sendChatRequestDto){
         return chatService.sendMessage(sendChatRequestDto);
     }
 
@@ -39,6 +41,12 @@ public class ChatController {
     @GetMapping(value = "/rooms/search", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<ChatRoom> searchRooms(@RequestBody @Validated SearchChatRoomRequestDto searchChatRoomRequestDto){
         return chatRoomService.searchMyChatRooms(searchChatRoomRequestDto);
+    }
+
+    @CrossOrigin
+    @PostMapping(value = "/rooms/create", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Mono<ChatRoom> createRoom(@RequestBody @Validated CreateRoomRequestDto createRoomRequestDto){
+        return chatRoomService.createChatRoom(createRoomRequestDto.getSender(), createRoomRequestDto.getReceiver());
     }
 
     @CrossOrigin
