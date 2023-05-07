@@ -14,6 +14,12 @@ const router = createRouter({
       name: 'register',
       component: () => import('../components/auth/Register.vue'),
       meta: { unauthorized: true }
+    },
+    {
+      path: '/auth/logIn',
+      name:'logIn',
+      component: ()=> import('../components/auth/LogIn.vue'),
+      meta: {unauthorized: true}
     }
   ]
 })
