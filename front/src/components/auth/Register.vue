@@ -48,35 +48,57 @@ const validateEmail = function () {
 </script>
 
 <template>
-    <div class="align-content-center">
-        <div class="mt-1">
-            <el-input v-model="username" type="text" placeholder="아이디를 입력해주세요." />
-        </div>
-        <div class="mt-1">
-            <el-input v-model="nickname" type="text" placeholder="닉네임을 입력해주세요." />
-        </div>
-        <div class="mt-1">
-            <el-input v-model="email" type="email" placeholder="이메일을 입력해주세요." />
-            <div>
-                <el-button type="primary" @click="sendEmail()">인증번호 전송</el-button>
-                <el-input v-model="authNum" type="text" placeholder="인증 번호를 입력해주세요." />
+    <div id="RegisterModel">
+        <div id="RegisterInput">
+            <div class="mt-1">
+                <el-input v-model="username" type="text" placeholder="아이디를 입력해주세요." />
             </div>
-            <el-button type="primary" @click="validateEmail()">인증번호 확인</el-button>
-        </div>
-        <div class="mt-1">
-            <el-input v-model="password" type="password" placeholder="비밀번호를 입력해주세요." />
-        </div>
-        <div class="mt-1">
-            <el-input
+            <div class="mt-1">
+                <el-input v-model="nickname" type="text" placeholder="닉네임을 입력해주세요." />
+            </div>
+            <div class="mt-1">
+                <el-input v-model="email" type="email" placeholder="이메일을 입력해주세요." />
+                <div>
+                    <el-button id="buttonState" type="primary" @click="sendEmail()" >인증번호 전송</el-button>
+                    <el-input v-model="authNum" type="text" placeholder="인증 번호를 입력해주세요." />
+                </div>
+                <el-button id="buttonState" type="primary" @click="validateEmail()">인증번호 확인</el-button>
+            </div>
+            <div class="mt-1">
+                <el-input v-model="password" type="password" placeholder="비밀번호를 입력해주세요." />
+            </div>
+            <div class="mt-1">
+                <el-input
                     v-model="passwordCheck"
                     type="password"
                     placeholder="비밀번호를 다시 입력해주세요."
-            />
-        </div>
-        <div class="mt-1">
-            <el-button type="primary" @click="join()">회원 가입</el-button>
+                />
+            </div>
+            <div class="mt-1">
+                <el-button id="buttonState" type="primary" @click="join()">회원 가입</el-button>
+            </div>
         </div>
     </div>
 </template>
 
-<style></style>
+<style>
+
+#RegisterModel{
+    width: 60%;
+    margin-left: 20%;
+    margin-top: 5%;
+    background-color: #ffe87c;
+}
+
+#RegisterInput{
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 20%;
+}
+
+#buttonState{
+    width: 50%;
+    margin-left: 25%;
+}
+
+</style>
