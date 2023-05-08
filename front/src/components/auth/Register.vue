@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import axios from "axios";
+import router from "@/router";
 
 const username = ref('')
 const nickname = ref('')
@@ -15,14 +16,14 @@ const join = function () {
         alert("이메일 인증을 먼저 진행해야 합니다.");
         return;
     }
-    axios.post("/lan/api/auth/register", {
+    axios.post("/lan/auth/register", {
         username: username.value,
         nickname: nickname.value,
         email: email.value,
         password: password.value,
         passwordCheck: passwordCheck.value
-    })
-        .catch(reason => alert(reason));
+    }).then(()=> router.replace({name:'logIn'}))
+        .catch(reason => alert(reason.response.data.result.failMessage));
 }
 
 const sendEmail = function () {
