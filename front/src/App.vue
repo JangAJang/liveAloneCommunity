@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Register from'@/components/auth/Register.vue'
 import { RouterLink, RouterView } from 'vue-router'
 </script>
 
@@ -16,7 +15,7 @@ import { RouterLink, RouterView } from 'vue-router'
             <ul>
                 <li>
                     <RouterLink to="/auth/register">회원가입</RouterLink>
-                    <RouterLink to="logIn">로그인</RouterLink>
+                    <RouterLink to="/auth/logIn">로그인</RouterLink>
                 </li>
             </ul>
         </nav>
