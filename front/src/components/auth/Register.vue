@@ -9,42 +9,45 @@ const email = ref('')
 const password = ref('')
 const passwordCheck = ref('')
 const authNum = ref('')
+const emailSent = ref(false);
 const emailVerified = ref(false);
 
 const join = function () {
-    if(!emailVerified){
-        alert("이메일 인증을 먼저 진행해야 합니다.");
-        return;
+    if(emailVerified.value){
+        axios.post("/lan/auth/register", {
+            username: username.value,
+            nickname: nickname.value,
+            email: email.value,
+            password: password.value,
+            passwordCheck: passwordCheck.value
+        }).then(()=> router.replace({ name:'logIn' }))
+            .catch(reason => alert(reason.response.data.result.failMessage));
     }
-    axios.post("/lan/auth/register", {
-        username: username.value,
-        nickname: nickname.value,
-        email: email.value,
-        password: password.value,
-        passwordCheck: passwordCheck.value
-    }).then(()=> router.replace({name:'logIn'}))
-        .catch(reason => alert(reason.response.data.result.failMessage));
+    else alert("이메일 인증을 먼저 진행해주세요.")
 }
 
 const sendEmail = function () {
-    axios.post("/lan/api/email/send", {
+    axios.post("/lan/email/send", {
         email: email.value
-    }).then(()=> alert('인증번호를 메일로 발송했습니다. 인증번호를 확인해주세요.'))
-        .catch((e) => {
-            alert("인증번호를 전송할 수 없습니다. 다른 이메일을 이용해주세요.");
-            alert(e);
-            return;
-        })
+    }).then(()=> {
+        alert('인증번호를 메일로 발송했습니다. 인증번호를 확인해주세요.')
+        emailSent.value = true
+    })
+        .catch(reason => alert(reason.response.data.result.failMessage));
 }
 
-const validateEmail = function () {
-    axios.post("/lan/pai/email/verify", {
-        email: email.value,
-        authNum: authNum.value
-    }).catch(reason=> {
-        alert(reason);
-        return;
-    }).then(()=> alert("이메일을 성공적으로 인증했습니다."))
+const verifyEmail = function () {
+    if(emailSent.value){
+        axios.post("/lan/email/verify", {
+            email: email.value,
+            authNum: authNum.value
+        }).then(()=> {
+            alert("이메일을 성공적으로 인증했습니다.");
+            emailVerified.value = true;
+        })
+            .catch(reason => alert(reason.response.data.result.failMessage));
+    }
+    else alert("인증번호를 먼저 요청해주세요.")
 }
 </script>
 
@@ -63,7 +66,7 @@ const validateEmail = function () {
                     <el-button id="buttonState" type="primary" @click="sendEmail()" >인증번호 전송</el-button>
                     <el-input v-model="authNum" type="text" placeholder="인증 번호를 입력해주세요." />
                 </div>
-                <el-button id="buttonState" type="primary" @click="validateEmail()">인증번호 확인</el-button>
+                <el-button id="buttonState" type="primary" @click="verifyEmail()">인증번호 확인</el-button>
             </div>
             <div class="mt-1">
                 <el-input v-model="password" type="password" placeholder="비밀번호를 입력해주세요." />
@@ -76,7 +79,7 @@ const validateEmail = function () {
                 />
             </div>
             <div class="mt-1">
-                <el-button id="buttonState" type="primary" @click="join()">회원 가입</el-button>
+                <el-button id="buttonState" type="primary" @click="join()" >회원 가입</el-button>
             </div>
         </div>
     </div>
