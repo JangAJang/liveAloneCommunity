@@ -50,7 +50,11 @@ public class PostController {
     @GetMapping("/of")
     @Operation(summary = "회원의 게시물 조회", description = "회원의 게시물을 이름의 역순으로 조회한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response getMembersPost(@RequestBody @Valid MembersPostRequestDto membersPostRequestDto){
+    public Response getMembersPost(@RequestParam("id") Long id, @PageableDefault Pageable pageable){
+        MembersPostRequestDto membersPostRequestDto = MembersPostRequestDto.builder()
+                .id(id)
+                .page(pageable.getPageNumber())
+                .size(pageable.getPageSize()).build();
         return Response.success(postService.getMembersPost(membersPostRequestDto));
     }
 
