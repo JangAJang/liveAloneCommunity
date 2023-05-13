@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import Profile from '@/components/main/Profile.vue'
+import MyPost from "@/components/main/MyPost.vue";
 </script>
 
 <template>
@@ -23,6 +24,7 @@ import Profile from '@/components/main/Profile.vue'
   </header>
   <RouterView/>
   <Profile/>
+  <MyPost/>
 </template>
 
 <style>
