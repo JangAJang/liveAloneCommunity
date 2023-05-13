@@ -5,7 +5,7 @@ import { createPinia } from 'pinia'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import 'bootstrap/dist/css/bootstrap-utilities.css'
-import VueCookies from "vue-cookies";
+import VueCookies from 'vue-cookies'
 
 // @ts-ignore
 import App from './App.vue'
@@ -24,8 +24,7 @@ app.$cookies.config('1d')
 
 router.beforeEach(async (to, from, next) => {
   // @ts-ignore
-  if (VueCookies.get('Authorization') == null)
-      await reissue()
+  if (VueCookies.get('Authorization') == null) await reissue()
   // @ts-ignore
   if (to.matched.some((record) => record.meta.unauthorized) || VueCookies.isKey('Authorization')) {
     // @ts-ignore
