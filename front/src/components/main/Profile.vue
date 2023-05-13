@@ -8,7 +8,7 @@ const email = ref('')
 const res = ref({})
 
 axios
-  .get('/lan/member?id=1')
+  .get('/lan/member/me')
   .then((response) => {
     username.value = "아이디 : " + response.data.result.data.username
     nickname.value = "닉네임 : " + response.data.result.data.nickname
