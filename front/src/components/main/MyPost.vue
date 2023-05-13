@@ -37,6 +37,7 @@ onMounted(() => {
   margin-left: 83%;
   margin-top: 2%;
   width: 15%;
+  height: 100%;
   background-color: #ffe87c;
   text-align: center;
 }
