@@ -3,3 +3,4 @@ out
 src/main/java/com/capstone/liveAloneCommunity/service/email/EmailAuthComponent.java
 build
 .gradle
+nodeenv-18
