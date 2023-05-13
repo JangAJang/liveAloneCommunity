@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {onMounted, ref} from 'vue'
 import axios from 'axios'
-import MyPost from "@/components/main/MyPost.vue";
 
 const username = ref('')
 const nickname = ref('')
@@ -25,7 +24,7 @@ onMounted(() => axios
 </script>
 
 <template>
-  <div id="profileInfo">
+  <div id="commentInfo">
       <br/>
     <el-text id="text">{{ username }}</el-text>
       <br/>
@@ -36,7 +35,7 @@ onMounted(() => axios
 </template>
 
 <style>
-#profileInfo{
+#commentInfo{
     margin-left: 83%;
     margin-top: 5%;
     width: 15%;
