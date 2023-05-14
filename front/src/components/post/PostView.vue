@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import axios from "axios";
 import {onMounted, ref} from "vue";
-import {RouterView} from "vue-router";
 import MyPost from "@/components/main/MyPost.vue";
 import Profile from "@/components/main/Profile.vue";
 import MyComment from "@/components/main/MyComment.vue";
+import router from "@/router";
 
 const props = defineProps({
     postId: {
@@ -29,6 +29,10 @@ onMounted(() => {
             category.value = res.data.result.data.categoryName
         })
 })
+
+const goToEdit = function () {
+    router.push({name: 'editPost', params: { postId: props.postId}})
+}
 </script>
 
 <template>
@@ -39,6 +43,10 @@ onMounted(() => {
           <h3>내용 : {{content}}</h3>
           <h3>글쓴이 : {{ writer }}</h3>
           <h3>작성일자 : {{ createdDate }}</h3>
+          <el-button-group id="buttons">
+              <el-button @click="goToEdit">글 수정</el-button>
+              <el-button>글 삭제</el-button>
+          </el-button-group>
       </div>
   </div>
 
@@ -55,6 +63,13 @@ onMounted(() => {
     margin-left: 20%;
     background-color: #ffe87c;
     position: absolute;
+}
+
+#buttons {
+    position: absolute;
+    margin-left: 85%;
+    display: grid;
+    grid-auto-flow: column;
 }
 
 #post {
