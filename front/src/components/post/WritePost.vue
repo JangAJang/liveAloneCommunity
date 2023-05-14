@@ -5,6 +5,7 @@ import {RouterView} from "vue-router";
 import MyPost from "@/components/main/MyPost.vue";
 import Profile from "@/components/main/Profile.vue";
 import MyComment from "@/components/main/MyComment.vue";
+import router from "@/router";
 
 const title = ref('')
 const content = ref('')
@@ -40,7 +41,7 @@ const savePost = function () {
     }).then(res => {
         alert('글 작성에 성공했습니다.')
         console.log(res)
-
+        router.push({name: 'readPost', params: {postId: res.data.result.data.id}})
     })
 }
 
