@@ -19,6 +19,11 @@ const router = createRouter({
       name: 'logIn',
       component: () => import('../components/auth/LogIn.vue'),
       meta: { unauthorized: true }
+    },
+    {
+      path: '/post/write',
+      name: 'writePost',
+      component: () => import('../components/post/WritePost.vue')
     }
   ]
 })

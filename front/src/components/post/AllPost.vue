@@ -4,6 +4,7 @@ import {onMounted, ref} from "vue";
 import MyPost from "@/components/main/MyPost.vue";
 import Profile from "@/components/main/Profile.vue";
 import MyComment from "@/components/main/MyComment.vue";
+import router from "@/router";
 
 const category = ref('HOBBY_SHARE')
 const page = ref(1)
@@ -90,6 +91,10 @@ const searchPost = function () {
         })
 }
 
+const goToWritePost = function () {
+    router.replace({name: 'writePost'})
+}
+
 onMounted(() => getPosts())
 </script>
 <template>
@@ -131,6 +136,7 @@ onMounted(() => getPosts())
             <el-input v-model="text"/>
         </div>
         <el-button @click="searchPost">검색</el-button>
+        <el-button @click="goToWritePost">글 작성</el-button>
     </div>
 </div>
     <Profile/>
