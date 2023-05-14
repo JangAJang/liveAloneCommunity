@@ -48,7 +48,12 @@ public class PostController {
     @GetMapping("/search")
     @Operation(summary = "게시물 검색", description = "게시물을 검색해 페이징처리해 반환한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response searchPost(@RequestBody @Valid SearchPostRequestDto searchPostRequestDto){
+    public Response searchPost(@RequestParam String text, @RequestParam SearchPostType searchPostType, @PageableDefault Pageable pageable){
+        SearchPostRequestDto searchPostRequestDto = SearchPostRequestDto.builder()
+                .text(text)
+                .searchPostType(searchPostType)
+                .page(pageable.getPageNumber())
+                .size(pageable.getPageSize()).build();
         return Response.success(postService.searchPost(searchPostRequestDto));
     }
 

@@ -6,9 +6,33 @@ import Profile from "@/components/main/Profile.vue";
 import MyComment from "@/components/main/MyComment.vue";
 
 const category = ref('HOBBY_SHARE')
-const page = ref(0)
-const size = ref(10)
+const page = ref(1)
+const size = ref(5)
 let posts = ref([])
+const text = ref('')
+const searchPostType = ref('')
+const options = [
+    {
+        value: 'TITLE',
+        label: '제목',
+    },
+    {
+        value: 'TITLE_AND_CONTENT',
+        label: '제목 & 내용',
+    },
+    {
+        value: 'WRITER_AND_TITLE',
+        label: '작성자 & 제목',
+    },
+    {
+        value: 'WRITER',
+        label: '작성자',
+    },
+    {
+        value: 'CONTENT',
+        label: '내용',
+    },
+]
 
 const getHobby = function () {
     category.value = 'HOBBY_SHARE'
@@ -37,6 +61,7 @@ const getRequests = function () {
 
 
 const getPosts = function () {
+    page.value = 1
     axios.get("/lan/post/category", {
         params: {
             category: category.value,
@@ -48,6 +73,24 @@ const getPosts = function () {
         posts.value = (res.data.result.data.result)
     })
 }
+
+const searchPost = function () {
+    page.value = 1
+    category.value = 'Search'
+    alert(searchPostType.value)
+    axios.get("/lan/post/search", {
+        params: {
+            page: page.value,
+            size: size.value,
+            text: text.value,
+            searchPostType: searchPostType.value
+        }
+    })
+        .then(res => {
+            posts.value = (res.data.result.data.result)
+        })
+}
+
 onMounted(() => getPosts())
 </script>
 <template>
@@ -72,8 +115,21 @@ onMounted(() => getPosts())
                     <text>작성일 : {{post.createdDate}}</text>
                     <br/>
                 </div>
+                <br/>
             </li>
         </ul>
+    </div>
+    <div>
+        <el-select v-model="searchPostType" class="m-2" placeholder="Select">
+            <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            />
+        </el-select>
+        <el-input v-model="text" id="searchText"/>
+        <el-button @click="searchPost">검색</el-button>
     </div>
 </div>
     <Profile/>
@@ -92,5 +148,9 @@ onMounted(() => getPosts())
 #botton {
     background-color: #ffc520;
     width: 20%;
+}
+
+#searchText {
+    margin-left: 25%;
 }
 </style>
