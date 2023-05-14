@@ -97,4 +97,13 @@ public class PostController {
         postService.deletePost(id, member);
         return Response.success();
     }
+
+    @GetMapping("/mine")
+    @Operation(summary = "내 게시글인지 확인", description = "내 게시글이면 문제가 없지만, 아니면 에러를 반환합니다.")
+    @ResponseStatus(HttpStatus.OK)
+    public Response isMyPost(@RequestParam("id") Long id){
+        Member member = getMember();
+        postService.isMyPost(member, id);
+        return Response.success();
+    }
 }

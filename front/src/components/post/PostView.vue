@@ -31,7 +31,11 @@ onMounted(() => {
 })
 
 const goToEdit = function () {
-    router.push({name: 'editPost', params: { postId: props.postId}})
+    axios.get(`/lan/post/mine?id=${props.postId}`)
+        .then(() => {
+            router.push({name: 'editPost', params: { postId: props.postId}})
+        })
+        .catch((reason) => alert(reason.response.data.result.failMessage))
 }
 </script>
 
