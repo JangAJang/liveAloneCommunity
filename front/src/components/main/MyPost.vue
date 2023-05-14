@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import axios from 'axios'
 
-let result = []
+let result = ref([])
 const page = ref(0)
 const size = ref(5)
 const id = ref(1)
@@ -13,7 +13,7 @@ onMounted(() => {
       params: {page: page.value, size: size.value }
     })
     .then((res) => {
-      result = res.data.result.data.result
+      result.value = res.data.result.data.result
     })
 })
 </script>
