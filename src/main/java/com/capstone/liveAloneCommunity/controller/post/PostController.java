@@ -50,7 +50,11 @@ public class PostController {
     @GetMapping("/of")
     @Operation(summary = "회원의 게시물 조회", description = "회원의 게시물을 이름의 역순으로 조회한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response getMembersPost(@RequestBody @Valid MembersPostRequestDto membersPostRequestDto){
+    public Response getMembersPost(@PageableDefault Pageable pageable){
+        MembersPostRequestDto membersPostRequestDto = MembersPostRequestDto.builder()
+                .id(getMember().getId())
+                .page(pageable.getPageNumber())
+                .size(pageable.getPageSize()).build();
         return Response.success(postService.getMembersPost(membersPostRequestDto));
     }
 
@@ -58,17 +62,20 @@ public class PostController {
     @Operation(summary = "게시글 작성", description = "게시글을 새로 작성한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response writePost(@RequestBody @Valid WritePostRequestDto writePostRequestDto){
-        Member member = memberRepository.findByUsername_Username(SecurityContextHolder.getContext()
-                .getAuthentication().getName()).orElseThrow(MemberNotFoundException::new);
+        Member member = getMember();
         return Response.success(postService.writePost(member, writePostRequestDto));
+    }
+
+    private Member getMember() {
+        return memberRepository.findByUsername_Username(SecurityContextHolder.getContext()
+                .getAuthentication().getName()).orElseThrow(MemberNotFoundException::new);
     }
 
     @PatchMapping("/edit")
     @Operation(summary = "게시글 수정", description = "존재하는 게시물을 수정한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response editPost(@RequestBody @Valid EditPostRequestDto editPostRequestDto){
-        Member member = memberRepository.findByUsername_Username(SecurityContextHolder.getContext()
-                .getAuthentication().getName()).orElseThrow(MemberNotFoundException::new);
+        Member member = getMember();
         return Response.success(postService.editPost(editPostRequestDto, member));
     }
 
@@ -76,8 +83,7 @@ public class PostController {
     @Operation(summary = "게시글 삭제", description = "게시글을 삭제한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response deletePost(@RequestParam("id") Long id){
-        Member member = memberRepository.findByUsername_Username(SecurityContextHolder.getContext()
-                .getAuthentication().getName()).orElseThrow(MemberNotFoundException::new);
+        Member member = getMember();
         postService.deletePost(id, member);
         return Response.success();
     }

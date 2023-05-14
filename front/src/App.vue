@@ -1,55 +1,61 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import Profile from '@/components/main/Profile.vue'
+import MyPost from '@/components/main/MyPost.vue'
+import MyComment from '@/components/main/MyComment.vue'
 </script>
 
 <template>
-    <header>
-        <h1>Live Alone Network</h1>
-        <nav>
-            <RouterLink to="" style="margin-left: 2%">게시판</RouterLink>
-            <RouterLink to="" style="margin-left: 2%">위치</RouterLink>
-            <RouterLink to="" style="margin-left: 2%">정보</RouterLink>
-            <RouterLink to="" style="margin-left: 2%">친구</RouterLink>
-        </nav>
-        <nav>
-            <ul>
-                <li>
-                    <RouterLink to="/auth/register">회원가입</RouterLink>
-                    <RouterLink to="/auth/logIn">로그인</RouterLink>
-                </li>
-            </ul>
-        </nav>
-    </header>
-  <RouterView/>
+  <header>
+    <h1>Live Alone Network</h1>
+    <nav>
+      <RouterLink to="/" style="margin-left: 2%">게시판</RouterLink>
+      <RouterLink to="" style="margin-left: 2%">위치</RouterLink>
+      <RouterLink to="" style="margin-left: 2%">정보</RouterLink>
+      <RouterLink to="" style="margin-left: 2%">친구</RouterLink>
+    </nav>
+    <nav>
+      <ul>
+        <li>
+          <RouterLink to="/auth/register">회원가입</RouterLink>
+          <RouterLink to="/auth/logIn">로그인</RouterLink>
+        </li>
+      </ul>
+    </nav>
+  </header>
+    <RouterView/>
+  <Profile/>
+  <MyPost/>
+  <MyComment/>
 </template>
 
 <style>
 header {
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-columns: 1fr;
-    align-items: center;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 1fr;
+  align-items: center;
 }
 h1 {
-    display: inline-block;
-    vertical-align: middle;
-    color: blue;
-    margin: 0.5rem;
-    padding: 0;
+  display: inline-block;
+  vertical-align: middle;
+  color: blue;
+  margin: 0.5rem;
+  padding: 0;
 }
 
 nav {
-    display: inline-block;
-    vertical-align: middle;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 html {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 header {
-    width: 100%;
-    height: 20%;
-    border-bottom: 1px solid #35495e;
+  width: 100%;
+  height: 20%;
+  border-bottom: 1px solid #35495e;
 }
 </style>
