@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import axios from "axios";
-import router from "@/router";
 
 const title = ref('')
 const content = ref('')

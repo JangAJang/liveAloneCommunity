@@ -18,7 +18,7 @@ const signIn = function () {
       const accessToken = res.headers.get('Authorization', String)
       VueCookies.set('Authorization', accessToken, 60 * 60 * 24)
       axios.defaults.headers.common['Authorization'] = VueCookies.get('Authorization')
-      router.replace({ name: 'main' })
+      router.push({ name: 'main' })
     })
     .catch((reason) => alert(reason.response.data.result.failMessage))
 }
