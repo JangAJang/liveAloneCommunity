@@ -22,8 +22,8 @@ onMounted(() => {
   <div id="postInfo">
     <ul>
       <li v-for="post in result" class="mt-1">
-        <el-text>{{ post.title }}</el-text>
-        <br />
+          <RouterLink :to="{name: 'readPost', params: { postId: post.id} }">{{post.title}}</RouterLink>
+          <br />
         <el-text>{{ post.createdDate }}</el-text>
         <br />
         <el-text>{{ post.categoryName }}</el-text>
