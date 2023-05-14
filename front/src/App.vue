@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import Profile from '@/components/main/Profile.vue'
-import MyPost from '@/components/main/MyPost.vue'
-import MyComment from '@/components/main/MyComment.vue'
 </script>
 
 <template>
@@ -24,9 +21,6 @@ import MyComment from '@/components/main/MyComment.vue'
     </nav>
   </header>
     <RouterView/>
-    <Profile/>
-    <MyPost/>
-    <MyComment/>
 </template>
 
 <style>

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import axios from "axios";
 import {onMounted, ref} from "vue";
+import {RouterView} from "vue-router";
+import MyPost from "@/components/main/MyPost.vue";
+import Profile from "@/components/main/Profile.vue";
+import MyComment from "@/components/main/MyComment.vue";
 
 const props = defineProps({
     postId: {
@@ -37,6 +41,10 @@ onMounted(() => {
           <h3>작성일자 : {{ createdDate }}</h3>
       </div>
   </div>
+
+    <Profile/>
+    <MyPost/>
+    <MyComment/>
 </template>
 
 <style>

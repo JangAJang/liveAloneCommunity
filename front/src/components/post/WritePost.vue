@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import axios from "axios";
+import {RouterView} from "vue-router";
+import MyPost from "@/components/main/MyPost.vue";
+import Profile from "@/components/main/Profile.vue";
+import MyComment from "@/components/main/MyComment.vue";
 
 const title = ref('')
 const content = ref('')
@@ -64,6 +68,10 @@ const savePost = function () {
       </div>
       <el-button id="button" @click="savePost">저장</el-button>
   </div>
+
+    <Profile/>
+    <MyPost/>
+    <MyComment/>
 </template>
 
 <style>
