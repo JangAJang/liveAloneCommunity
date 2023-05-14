@@ -24,6 +24,12 @@ const router = createRouter({
       path: '/post/write',
       name: 'writePost',
       component: () => import('../components/post/WritePost.vue')
+    },
+    {
+      path: '/post/read/:postId',
+      name: 'readPost',
+      component: ()=> import('../components/post/PostView.vue'),
+      props: true
     }
   ]
 })

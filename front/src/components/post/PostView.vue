@@ -1,0 +1,56 @@
+<script setup lang="ts">
+import axios from "axios";
+import {onMounted, ref} from "vue";
+
+const props = defineProps({
+    postId: {
+        type: [Number, String],
+        required: true
+    }
+})
+const title = ref('')
+const content = ref('')
+const writer = ref('')
+const createdDate = ref('')
+const category = ref('')
+
+onMounted(() => {
+    axios.get(`/lan/post?id=${props.postId}`)
+        .then(res => {
+            console.log(res.data.result.data)
+            title.value = res.data.result.data.title
+            content.value = res.data.result.data.content
+            writer.value = res.data.result.data.writer
+            createdDate.value = res.data.result.data.createdDate
+            category.value = res.data.result.data.categoryName
+        })
+})
+</script>
+
+<template>
+  <div id="background">
+      <div id="post">
+          <h3>제목 : {{title}}</h3>
+          <h3>{{ category }}</h3>
+          <h3>내용 : {{content}}</h3>
+          <h3>글쓴이 : {{ writer }}</h3>
+          <h3>작성일자 : {{ createdDate }}</h3>
+      </div>
+  </div>
+</template>
+
+<style>
+
+#background {
+    margin-top: 2%;
+    width: 60%;
+    margin-left: 20%;
+    background-color: #ffe87c;
+    position: absolute;
+}
+
+#post {
+    margin-left: 2%;
+    margin-top: 2%;
+}
+</style>

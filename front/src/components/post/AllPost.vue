@@ -92,7 +92,7 @@ const searchPost = function () {
 }
 
 const goToWritePost = function () {
-    router.replace({name: 'writePost'})
+    router.push({name: 'writePost'})
 }
 
 onMounted(() => getPosts())
@@ -112,7 +112,7 @@ onMounted(() => getPosts())
         <ul>
             <li v-for="post in posts">
                 <div>
-                    <text>제목 : {{post.title}}</text>
+                    <RouterLink :to="{name: 'readPost', params: { postId: post.id} }">제목 : {{post.title}}</RouterLink>
                     <br/>
                     <text>작성자 : {{post.writer}}</text>
                     <br/>
@@ -139,9 +139,6 @@ onMounted(() => getPosts())
         <el-button @click="goToWritePost">글 작성</el-button>
     </div>
 </div>
-    <Profile/>
-    <MyPost/>
-    <MyComment/>
 </template>
 
 <style>

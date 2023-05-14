@@ -4,15 +4,13 @@ import com.capstone.liveAloneCommunity.domain.post.Category;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.post.Post;
 import com.querydsl.core.annotations.QueryProjection;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class PostResponseDto {
     private Long id;
     private String writer;
@@ -37,25 +35,22 @@ public class PostResponseDto {
                 + ". " + createdDate.getHour() + ":" + createdDate.getDayOfMonth();
     }
 
+    private static String parseCreatedDate(LocalDateTime createdDate){
+        return createdDate.getYear() + ". " +createdDate.getMonthValue() + ". " + createdDate.getDayOfMonth()
+                + ". " + createdDate.getHour() + ":" + createdDate.getDayOfMonth();
+    }
+
     public static PostResponseDto toDto(Post post){
-        return PostResponseDto.builder()
-                .id(post.getId())
-                .category(post.getCategory())
-                .writer(post.getWritersName())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .createdDate(post.getCreatedDate())
-                .build();
+        return new PostResponseDto(post.getId(), post.getWritersName(),
+                post.getTitle(), post.getContent(),
+                post.getCategory().getDescription(),
+                parseCreatedDate(post.getCreatedDate()));
     }
 
     public static PostResponseDto toDto(Post post, Member member){
-        return PostResponseDto.builder()
-                .id(post.getId())
-                .category(post.getCategory())
-                .writer(member.getNickname())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .createdDate(post.getCreatedDate())
-                .build();
+        return new PostResponseDto(post.getId(), member.getNickname(),
+                post.getTitle(), post.getContent(),
+                post.getCategory().getDescription(),
+                parseCreatedDate(post.getCreatedDate()));
     }
 }
