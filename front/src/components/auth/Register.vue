@@ -22,7 +22,7 @@ const join = function () {
         password: password.value,
         passwordCheck: passwordCheck.value
       })
-      .then(() => router.replace({ name: 'logIn' }))
+      .then(() => router.push({ name: 'logIn' }))
       .catch((reason) => alert(reason.response.data.result.failMessage))
   } else alert('이메일 인증을 먼저 진행해주세요.')
 }

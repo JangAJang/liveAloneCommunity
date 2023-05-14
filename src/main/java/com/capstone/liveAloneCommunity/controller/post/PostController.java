@@ -36,14 +36,24 @@ public class PostController {
     @GetMapping("/category")
     @Operation(summary = "카테고리별 게시물 조회", description = "게시물을 카테고리별로 페이징처리해 조회한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response getPostOfCategory(@RequestBody PostByCategoryRequestDto postByCategoryRequestDto){
+    public Response getPostOfCategory(@RequestParam Category category, @PageableDefault Pageable pageable){
+        PostByCategoryRequestDto postByCategoryRequestDto = PostByCategoryRequestDto.builder()
+                .category(category)
+                .page(pageable.getPageNumber())
+                .size(pageable.getPageSize())
+                .build();
         return Response.success(postService.getPostByCategory(postByCategoryRequestDto));
     }
 
     @GetMapping("/search")
     @Operation(summary = "게시물 검색", description = "게시물을 검색해 페이징처리해 반환한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response searchPost(@RequestBody @Valid SearchPostRequestDto searchPostRequestDto){
+    public Response searchPost(@RequestParam String text, @RequestParam SearchPostType searchPostType, @PageableDefault Pageable pageable){
+        SearchPostRequestDto searchPostRequestDto = SearchPostRequestDto.builder()
+                .text(text)
+                .searchPostType(searchPostType)
+                .page(pageable.getPageNumber())
+                .size(pageable.getPageSize()).build();
         return Response.success(postService.searchPost(searchPostRequestDto));
     }
 
@@ -85,6 +95,15 @@ public class PostController {
     public Response deletePost(@RequestParam("id") Long id){
         Member member = getMember();
         postService.deletePost(id, member);
+        return Response.success();
+    }
+
+    @GetMapping("/mine")
+    @Operation(summary = "내 게시글인지 확인", description = "내 게시글이면 문제가 없지만, 아니면 에러를 반환합니다.")
+    @ResponseStatus(HttpStatus.OK)
+    public Response isMyPost(@RequestParam("id") Long id){
+        Member member = getMember();
+        postService.isMyPost(member, id);
         return Response.success();
     }
 }

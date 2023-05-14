@@ -7,6 +7,7 @@ import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.post.Post;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotAllowedException;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
+import com.capstone.liveAloneCommunity.exception.post.NotMyPostException;
 import com.capstone.liveAloneCommunity.exception.post.PostNotFoundException;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.repository.post.PostRepository;
@@ -93,5 +94,11 @@ public class PostService {
 
     public void validatePostAuthority(Member member, Post post){
         if(!post.isWriter(member)) throw new MemberNotAllowedException();
+    }
+
+    public void isMyPost(Member member, Long id) {
+        Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+        if(post.isWriter(member)) return;
+        throw new NotMyPostException();
     }
 }

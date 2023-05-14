@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import axios from 'axios'
 
-let result = []
+let result = ref([])
 onMounted(() => {
   axios
     .get('/lan/comment/member', {
@@ -12,7 +12,7 @@ onMounted(() => {
       }
     })
     .then((res) => {
-      result = res.data.result.data.readCommentResponseDto
+      result.value = res.data.result.data.readCommentResponseDto
     })
 })
 </script>
