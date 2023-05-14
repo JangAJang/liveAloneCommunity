@@ -77,7 +77,6 @@ const getPosts = function () {
 const searchPost = function () {
     page.value = 1
     category.value = 'Search'
-    alert(searchPostType.value)
     axios.get("/lan/post/search", {
         params: {
             page: page.value,
@@ -119,8 +118,8 @@ onMounted(() => getPosts())
             </li>
         </ul>
     </div>
-    <div>
-        <el-select v-model="searchPostType" class="m-2" placeholder="Select">
+    <div id="searchBox">
+        <el-select v-model="searchPostType" placeholder="Select">
             <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -128,7 +127,9 @@ onMounted(() => getPosts())
                 :value="item.value"
             />
         </el-select>
-        <el-input v-model="text" id="searchText"/>
+        <div id="searchText">
+            <el-input v-model="text"/>
+        </div>
         <el-button @click="searchPost">검색</el-button>
     </div>
 </div>
@@ -145,12 +146,21 @@ onMounted(() => getPosts())
     background-color: #ffe87c;
     position: absolute;
 }
+
 #botton {
     background-color: #ffc520;
     width: 20%;
 }
 
+#searchBox {
+    position: absolute;
+    display: grid;
+    grid-auto-flow: column;
+    width: 70%;
+    margin-left: 15%;
+}
+
 #searchText {
-    margin-left: 25%;
+    align-content: center;
 }
 </style>
