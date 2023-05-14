@@ -37,6 +37,22 @@ const goToEdit = function () {
         })
         .catch((reason) => alert(reason.response.data.result.failMessage))
 }
+
+const requestDelete = function () {
+    axios.get(`/lan/post/mine?id=${props.postId}`)
+        .then(() => {
+            deletePost()
+        })
+        .catch((reason) => alert(reason.response.data.result.failMessage))
+}
+
+const deletePost = function () {
+    axios.delete(`/lan/post/delete?id=${props.postId}`)
+        .then(() => {
+            alert("성공적으로 게시글을 삭제했습니다.")
+            router.replace({name: 'main'})
+        })
+}
 </script>
 
 <template>
@@ -49,7 +65,7 @@ const goToEdit = function () {
           <h3>작성일자 : {{ createdDate }}</h3>
           <el-button-group id="buttons">
               <el-button @click="goToEdit">글 수정</el-button>
-              <el-button>글 삭제</el-button>
+              <el-button @click="requestDelete">글 삭제</el-button>
           </el-button-group>
       </div>
   </div>
