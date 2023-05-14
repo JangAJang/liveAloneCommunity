@@ -24,9 +24,7 @@ import MyComment from '@/components/main/MyComment.vue'
     </nav>
   </header>
     <RouterView/>
-  <Profile/>
-  <MyPost/>
-  <MyComment/>
+
 </template>
 
 <style>

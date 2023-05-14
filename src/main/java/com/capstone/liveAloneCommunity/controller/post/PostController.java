@@ -36,7 +36,12 @@ public class PostController {
     @GetMapping("/category")
     @Operation(summary = "카테고리별 게시물 조회", description = "게시물을 카테고리별로 페이징처리해 조회한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response getPostOfCategory(@RequestBody PostByCategoryRequestDto postByCategoryRequestDto){
+    public Response getPostOfCategory(@RequestParam Category category, @PageableDefault Pageable pageable){
+        PostByCategoryRequestDto postByCategoryRequestDto = PostByCategoryRequestDto.builder()
+                .category(category)
+                .page(pageable.getPageNumber())
+                .size(pageable.getPageSize())
+                .build();
         return Response.success(postService.getPostByCategory(postByCategoryRequestDto));
     }
 
