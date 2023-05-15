@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import App from '@/App.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,7 +6,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'main',
-      component: App
+      component: () => import('../components/post/AllPost.vue')
     },
     {
       path: '/auth/register',
@@ -17,9 +16,26 @@ const router = createRouter({
     },
     {
       path: '/auth/logIn',
-      name:'logIn',
-      component: ()=> import('../components/auth/LogIn.vue'),
-      meta: {unauthorized: true}
+      name: 'logIn',
+      component: () => import('../components/auth/LogIn.vue'),
+      meta: { unauthorized: true }
+    },
+    {
+      path: '/post/write',
+      name: 'writePost',
+      component: () => import('../components/post/WritePost.vue')
+    },
+    {
+      path: '/post/read/:postId',
+      name: 'readPost',
+      component: () => import('../components/post/PostView.vue'),
+      props: true
+    },
+    {
+      path: '/post/edit/:postId',
+      name: 'editPost',
+      component: () => import('../components/post/EditPostView.vue'),
+      props: true
     }
   ]
 })
