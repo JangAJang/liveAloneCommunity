@@ -6,7 +6,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'main',
-      component: ()=> import('../components/post/AllPost.vue')
+      component: () => import('../components/post/AllPost.vue')
     },
     {
       path: '/auth/register',
@@ -28,7 +28,7 @@ const router = createRouter({
     {
       path: '/post/read/:postId',
       name: 'readPost',
-      component: ()=> import('../components/post/PostView.vue'),
+      component: () => import('../components/post/PostView.vue'),
       props: true
     },
     {
