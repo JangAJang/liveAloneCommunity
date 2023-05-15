@@ -10,7 +10,7 @@ const id = ref(1)
 onMounted(() => {
   axios
     .get('/lan/post/of', {
-      params: {page: page.value, size: size.value }
+      params: { page: page.value, size: size.value }
     })
     .then((res) => {
       result.value = res.data.result.data.result
@@ -22,8 +22,10 @@ onMounted(() => {
   <div id="postInfo">
     <ul>
       <li v-for="post in result" class="mt-1">
-          <RouterLink :to="{name: 'readPost', params: { postId: post.id} }">{{post.title}}</RouterLink>
-          <br />
+        <RouterLink :to="{ name: 'readPost', params: { postId: post.id } }">{{
+          post.title
+        }}</RouterLink>
+        <br />
         <el-text>{{ post.createdDate }}</el-text>
         <br />
         <el-text>{{ post.categoryName }}</el-text>
