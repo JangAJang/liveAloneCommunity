@@ -25,6 +25,10 @@ public class Member{
     @Column(name = "MEMBER_ROLE")
     @Enumerated(value = EnumType.STRING)
     private Role role;
+    @Column(nullable = true)
+    private String providerId;
+    @Column
+    private String provider;
 
     public Member(RegisterRequestDto registerRequestDto, PasswordEncoder passwordEncoder){
         this.username = new Username(registerRequestDto.getUsername());
@@ -35,12 +39,14 @@ public class Member{
     }
 
     @Builder
-    public Member(Username username, Nickname nickname, Email email, Password password, Role role) {
+    public Member(Username username, Nickname nickname, Email email, Password password, Role role, String provider, String providerId) {
         this.username = username;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.provider = provider;
+        this.providerId = providerId;
     }
 
     public String getUsername(){
