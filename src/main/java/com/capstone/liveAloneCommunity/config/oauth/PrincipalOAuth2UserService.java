@@ -63,9 +63,6 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
         if(userRequest.getClientRegistration().getRegistrationId().equals("naver")){
             return  new NaverUserInfo((Map) oAuth2User.getAttributes().get("response"));
         }
-        if(userRequest.getClientRegistration().getRegistrationId().equals("kakao")){
-            return new KakaoUserInfo((Map)oAuth2User.getAttributes().get("profile"));
-        }
         return null;
     }
 }
