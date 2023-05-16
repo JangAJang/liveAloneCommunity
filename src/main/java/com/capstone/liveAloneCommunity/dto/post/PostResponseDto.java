@@ -32,12 +32,12 @@ public class PostResponseDto {
 
     private String getCreatedDateToString(LocalDateTime createdDate){
         return createdDate.getYear() + ". " +createdDate.getMonthValue() + ". " + createdDate.getDayOfMonth()
-                + ". " + createdDate.getHour() + ":" + createdDate.getDayOfMonth();
+                + ". " + createdDate.getHour() + ":" + createdDate.getMinute();
     }
 
     private static String parseCreatedDate(LocalDateTime createdDate){
         return createdDate.getYear() + ". " +createdDate.getMonthValue() + ". " + createdDate.getDayOfMonth()
-                + ". " + createdDate.getHour() + ":" + createdDate.getDayOfMonth();
+                + ". " + createdDate.getHour() + ":" + createdDate.getMinute();
     }
 
     public static PostResponseDto toDto(Post post){

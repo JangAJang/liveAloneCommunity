@@ -29,6 +29,11 @@ const signIn = function () {
     <el-input v-model="password" type="password" placeholder="비밀번호를 입력하세요" />
     <el-button type="primary" @click="signIn()" id="logInButton">로그인</el-button>
   </div>
+  <form>
+    <a href="https://kauth.kakao.com/oauth/authorize?client_id=8ca91c36f6c867eabd678eb00abb06e3&redirect_uri=http://localhost:8080/api/auth/kakao/callback&response_type=code">
+        <img src="@/assets/image/kakao_login_medium_narrow.png" />
+    </a>
+  </form>
 </template>
 <style>
 #logInPart {
