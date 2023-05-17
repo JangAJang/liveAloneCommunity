@@ -35,7 +35,8 @@ public class KakaoAuthService {
 
     public LogInRequestDto getLogInRequestByCode(String code){
         KakaoProfile kakaoProfile = getKakaoInfo(code);
-        Member member = memberRepository.findByUsername_Username("KAKAO_" + kakaoProfile.getEmail()).orElse(createMemberByKakaoInfo(kakaoProfile));
+        Member member = memberRepository.findByUsername_Username("KAKAO_" + kakaoProfile.getEmail())
+                .orElseGet(()-> createMemberByKakaoInfo(kakaoProfile));
         return LogInRequestDto.builder()
                 .username(member.getUsername())
                 .password("KAKAO_" + kakaoProfile.getId()).build();
@@ -63,7 +64,6 @@ public class KakaoAuthService {
     }
 
     private OAuthToken getKakaoToken(String code, ObjectMapper objectMapper){
-        OAuthToken oAuthToken;
         try {
             return objectMapper.readValue(getKakaoToken(code).getBody(), OAuthToken.class);
         } catch (
