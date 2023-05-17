@@ -6,7 +6,6 @@ import VueCookies from 'vue-cookies'
 
 const username = ref('')
 const password = ref('')
-
 const signIn = function () {
   axios
     .post('/lan/auth/logIn', {
@@ -22,6 +21,35 @@ const signIn = function () {
     })
     .catch((reason) => alert(reason.response.data.result.failMessage))
 }
+
+const kakaoLogIn = function () {
+    console.log(window.Kakao)
+    window.Kakao.Auth.logIn({
+        scope: 'profile_nickname, account_email',
+        success: this.getKakaoAccount,
+    });
+}
+
+
+const getKakaoAccount = function () {
+    window.Kakao.API.request({
+        url: 'v2/user/me',
+        success: res => {
+            const kakao_account = res.kakao_account;
+            const nickname = kakao_account.nickname;
+            const email = kakao_account.email;
+            console.log(kakao_account.id);
+            console.log(nickname);
+            console.log(email);
+            alert("성공")
+        },
+        fail: error => {
+            console.log(error)
+        }
+    })
+}
+
+
 </script>
 <template>
   <div id="logInPart">
