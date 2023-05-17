@@ -6,7 +6,6 @@ import VueCookies from 'vue-cookies'
 
 const username = ref('')
 const password = ref('')
-
 const signIn = function () {
   axios
     .post('/lan/auth/logIn', {
@@ -22,6 +21,35 @@ const signIn = function () {
     })
     .catch((reason) => alert(reason.response.data.result.failMessage))
 }
+
+const kakaoLogIn = function () {
+    console.log(window.Kakao)
+    window.Kakao.Auth.logIn({
+        scope: 'profile_nickname, account_email',
+        success: this.getKakaoAccount,
+    });
+}
+
+
+const getKakaoAccount = function () {
+    window.Kakao.API.request({
+        url: 'v2/user/me',
+        success: res => {
+            const kakao_account = res.kakao_account;
+            const nickname = kakao_account.nickname;
+            const email = kakao_account.email;
+            console.log(kakao_account.id);
+            console.log(nickname);
+            console.log(email);
+            alert("성공")
+        },
+        fail: error => {
+            console.log(error)
+        }
+    })
+}
+
+
 </script>
 <template>
   <div id="logInPart">
@@ -29,6 +57,11 @@ const signIn = function () {
     <el-input v-model="password" type="password" placeholder="비밀번호를 입력하세요" />
     <el-button type="primary" @click="signIn()" id="logInButton">로그인</el-button>
   </div>
+  <form>
+    <a href="https://kauth.kakao.com/oauth/authorize?client_id=8ca91c36f6c867eabd678eb00abb06e3&redirect_uri=http://localhost:8080/api/auth/kakao/callback&response_type=code">
+        <img src="@/assets/image/kakao_login_medium_narrow.png" />
+    </a>
+  </form>
 </template>
 <style>
 #logInPart {
