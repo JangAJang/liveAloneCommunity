@@ -21,8 +21,6 @@ app.mount('#app')
 app.use(VueCookies)
 // @ts-ignore
 app.$cookies.config('1d')
-Kakao.init('229db5180010ffc0378044aa071a7a5c');
-Kakao.isInitialized();
 
 router.beforeEach(async (to, from, next) => {
   // @ts-ignore

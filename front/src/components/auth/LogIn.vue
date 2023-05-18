@@ -23,32 +23,12 @@ const signIn = function () {
 }
 
 const kakaoLogIn = function () {
-    console.log(window.Kakao)
-    window.Kakao.Auth.logIn({
-        scope: 'profile_nickname, account_email',
-        success: this.getKakaoAccount,
+    Kakao.init('229db5180010ffc0378044aa071a7a5c');
+    Kakao.Auth.authorize({
+        redirectUri: 'http://localhost:5173/auth/kakao-login',
+        prompts: 'login',
     });
 }
-
-
-const getKakaoAccount = function () {
-    window.Kakao.API.request({
-        url: 'v2/user/me',
-        success: res => {
-            const kakao_account = res.kakao_account;
-            const nickname = kakao_account.nickname;
-            const email = kakao_account.email;
-            console.log(kakao_account.id);
-            console.log(nickname);
-            console.log(email);
-            alert("성공")
-        },
-        fail: error => {
-            console.log(error)
-        }
-    })
-}
-
 
 </script>
 <template>
@@ -58,7 +38,7 @@ const getKakaoAccount = function () {
     <el-button type="primary" @click="signIn()" id="logInButton">로그인</el-button>
   </div>
   <form>
-    <a href="https://kauth.kakao.com/oauth/authorize?client_id=8ca91c36f6c867eabd678eb00abb06e3&redirect_uri=http://localhost:8080/api/auth/kakao/callback&response_type=code">
+    <a v-on:click="kakaoLogIn">
         <img src="@/assets/image/kakao_login_medium_narrow.png" />
     </a>
   </form>
