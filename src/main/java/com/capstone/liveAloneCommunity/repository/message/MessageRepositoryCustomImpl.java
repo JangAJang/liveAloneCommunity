@@ -7,6 +7,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 
+import static com.capstone.liveAloneCommunity.entity.message.QMessage.message;
+
 @RequiredArgsConstructor
 public class MessageRepositoryCustomImpl implements MessageRepositoryCustom{
     private final JPAQueryFactory jpaQueryFactory;
@@ -41,5 +43,10 @@ public class MessageRepositoryCustomImpl implements MessageRepositoryCustom{
         }
         return readByNameAndReceiverCondition(messageSearchRequestDto)
                 .or(readByNameAndSenderCondition(messageSearchRequestDto));
+    }
+
+    private static BooleanExpression readByNameAndSenderCondition(MessageSearchRequestDto messageSearchRequestDto) {
+        return message.sender.nickname.nickname.contains(messageSearchRequestDto.getText())
+                .and(message.receiver.nickname.nickname.eq(messageSearchRequestDto.getMember()));
     }
 }
