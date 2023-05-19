@@ -1,17 +1,23 @@
 package com.capstone.liveAloneCommunity.controller.message;
 
+import com.capstone.liveAloneCommunity.dto.message.MessageSearchRequestDto;
 import com.capstone.liveAloneCommunity.dto.message.WriteMessageRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
+import com.capstone.liveAloneCommunity.repository.message.ReadMessageType;
+import com.capstone.liveAloneCommunity.repository.message.SearchMessageType;
 import com.capstone.liveAloneCommunity.response.Response;
 import com.capstone.liveAloneCommunity.service.message.MessageService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -39,7 +45,6 @@ public class MessageController {
     }
 
     private Member getMember() {
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return memberRepository.findByUsername_Username(authentication.getName())
                 .orElseThrow(MemberNotFoundException::new);
