@@ -58,4 +58,18 @@ public class MessageRepositoryCustomImpl implements MessageRepositoryCustom{
     private static BooleanExpression ReadByContentCondition(MessageSearchRequestDto messageSearchRequestDto) {
         return message.content.content.contains(messageSearchRequestDto.getText());
     }
+
+    private BooleanExpression ReadByCalenderCondition(MessageSearchRequestDto messageSearchRequestDto,
+                                                      SearchMessageType searchMessageType, ReadMessageType readMessageType) {
+        if (searchMessageType.equals(SearchMessageType.YEAR)) {
+            return message.createdDate.year().eq(Integer.valueOf(messageSearchRequestDto.getText()))
+                    .and(checkReadCondition(readMessageType, messageSearchRequestDto));
+        }
+        if (searchMessageType.equals(SearchMessageType.MONTH)) {
+            return message.createdDate.month().eq(Integer.valueOf(messageSearchRequestDto.getText()))
+                    .and(checkReadCondition(readMessageType, messageSearchRequestDto));
+        }
+        return message.createdDate.dayOfMonth().eq(Integer.valueOf(messageSearchRequestDto.getText()))
+                .and(checkReadCondition(readMessageType, messageSearchRequestDto));
+    }
 }
