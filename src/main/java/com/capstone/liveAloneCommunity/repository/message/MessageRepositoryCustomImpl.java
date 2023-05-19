@@ -2,20 +2,36 @@ package com.capstone.liveAloneCommunity.repository.message;
 
 import com.capstone.liveAloneCommunity.dto.message.MessageResponseDto;
 import com.capstone.liveAloneCommunity.dto.message.MessageSearchRequestDto;
+import com.capstone.liveAloneCommunity.dto.message.QMessageResponseDto;
+import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import static com.capstone.liveAloneCommunity.entity.message.QMessage.message;
 
 @RequiredArgsConstructor
 public class MessageRepositoryCustomImpl implements MessageRepositoryCustom{
+
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
     public Page<MessageResponseDto> searchMessage(MessageSearchRequestDto messageSearchRequestDto) {
-        return null;
+        Pageable pageable = PageRequest.of(messageSearchRequestDto.getPage(), messageSearchRequestDto.getSize());
+        QueryResults<MessageResponseDto> result = jpaQueryFactory
+                .select(new QMessageResponseDto(message.content.content, message.receiver.nickname.nickname,
+                        message.sender.nickname.nickname, message.createdDate))
+                .from(message)
+                .where(checkCondition(messageSearchRequestDto, messageSearchRequestDto.getSearchMessageType(),
+                        messageSearchRequestDto.getReadMessageType()))
+                .orderBy(message.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+        return new PageImpl<>(result.getResults(), pageable, result.getTotal());
     }
 
     private BooleanExpression checkCondition(MessageSearchRequestDto messageSearchRequestDto,
