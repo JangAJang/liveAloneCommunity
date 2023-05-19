@@ -30,4 +30,16 @@ public class MessageRepositoryCustomImpl implements MessageRepositoryCustom{
         }
         return ReadByCalenderCondition(messageSearchRequestDto, searchMessageType, readMessageType);
     }
+
+    private BooleanExpression ReadByNameCondition(MessageSearchRequestDto messageSearchRequestDto,
+                                                  ReadMessageType readMessageType) {
+        if (readMessageType.equals(ReadMessageType.SENDER)) {
+            return readByNameAndSenderCondition(messageSearchRequestDto);
+        }
+        if (readMessageType.equals(ReadMessageType.RECEIVER)) {
+            return readByNameAndReceiverCondition(messageSearchRequestDto);
+        }
+        return readByNameAndReceiverCondition(messageSearchRequestDto)
+                .or(readByNameAndSenderCondition(messageSearchRequestDto));
+    }
 }
