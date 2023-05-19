@@ -53,6 +53,7 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "카카오 로그인", description = "카카오 로그인 진행, 만약 기존에 로그인한 적이 없다면 계정을 만든 후 진행")
     public Response kakaoCallBack(@RequestParam("code") String code, HttpServletResponse response){
+        System.out.println("CODE : " + code);
         LogInRequestDto logInRequestDto = kakaoAuthService.getLogInRequestByCode(code);
         return logIn(logInRequestDto, response);
     }

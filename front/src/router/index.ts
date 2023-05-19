@@ -21,6 +21,12 @@ const router = createRouter({
       meta: { unauthorized: true }
     },
     {
+      path: '/auth/kakao-login',
+      name: 'kakaoAuth',
+      component: ()=> import('../components/auth/KakaoLogIn.vue'),
+      meta: {unauthorized: true}
+    },
+    {
       path: '/post/write',
       name: 'writePost',
       component: () => import('../components/post/WritePost.vue')
