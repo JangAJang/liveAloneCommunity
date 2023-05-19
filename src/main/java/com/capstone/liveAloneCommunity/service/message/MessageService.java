@@ -8,9 +8,7 @@ import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.message.Message;
 import com.capstone.liveAloneCommunity.exception.message.MessageNotFoundException;
 import com.capstone.liveAloneCommunity.repository.message.MessageRepository;
-import com.capstone.liveAloneCommunity.repository.message.ReadMessageType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
