@@ -35,4 +35,8 @@ public class MessageService {
     public MultiMessageResponseDto readMessageByReceiver(MessageSearchRequestDto messageSearchRequestDto) {
         return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto).getContent());
     }
+
+    public MultiMessageResponseDto readMessageBySender(MessageSearchRequestDto messageSearchRequestDto) {
+        return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto).getContent());
+    }
 }
