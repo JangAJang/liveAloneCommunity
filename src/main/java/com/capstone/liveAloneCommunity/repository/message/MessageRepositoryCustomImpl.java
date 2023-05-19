@@ -55,4 +55,7 @@ public class MessageRepositoryCustomImpl implements MessageRepositoryCustom{
                 .and(message.sender.nickname.nickname.eq(messageSearchRequestDto.getMember()));
     }
 
+    private static BooleanExpression ReadByContentCondition(MessageSearchRequestDto messageSearchRequestDto) {
+        return message.content.content.contains(messageSearchRequestDto.getText());
+    }
 }
