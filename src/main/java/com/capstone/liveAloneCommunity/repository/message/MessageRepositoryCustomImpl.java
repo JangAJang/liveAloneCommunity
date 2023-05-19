@@ -72,4 +72,15 @@ public class MessageRepositoryCustomImpl implements MessageRepositoryCustom{
         return message.createdDate.dayOfMonth().eq(Integer.valueOf(messageSearchRequestDto.getText()))
                 .and(checkReadCondition(readMessageType, messageSearchRequestDto));
     }
+
+    private BooleanExpression checkReadCondition(ReadMessageType readMessageType, MessageSearchRequestDto messageSearchRequestDto) {
+        if (readMessageType.equals(ReadMessageType.SENDER)) {
+            return message.sender.nickname.nickname.eq(messageSearchRequestDto.getMember());
+        }
+        if (readMessageType.equals(ReadMessageType.RECEIVER)) {
+            return message.receiver.nickname.nickname.eq(messageSearchRequestDto.getMember());
+        }
+        return message.sender.nickname.nickname.eq(messageSearchRequestDto.getMember())
+                .or(message.receiver.nickname.nickname.eq(messageSearchRequestDto.getMember()));
+    }
 }
