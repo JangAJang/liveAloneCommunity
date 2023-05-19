@@ -42,4 +42,16 @@ public class Message extends BaseTimeEntity {
         this.receiver = receiver;
         this.content = new Content(content);
     }
+
+    public String getReceiverNickname() {
+        return this.receiver.getNickname();
+    }
+
+    public String getSenderNickname() {
+        return this.sender.getNickname();
+    }
+
+    public String getContent() {
+        return this.content.getContent();
+    }
 }
