@@ -49,4 +49,10 @@ public class MessageRepositoryCustomImpl implements MessageRepositoryCustom{
         return message.sender.nickname.nickname.contains(messageSearchRequestDto.getText())
                 .and(message.receiver.nickname.nickname.eq(messageSearchRequestDto.getMember()));
     }
+
+    private static BooleanExpression readByNameAndReceiverCondition(MessageSearchRequestDto messageSearchRequestDto) {
+        return message.receiver.nickname.nickname.contains(messageSearchRequestDto.getText())
+                .and(message.sender.nickname.nickname.eq(messageSearchRequestDto.getMember()));
+    }
+
 }
