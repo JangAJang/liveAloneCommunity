@@ -31,4 +31,8 @@ public class MessageService {
         Message message = messageRepository.findById(id).orElseThrow(MessageNotFoundException::new);
         return MessageResponseDto.toDto(message);
     }
+
+    public MultiMessageResponseDto readMessageByReceiver(MessageSearchRequestDto messageSearchRequestDto) {
+        return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto).getContent());
+    }
 }
