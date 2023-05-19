@@ -1,6 +1,5 @@
 package com.capstone.liveAloneCommunity.entity.message;
 
-
 import com.capstone.liveAloneCommunity.domain.post.Content;
 import com.capstone.liveAloneCommunity.entity.BaseTimeEntity;
 import com.capstone.liveAloneCommunity.entity.member.Member;
@@ -19,12 +18,9 @@ public class Message extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     @Embedded
     private Content content;
-
     private boolean deletedByReceiver = false;
-
     private boolean deletedBySender = false;
 
     @ManyToOne
