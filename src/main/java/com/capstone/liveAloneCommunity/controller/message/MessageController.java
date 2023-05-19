@@ -59,6 +59,21 @@ public class MessageController {
         return Response.success(messageService.readMessageByReceiver(messageSearchRequestDto));
     }
 
+    @GetMapping("/sender")
+    @Operation(summary = "보낸 쪽지 조히", description = "보낸 쪽지를 조회한다.")
+    @ResponseStatus(HttpStatus.OK)
+    public Response readMessageBySender(@RequestParam ReadMessageType readMessageType, @PageableDefault Pageable pageable) {
+        Member member = getMember();
+        MessageSearchRequestDto messageSearchRequestDto = MessageSearchRequestDto.builder()
+                .member(member.getNickname())
+                .page(pageable.getPageNumber())
+                .size(pageable.getPageSize())
+                .searchMessageType(SearchMessageType.NOT)
+                .readMessageType(readMessageType)
+                .build();
+        return Response.success(messageService.readMessageBySender(messageSearchRequestDto));
+    }
+
     private Member getMember() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return memberRepository.findByUsername_Username(authentication.getName())
