@@ -1,12 +1,16 @@
 package com.capstone.liveAloneCommunity.service.message;
 
 import com.capstone.liveAloneCommunity.dto.message.MessageResponseDto;
+import com.capstone.liveAloneCommunity.dto.message.MessageSearchRequestDto;
+import com.capstone.liveAloneCommunity.dto.message.MultiMessageResponseDto;
 import com.capstone.liveAloneCommunity.dto.message.WriteMessageRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.message.Message;
 import com.capstone.liveAloneCommunity.exception.message.MessageNotFoundException;
 import com.capstone.liveAloneCommunity.repository.message.MessageRepository;
+import com.capstone.liveAloneCommunity.repository.message.ReadMessageType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
