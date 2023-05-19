@@ -31,7 +31,15 @@ public class MessageController {
         return Response.success(messageService.writeMessage(member, receiver, writeMessageRequestDto));
     }
 
+    @GetMapping("")
+    @Operation(summary = "단건 쪽지 조회", description = "쪽지를 단건 조회한다.")
+    @ResponseStatus(HttpStatus.OK)
+    public Response readMessage(@RequestParam Long id) {
+        return Response.success(messageService.readMessage(id));
+    }
+
     private Member getMember() {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return memberRepository.findByUsername_Username(authentication.getName())
                 .orElseThrow(MemberNotFoundException::new);
