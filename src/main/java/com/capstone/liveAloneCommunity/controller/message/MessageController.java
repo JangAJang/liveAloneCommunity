@@ -20,4 +20,9 @@ public class MessageController {
         return memberRepository.findByUsername_Username(authentication.getName())
                 .orElseThrow(MemberNotFoundException::new);
     }
+
+    private Member getReceiver(String receiver) {
+        return memberRepository.findByNickname_Nickname(receiver)
+                .orElseThrow(MemberNotFoundException::new);
+    }
 }
