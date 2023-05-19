@@ -50,8 +50,4 @@ public class Message extends BaseTimeEntity {
     public String getSenderNickname() {
         return this.sender.getNickname();
     }
-
-    public String getContent() {
-        return this.content.getContent();
-    }
 }
