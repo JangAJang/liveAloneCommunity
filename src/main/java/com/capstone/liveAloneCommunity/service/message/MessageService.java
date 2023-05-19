@@ -43,4 +43,8 @@ public class MessageService {
     public MultiMessageResponseDto readMessageAll(MessageSearchRequestDto messageSearchRequestDto) {
         return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto).getContent());
     }
+
+    public MultiMessageResponseDto readMessageBySearch(MessageSearchRequestDto messageSearchRequestDto) {
+        return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto).getContent());
+    }
 }
