@@ -24,7 +24,7 @@ public class MessageService {
         return MessageResponseDto.toDto(message);
     }
 
-    private static void isSameSenderAndReceiver(Member member, Member receiver) {
+    private void isSameSenderAndReceiver(Member member, Member receiver) {
         if (member.equals(receiver)) {
             throw new CanNotSameReceiverAndSenderException();
         }
