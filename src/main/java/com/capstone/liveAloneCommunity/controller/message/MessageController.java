@@ -98,7 +98,7 @@ public class MessageController {
                 .orElseThrow(MemberNotFoundException::new);
     }
 
-    private static MessageSearchRequestDto setBuilder(ReadMessageType readMessageType, Pageable pageable, Member member) {
+    private MessageSearchRequestDto setBuilder(ReadMessageType readMessageType, Pageable pageable, Member member) {
         return MessageSearchRequestDto.builder()
                 .member(member.getNickname())
                 .page(pageable.getPageNumber())
