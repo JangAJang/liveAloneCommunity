@@ -7,6 +7,7 @@ import com.capstone.liveAloneCommunity.dto.message.WriteMessageRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.message.Message;
 import com.capstone.liveAloneCommunity.exception.message.MessageNotFoundException;
+import com.capstone.liveAloneCommunity.exception.message.CanNotSameReceiverAndSenderException;
 import com.capstone.liveAloneCommunity.repository.message.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class MessageService {
     private final MessageRepository messageRepository;
 
     public MessageResponseDto writeMessage(Member member, Member receiver, WriteMessageRequestDto writeMessageRequestDto) {
+        isSameSenderAndReceiver(member, receiver);
         Message message = new Message(member, receiver, writeMessageRequestDto.getContent());
         messageRepository.save(message);
         return MessageResponseDto.toDto(message);
@@ -44,5 +46,11 @@ public class MessageService {
 
     public MultiMessageResponseDto readMessageBySearch(MessageSearchRequestDto messageSearchRequestDto) {
         return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto).getContent());
+    }
+
+    private void isSameSenderAndReceiver(Member member, Member receiver) {
+        if (member.equals(receiver)) {
+            throw new CanNotSameReceiverAndSenderException();
+        }
     }
 }
