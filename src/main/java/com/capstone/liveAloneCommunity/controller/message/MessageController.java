@@ -40,7 +40,8 @@ public class MessageController {
     @Operation(summary = "단건 쪽지 조회", description = "쪽지를 단건 조회한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response readMessage(@RequestParam Long id) {
-        return Response.success(messageService.readMessage(id));
+        Member member = getMember();
+        return Response.success(messageService.readMessage(member, id));
     }
 
     @GetMapping("/receiver")
