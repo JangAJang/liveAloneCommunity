@@ -20,4 +20,10 @@ public class MessageExceptionAdvice {
     public Response SenderAndMemberNotEqualsException() {
         return Response.failure(400, "송신자의 정보가 일치하지 않습니다.");
     }
+
+    @ExceptionHandler(NotMyMessageException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response NotMyMessageException() {
+        return Response.failure(400, "열람할 수 없는 메세지입니다.");
+    }
 }
