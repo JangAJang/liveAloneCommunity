@@ -27,6 +27,11 @@ const router = createRouter({
       meta: { unauthorized: true }
     },
     {
+      path: '/member',
+      name: 'myPage',
+      component: ()=> import('../components/member/MyPage.vue'),
+    },
+    {
       path: '/post/write',
       name: 'writePost',
       component: () => import('../components/post/WritePost.vue')
