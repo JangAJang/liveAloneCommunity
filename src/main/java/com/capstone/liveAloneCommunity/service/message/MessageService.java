@@ -3,13 +3,9 @@ package com.capstone.liveAloneCommunity.service.message;
 import com.capstone.liveAloneCommunity.dto.message.MessageResponseDto;
 import com.capstone.liveAloneCommunity.dto.message.MessageSearchRequestDto;
 import com.capstone.liveAloneCommunity.dto.message.MultiMessageResponseDto;
-import com.capstone.liveAloneCommunity.dto.message.WriteMessageRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.message.Message;
-import com.capstone.liveAloneCommunity.exception.message.MessageNotFoundException;
-import com.capstone.liveAloneCommunity.exception.message.CanNotSameReceiverAndSenderException;
-import com.capstone.liveAloneCommunity.exception.message.NotMyMessageException;
-import com.capstone.liveAloneCommunity.exception.message.SenderAndMemberNotEqualsException;
+import com.capstone.liveAloneCommunity.exception.message.*;
 import com.capstone.liveAloneCommunity.repository.message.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,6 +28,7 @@ public class MessageService {
     public MessageResponseDto readMessage(Member member, Long id) {
         Message message = messageRepository.findById(id).orElseThrow(MessageNotFoundException::new);
         checkMessageMember(message, member);
+        checkDeletedMessage(message, member);
         return MessageResponseDto.toDto(message);
     }
 
@@ -48,6 +45,15 @@ public class MessageService {
     private void checkMessageMember(Message message, Member member) {
         if (!(message.checkMessageReceiver(message, member)) && !(message.checkMessageSender(message, member))) {
             throw new NotMyMessageException();
+        }
+    }
+
+    private void checkDeletedMessage(Message message, Member member) {
+        if (message.checkMessageSender(message, member) && message.isDeletedBySender()) {
+            throw new DeletedMessageException();
+        }
+        if (message.checkMessageReceiver(message, member) && message.isDeletedByReceiver()) {
+            throw new DeletedMessageException();
         }
     }
 }
