@@ -32,19 +32,7 @@ public class MessageService {
         return MessageResponseDto.toDto(message);
     }
 
-    public MultiMessageResponseDto readMessageByReceiver(MessageSearchRequestDto messageSearchRequestDto) {
-        return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto).getContent());
-    }
-
-    public MultiMessageResponseDto readMessageBySender(MessageSearchRequestDto messageSearchRequestDto) {
-        return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto).getContent());
-    }
-
-    public MultiMessageResponseDto readMessageAll(MessageSearchRequestDto messageSearchRequestDto) {
-        return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto).getContent());
-    }
-
-    public MultiMessageResponseDto readMessageBySearch(MessageSearchRequestDto messageSearchRequestDto) {
+    public MultiMessageResponseDto readMessageByCondition(MessageSearchRequestDto messageSearchRequestDto) {
         return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto).getContent());
     }
 
