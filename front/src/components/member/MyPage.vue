@@ -3,6 +3,7 @@ import {onMounted, ref} from "vue";
 import axios from "axios";
 import Profile from "@/components/main/Profile.vue";
 import MyComment from "@/components/main/MyComment.vue";
+import router from "@/router";
 
 const nickname = ref('')
 const currentPassword = ref('')
@@ -14,6 +15,22 @@ onMounted(() => {
         nickname.value = res.data.result.data.nickname
       })
 })
+
+const changeNickname = function () {
+  axios
+      .patch("/lan/member/edit", {
+    nickname: nickname.value
+  })
+      .then(() => {
+    alert("닉네임 변경에 성공했습니다.")
+    router.push({name: 'myPage'})
+  })
+      .catch((reason) => alert(reason.response.data.result.failMessage))
+}
+const deleteMember = function () {
+
+}
+
 </script>
 
 <template>
@@ -21,29 +38,29 @@ onMounted(() => {
     <h2 id="MemberInfo">회원 정보</h2>
     <div id="nickname">
       <el-text id="frontTap">닉네임</el-text>
-      <el-input v-model="nickname"></el-input>
-      <el-button>닉네임 변경</el-button>
+      <el-input v-model="nickname" type="text"></el-input>
+      <el-button @click="changeNickname">닉네임 변경</el-button>
     </div>
     <br/>
     <h2 id="MemberInfo">비밀번호 수정</h2>
     <div id="nickname">
       <el-text id="frontTap">기존 비밀번호</el-text>
-      <el-input v-model="nickname"></el-input>
-      <el-button>닉네임 변경</el-button>
+      <el-input v-model="currentPassword" type="password"></el-input>
     </div>
     <div id="nickname">
       <el-text id="frontTap">새 비밀번호</el-text>
-      <el-input v-model="nickname"></el-input>
-      <el-button>닉네임 변경</el-button>
+      <el-input v-model="newPassword" type="password"></el-input>
     </div>
     <div id="nickname">
       <el-text id="frontTap">새 비밀번호 재입력</el-text>
-      <el-input v-model="nickname"></el-input>
-      <el-button>닉네임 변경</el-button>
+      <el-input v-model="newPasswordCheck" type="password"></el-input>
+    </div>
+    <div id="nickname">
+      <el-button @click="changePassword">비밀번호 변경</el-button>
     </div>
     <h2 id="MemberInfo">회원 삭제</h2>
     <div id="nickname">
-      <el-button>회원 삭제</el-button>
+      <el-button >회원 삭제</el-button>
     </div>
   </div>
   <Profile/>
