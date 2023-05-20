@@ -105,6 +105,15 @@ public class MessageController {
         return Response.success(messageService.readMessageBySearch(messageSearchRequestDto));
     }
 
+    @DeleteMapping("")
+    @Operation(summary = "쪽지 삭제", description = "쪽지를 삭제한다.")
+    @ResponseStatus(HttpStatus.OK)
+    public Response deleteMessage(@RequestParam Long id) {
+        Member member = getMember();
+        messageService.deleteMessage(member, id);
+        return Response.success("쪽지 삭제 완료");
+    }
+
     private Member getMember() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return memberRepository.findByUsername_Username(authentication.getName())
