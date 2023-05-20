@@ -65,16 +65,6 @@ public class MessageRepositoryCustomImpl implements MessageRepositoryCustom{
         if (SearchMessageType.CONTENT.equals(searchMessageType)) {
             return message.content.content.contains(messageSearchRequestDto.getText());
         }
-        if (SearchMessageType.CALENDER.equals(searchMessageType)) {
-            return readByCalenderCondition(messageSearchRequestDto);
-        }
         return null;
-    }
-
-    private BooleanExpression readByCalenderCondition(MessageSearchRequestDto messageSearchRequestDto) {
-        String[] str = messageSearchRequestDto.getText().split("/");
-        return message.createdDate.year().eq(Integer.valueOf(str[0]))
-                .and(message.createdDate.month().eq(Integer.valueOf(str[1])))
-                .and(message.createdDate.dayOfMonth().eq(Integer.valueOf(str[2])));
     }
 }
