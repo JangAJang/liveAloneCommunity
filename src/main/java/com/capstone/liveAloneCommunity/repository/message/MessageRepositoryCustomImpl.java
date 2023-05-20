@@ -6,7 +6,6 @@ import com.capstone.liveAloneCommunity.dto.message.QMessageResponseDto;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -32,7 +31,6 @@ public class MessageRepositoryCustomImpl implements MessageRepositoryCustom{
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
-
         return new PageImpl<>(result.getResults(), pageable, result.getTotal());
     }
 
