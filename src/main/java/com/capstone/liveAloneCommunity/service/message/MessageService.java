@@ -45,4 +45,17 @@ public class MessageService {
     public MultiMessageResponseDto readMessageBySearch(MessageSearchRequestDto messageSearchRequestDto) {
         return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto).getContent());
     }
+
+    public void deleteMessage(Member member, Long id) {
+        Message message = messageRepository.findById(id).orElseThrow(MessageNotFoundException::new);
+        if (message.getSender().equals(member)) {
+            message.deletedBySender();
+        }
+        if (message.getReceiver().equals(member)) {
+            message.deleteByReceiver();
+        }
+        if (message.isDeletedMessage()) {
+            messageRepository.delete(message);
+        }
+    }
 }
