@@ -42,7 +42,14 @@ const changePassword = function () {
 }
 
 const deleteMember = function () {
-
+  if(confirm("회원을 삭제하시겠습니까?")){
+    axios.delete("/lan/member/delete")
+        .then(() => {
+          alert("회원을 탈퇴했습니다. 그동한 L.A.N과 함꼐 해주셔서 감사합니다.")
+          router.push({name: 'logIn'})
+        })
+        .catch((reason) => alert(reason.response.data.result.failMessage))
+  }
 }
 
 </script>
@@ -74,7 +81,7 @@ const deleteMember = function () {
     </div>
     <h2 id="MemberInfo">회원 삭제</h2>
     <div id="nickname">
-      <el-button >회원 삭제</el-button>
+      <el-button @click="deleteMember">회원 삭제</el-button>
     </div>
   </div>
   <Profile/>
