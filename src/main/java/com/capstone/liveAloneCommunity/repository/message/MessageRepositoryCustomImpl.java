@@ -25,78 +25,61 @@ public class MessageRepositoryCustomImpl implements MessageRepositoryCustom{
                 .select(new QMessageResponseDto(message.content.content, message.receiver.nickname.nickname,
                         message.sender.nickname.nickname, message.createdDate))
                 .from(message)
-                .where(checkCondition(messageSearchRequestDto, messageSearchRequestDto.getSearchMessageType(),
-                        messageSearchRequestDto.getReadMessageType()))
+                .where(checkSearchCondition(messageSearchRequestDto, messageSearchRequestDto.getSearchMessageType()),
+                        (checkReadCondition(messageSearchRequestDto, messageSearchRequestDto.getReadMessageType())))
                 .orderBy(message.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
+
         return new PageImpl<>(result.getResults(), pageable, result.getTotal());
     }
 
-    private BooleanExpression checkCondition(MessageSearchRequestDto messageSearchRequestDto,
-                                             SearchMessageType searchMessageType, ReadMessageType readMessageType) {
+    private BooleanExpression checkSearchCondition(MessageSearchRequestDto messageSearchRequestDto,
+                                                   SearchMessageType searchMessageType) {
         if (searchMessageType.equals(SearchMessageType.NAME)) {
-            return ReadByNameCondition(messageSearchRequestDto, readMessageType);
+            return message.sender.nickname.nickname.contains(messageSearchRequestDto.getText())
+                    .or(message.receiver.nickname.nickname.contains(messageSearchRequestDto.getText()));
         }
         if (searchMessageType.equals(SearchMessageType.CONTENT)) {
-            return ReadByContentCondition(messageSearchRequestDto)
-                    .and(checkReadCondition(readMessageType, messageSearchRequestDto));
+            return message.content.content.contains(messageSearchRequestDto.getText());
         }
         if (searchMessageType.equals(SearchMessageType.NOT)) {
-            return checkReadCondition(readMessageType, messageSearchRequestDto);
+            return null;
         }
-        return ReadByCalenderCondition(messageSearchRequestDto, searchMessageType, readMessageType);
+        return readByCalenderCondition(messageSearchRequestDto, searchMessageType);
     }
 
-    private BooleanExpression ReadByNameCondition(MessageSearchRequestDto messageSearchRequestDto,
-                                                  ReadMessageType readMessageType) {
-        if (readMessageType.equals(ReadMessageType.SENDER)) {
-            return readByNameAndSenderCondition(messageSearchRequestDto);
-        }
-        if (readMessageType.equals(ReadMessageType.RECEIVER)) {
-            return readByNameAndReceiverCondition(messageSearchRequestDto);
-        }
-        return readByNameAndReceiverCondition(messageSearchRequestDto)
-                .or(readByNameAndSenderCondition(messageSearchRequestDto));
-    }
-
-    private static BooleanExpression readByNameAndSenderCondition(MessageSearchRequestDto messageSearchRequestDto) {
-        return message.sender.nickname.nickname.contains(messageSearchRequestDto.getText())
-                .and(message.receiver.nickname.nickname.eq(messageSearchRequestDto.getMember()));
-    }
-
-    private static BooleanExpression readByNameAndReceiverCondition(MessageSearchRequestDto messageSearchRequestDto) {
-        return message.receiver.nickname.nickname.contains(messageSearchRequestDto.getText())
-                .and(message.sender.nickname.nickname.eq(messageSearchRequestDto.getMember()));
-    }
-
-    private static BooleanExpression ReadByContentCondition(MessageSearchRequestDto messageSearchRequestDto) {
-        return message.content.content.contains(messageSearchRequestDto.getText());
-    }
-
-    private BooleanExpression ReadByCalenderCondition(MessageSearchRequestDto messageSearchRequestDto,
-                                                      SearchMessageType searchMessageType, ReadMessageType readMessageType) {
+    private BooleanExpression readByCalenderCondition(MessageSearchRequestDto messageSearchRequestDto,
+                                                      SearchMessageType searchMessageType) {
         if (searchMessageType.equals(SearchMessageType.YEAR)) {
-            return message.createdDate.year().eq(Integer.valueOf(messageSearchRequestDto.getText()))
-                    .and(checkReadCondition(readMessageType, messageSearchRequestDto));
+            return message.createdDate.year().eq(Integer.valueOf(messageSearchRequestDto.getText()));
         }
         if (searchMessageType.equals(SearchMessageType.MONTH)) {
-            return message.createdDate.month().eq(Integer.valueOf(messageSearchRequestDto.getText()))
-                    .and(checkReadCondition(readMessageType, messageSearchRequestDto));
+            return message.createdDate.month().eq(Integer.valueOf(messageSearchRequestDto.getText()));
         }
-        return message.createdDate.dayOfMonth().eq(Integer.valueOf(messageSearchRequestDto.getText()))
-                .and(checkReadCondition(readMessageType, messageSearchRequestDto));
+        return message.createdDate.dayOfMonth().eq(Integer.valueOf(messageSearchRequestDto.getText()));
     }
 
-    private BooleanExpression checkReadCondition(ReadMessageType readMessageType, MessageSearchRequestDto messageSearchRequestDto) {
+    private BooleanExpression checkReadCondition(MessageSearchRequestDto messageSearchRequestDto,
+                                                 ReadMessageType readMessageType) {
         if (readMessageType.equals(ReadMessageType.SENDER)) {
-            return message.sender.nickname.nickname.eq(messageSearchRequestDto.getMember());
+            return readSenderCondition(messageSearchRequestDto, readMessageType);
         }
         if (readMessageType.equals(ReadMessageType.RECEIVER)) {
-            return message.receiver.nickname.nickname.eq(messageSearchRequestDto.getMember());
+            return readReceiverCondition(messageSearchRequestDto, readMessageType);
         }
+        return readSenderCondition(messageSearchRequestDto, readMessageType)
+                .or(readReceiverCondition(messageSearchRequestDto, readMessageType));
+    }
+
+    private BooleanExpression readReceiverCondition(MessageSearchRequestDto messageSearchRequestDto, ReadMessageType readMessageType) {
+        return message.receiver.nickname.nickname.eq(messageSearchRequestDto.getMember())
+                .and(message.deletedByReceiver.not());
+    }
+
+    private BooleanExpression readSenderCondition(MessageSearchRequestDto messageSearchRequestDto, ReadMessageType readMessageType) {
         return message.sender.nickname.nickname.eq(messageSearchRequestDto.getMember())
-                .or(message.receiver.nickname.nickname.eq(messageSearchRequestDto.getMember()));
+                .and(message.deletedBySender.not());
     }
 }
