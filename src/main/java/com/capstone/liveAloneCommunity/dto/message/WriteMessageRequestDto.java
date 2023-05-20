@@ -15,4 +15,6 @@ public class WriteMessageRequestDto {
     private String content;
     @NotBlank
     private String receiver;
+    @NotBlank
+    private String sender;
 }
