@@ -28,7 +28,7 @@ public class MessageController {
     public Response writeMessage(@RequestBody @Valid WriteMessageRequestDto writeMessageRequestDto) {
         Member member = getMember();
         Member receiver = getReceiver(writeMessageRequestDto.getReceiver());
-        return Response.success(messageService.writeMessage(member, receiver, writeMessageRequestDto));
+        return Response.success(messageService.writeMessage(member, receiver, writeMessageRequestDto.getContent()));
     }
 
     private Member getMember() {
