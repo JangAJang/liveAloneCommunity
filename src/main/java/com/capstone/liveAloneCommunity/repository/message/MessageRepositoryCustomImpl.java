@@ -60,14 +60,14 @@ public class MessageRepositoryCustomImpl implements MessageRepositoryCustom{
 
     private BooleanExpression checkSearchCondition(MessageSearchRequestDto messageSearchRequestDto,
                                                    SearchMessageType searchMessageType) {
-        if (searchMessageType.equals(SearchMessageType.NAME)) {
+        if (SearchMessageType.NAME.equals(searchMessageType)) {
             return message.sender.nickname.nickname.contains(messageSearchRequestDto.getText())
                     .or(message.receiver.nickname.nickname.contains(messageSearchRequestDto.getText()));
         }
-        if (searchMessageType.equals(SearchMessageType.CONTENT)) {
+        if (SearchMessageType.CONTENT.equals(searchMessageType)) {
             return message.content.content.contains(messageSearchRequestDto.getText());
         }
-        if (searchMessageType.equals(SearchMessageType.CALENDER)) {
+        if (SearchMessageType.CALENDER.equals(searchMessageType)) {
             return readByCalenderCondition(messageSearchRequestDto);
         }
         return null;
