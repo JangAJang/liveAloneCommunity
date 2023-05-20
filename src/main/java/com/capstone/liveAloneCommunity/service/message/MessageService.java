@@ -21,10 +21,9 @@ public class MessageService {
 
     private final MessageRepository messageRepository;
 
-    public MessageResponseDto writeMessage(Member member, Member receiver, WriteMessageRequestDto writeMessageRequestDto) {
+    public MessageResponseDto writeMessage(Member member, Member receiver, String content) {
         isSameSenderAndReceiver(member, receiver);
-        isSameMemberAndSender(member, writeMessageRequestDto.getSender());
-        Message message = new Message(member, receiver, writeMessageRequestDto.getContent());
+        Message message = new Message(member, receiver, content);
         messageRepository.save(message);
         return MessageResponseDto.toDto(message);
     }
@@ -41,12 +40,6 @@ public class MessageService {
     private void isSameSenderAndReceiver(Member member, Member receiver) {
         if (member.equals(receiver)) {
             throw new CanNotSameReceiverAndSenderException();
-        }
-    }
-
-    private void isSameMemberAndSender(Member member, String senderNickname) {
-        if (!member.getNickname().equals(senderNickname)) {
-            throw new SenderAndMemberNotEqualsException();
         }
     }
 }
