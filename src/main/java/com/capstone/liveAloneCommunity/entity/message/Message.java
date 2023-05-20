@@ -50,4 +50,8 @@ public class Message extends BaseTimeEntity {
     public String getContent() {
         return this.content.getContent();
     }
+
+    public void deletedBySender() {
+        this.deletedBySender = true;
+    }
 }
