@@ -36,6 +36,20 @@ public class MessageService {
         return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto).getContent());
     }
 
+    public void deleteMessage(Member member, Long id) {
+        Message message = messageRepository.findById(id).orElseThrow(MessageNotFoundException::new);
+        checkMessageMember(message, member);
+        if (message.getSender().equals(member)) {
+            message.deletedBySender();
+        }
+        if (message.getReceiver().equals(member)) {
+            message.deleteByReceiver();
+        }
+        if (message.isDeletedMessage()) {
+            messageRepository.delete(message);
+        }
+    }
+
     private void isSameSenderAndReceiver(Member member, Member receiver) {
         if (member.equals(receiver)) {
             throw new CanNotSameReceiverAndSenderException();
@@ -54,19 +68,6 @@ public class MessageService {
         }
         if (message.checkMessageReceiver(message, member) && message.isDeletedByReceiver()) {
             throw new DeletedMessageException();
-        }
-    }
-
-    public void deleteMessage(Member member, Long id) {
-        Message message = messageRepository.findById(id).orElseThrow(MessageNotFoundException::new);
-        if (message.getSender().equals(member)) {
-            message.deletedBySender();
-        }
-        if (message.getReceiver().equals(member)) {
-            message.deleteByReceiver();
-        }
-        if (message.isDeletedMessage()) {
-            messageRepository.delete(message);
         }
     }
 }
