@@ -27,6 +27,20 @@ const changeNickname = function () {
   })
       .catch((reason) => alert(reason.response.data.result.failMessage))
 }
+
+const changePassword = function () {
+  axios.patch("/lan/member/changePassword", {
+    currentPassword: currentPassword.value,
+    newPassword: newPassword.value,
+    newPasswordCheck: newPasswordCheck.value
+  })
+      .then(()=> {
+        alert("비밀번호 변경에 성공했습니다.")
+        router.push({name: 'myPage'})
+      })
+      .catch((reason) => alert(reason.response.data.result.failMessage))
+}
+
 const deleteMember = function () {
 
 }
