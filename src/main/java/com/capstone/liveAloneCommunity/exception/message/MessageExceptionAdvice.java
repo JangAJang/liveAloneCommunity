@@ -26,4 +26,10 @@ public class MessageExceptionAdvice {
     public Response NotMyMessageException() {
         return Response.failure(400, "열람할 수 없는 메세지입니다.");
     }
+
+    @ExceptionHandler(DeletedMessageException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response DeletedMessageException() {
+        return Response.failure(400, "삭제된 쪽지입니다.");
+    }
 }
