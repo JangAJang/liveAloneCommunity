@@ -47,12 +47,12 @@ public class MessageRepositoryCustomImpl implements MessageRepositoryCustom{
     }
 
     private BooleanExpression readReceiverCondition(MessageSearchRequestDto messageSearchRequestDto, ReadMessageType readMessageType) {
-        return message.receiver.nickname.nickname.eq(messageSearchRequestDto.getMember())
+        return message.receiver.nickname.nickname.eq(messageSearchRequestDto.getRequestMember())
                 .and(message.deletedByReceiver.not());
     }
 
     private BooleanExpression readSenderCondition(MessageSearchRequestDto messageSearchRequestDto, ReadMessageType readMessageType) {
-        return message.sender.nickname.nickname.eq(messageSearchRequestDto.getMember())
+        return message.sender.nickname.nickname.eq(messageSearchRequestDto.getRequestMember())
                 .and(message.deletedBySender.not());
     }
 
