@@ -3,10 +3,9 @@ package com.capstone.liveAloneCommunity.service.message;
 import com.capstone.liveAloneCommunity.dto.message.MessageResponseDto;
 import com.capstone.liveAloneCommunity.dto.message.MessageSearchRequestDto;
 import com.capstone.liveAloneCommunity.dto.message.MultiMessageResponseDto;
-import com.capstone.liveAloneCommunity.dto.message.WriteMessageRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.message.Message;
-import com.capstone.liveAloneCommunity.exception.message.MessageNotFoundException;
+import com.capstone.liveAloneCommunity.exception.message.*;
 import com.capstone.liveAloneCommunity.repository.message.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,31 +18,43 @@ public class MessageService {
 
     private final MessageRepository messageRepository;
 
-    public MessageResponseDto writeMessage(Member member, Member receiver, WriteMessageRequestDto writeMessageRequestDto) {
-        Message message = new Message(member, receiver, writeMessageRequestDto.getContent());
+    public MessageResponseDto writeMessage(Member member, Member receiver, String content) {
+        isSameSenderAndReceiver(member, receiver);
+        Message message = new Message(member, receiver, content);
         messageRepository.save(message);
         return MessageResponseDto.toDto(message);
     }
 
-    public MessageResponseDto readMessage(Long id) {
+    public MessageResponseDto readMessage(Member member, Long id) {
         Message message = messageRepository.findById(id).orElseThrow(MessageNotFoundException::new);
+        checkMessageMember(message, member);
+        checkDeletedMessage(message, member);
         return MessageResponseDto.toDto(message);
     }
 
-    public MultiMessageResponseDto readMessageByReceiver(MessageSearchRequestDto messageSearchRequestDto) {
+    public MultiMessageResponseDto readMessageByCondition(MessageSearchRequestDto messageSearchRequestDto) {
         return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto).getContent());
     }
 
-    public MultiMessageResponseDto readMessageBySender(MessageSearchRequestDto messageSearchRequestDto) {
-        return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto).getContent());
+    private void isSameSenderAndReceiver(Member member, Member receiver) {
+        if (member.equals(receiver)) {
+            throw new CanNotSameReceiverAndSenderException();
+        }
     }
 
-    public MultiMessageResponseDto readMessageAll(MessageSearchRequestDto messageSearchRequestDto) {
-        return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto).getContent());
+    private void checkMessageMember(Message message, Member member) {
+        if (!(message.checkMessageReceiver(message, member)) && !(message.checkMessageSender(message, member))) {
+            throw new NotMyMessageException();
+        }
     }
 
-    public MultiMessageResponseDto readMessageBySearch(MessageSearchRequestDto messageSearchRequestDto) {
-        return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto).getContent());
+    private void checkDeletedMessage(Message message, Member member) {
+        if (message.checkMessageSender(message, member) && message.isDeletedBySender()) {
+            throw new DeletedMessageException();
+        }
+        if (message.checkMessageReceiver(message, member) && message.isDeletedByReceiver()) {
+            throw new DeletedMessageException();
+        }
     }
 
     public void deleteMessage(Member member, Long id) {

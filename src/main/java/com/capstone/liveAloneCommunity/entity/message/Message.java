@@ -22,12 +22,10 @@ public class Message extends BaseTimeEntity {
     private Content content;
     private boolean deletedByReceiver = false;
     private boolean deletedBySender = false;
-
     @ManyToOne
     @JoinColumn(name = "receiver_name")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Member receiver;
-
     @ManyToOne
     @JoinColumn(name = "sender_name")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
@@ -61,5 +59,13 @@ public class Message extends BaseTimeEntity {
 
     public boolean isDeletedMessage() {
         return deletedBySender && deletedByReceiver;
+    }
+
+    public boolean checkMessageReceiver(Message message, Member member) {
+        return message.getReceiver().equals(member);
+    }
+
+    public boolean checkMessageSender(Message message, Member member) {
+        return message.getSender().equals(member);
     }
 }

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ReadMessageType {
 
-    SENDER, RECEIVER, ALL, NOT;
+    SENDER, RECEIVER, ALL;
 
     @JsonValue
     public String getName(){
