@@ -23,13 +23,12 @@ const signIn = function () {
 }
 
 const kakaoLogIn = function () {
-    Kakao.init('229db5180010ffc0378044aa071a7a5c');
-    Kakao.Auth.authorize({
-        redirectUri: 'http://localhost:5173/auth/kakao-login',
-        prompts: 'login',
-    });
+  Kakao.init('229db5180010ffc0378044aa071a7a5c')
+  Kakao.Auth.authorize({
+    redirectUri: 'http://localhost:5173/auth/kakao-login',
+    prompts: 'login',
+  })
 }
-
 </script>
 <template>
   <div id="logInPart">
@@ -39,7 +38,7 @@ const kakaoLogIn = function () {
   </div>
   <form>
     <a v-on:click="kakaoLogIn">
-        <img src="@/assets/image/kakao_login_medium_narrow.png" />
+      <img src="@/assets/image/kakao_login_medium_narrow.png" />
     </a>
   </form>
 </template>
