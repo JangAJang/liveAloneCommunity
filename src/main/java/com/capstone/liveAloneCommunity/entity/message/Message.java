@@ -17,7 +17,7 @@ public class Message extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @Embedded
     private Content content;
     private boolean deletedByReceiver = false;
