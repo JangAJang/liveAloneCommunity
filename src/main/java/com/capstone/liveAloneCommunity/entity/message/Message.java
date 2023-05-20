@@ -58,4 +58,8 @@ public class Message extends BaseTimeEntity {
     public void deleteByReceiver() {
         this.deletedByReceiver = true;
     }
+
+    public boolean isDeletedMessage() {
+        return deletedBySender && deletedByReceiver;
+    }
 }
