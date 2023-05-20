@@ -99,12 +99,11 @@ public class MessageController {
     }
 
     private static MessageSearchRequestDto setBuilder(ReadMessageType readMessageType, Pageable pageable, Member member) {
-        MessageSearchRequestDto messageSearchRequestDto = MessageSearchRequestDto.builder()
+        return MessageSearchRequestDto.builder()
                 .member(member.getNickname())
                 .page(pageable.getPageNumber())
                 .size(pageable.getPageSize())
                 .readMessageType(readMessageType)
                 .build();
-        return messageSearchRequestDto;
     }
 }
