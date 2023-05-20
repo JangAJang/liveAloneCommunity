@@ -14,4 +14,10 @@ public class MessageExceptionAdvice {
     public Response CanNotSameReceiverAndSenderException() {
         return Response.failure(400, "송신자와 수신자는 같을 수 없습니다.");
     }
+
+    @ExceptionHandler(SenderAndMemberNotEqualsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response SenderAndMemberNotEqualsException() {
+        return Response.failure(400, "송신자의 정보가 일치하지 않습니다.");
+    }
 }
