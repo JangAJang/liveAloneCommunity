@@ -48,14 +48,8 @@ public class MessageController {
     @ResponseStatus(HttpStatus.OK)
     public Response readMessageByReceiver(@RequestParam ReadMessageType readMessageType, @PageableDefault Pageable pageable) {
         Member member = getMember();
-        MessageSearchRequestDto messageSearchRequestDto = MessageSearchRequestDto.builder()
-                .member(member.getNickname())
-                .page(pageable.getPageNumber())
-                .size(pageable.getPageSize())
-                .searchMessageType(SearchMessageType.NOT)
-                .readMessageType(readMessageType)
-                .build();
-        return Response.success(messageService.readMessageByReceiver(messageSearchRequestDto));
+        MessageSearchRequestDto messageSearchRequestDto = setBuilder(readMessageType, pageable, member);
+        return Response.success(messageService.readMessageByCondition(messageSearchRequestDto));
     }
 
     @GetMapping("/sender")
@@ -63,14 +57,8 @@ public class MessageController {
     @ResponseStatus(HttpStatus.OK)
     public Response readMessageBySender(@RequestParam ReadMessageType readMessageType, @PageableDefault Pageable pageable) {
         Member member = getMember();
-        MessageSearchRequestDto messageSearchRequestDto = MessageSearchRequestDto.builder()
-                .member(member.getNickname())
-                .page(pageable.getPageNumber())
-                .size(pageable.getPageSize())
-                .searchMessageType(SearchMessageType.NOT)
-                .readMessageType(readMessageType)
-                .build();
-        return Response.success(messageService.readMessageBySender(messageSearchRequestDto));
+        MessageSearchRequestDto messageSearchRequestDto = setBuilder(readMessageType, pageable, member);
+        return Response.success(messageService.readMessageByCondition(messageSearchRequestDto));
     }
 
     @GetMapping("/all")
@@ -78,14 +66,8 @@ public class MessageController {
     @ResponseStatus(HttpStatus.OK)
     public Response readMessageAll(@RequestParam ReadMessageType readMessageType, @PageableDefault Pageable pageable) {
         Member member = getMember();
-        MessageSearchRequestDto messageSearchRequestDto = MessageSearchRequestDto.builder()
-                .member(member.getNickname())
-                .page(pageable.getPageNumber())
-                .size(pageable.getPageSize())
-                .searchMessageType(SearchMessageType.NOT)
-                .readMessageType(readMessageType)
-                .build();
-        return Response.success(messageService.readMessageAll(messageSearchRequestDto));
+        MessageSearchRequestDto messageSearchRequestDto = setBuilder(readMessageType, pageable, member);
+        return Response.success(messageService.readMessageByCondition(messageSearchRequestDto));
     }
 
     @GetMapping("/search")
@@ -102,7 +84,7 @@ public class MessageController {
                 .searchMessageType(searchMessageType)
                 .readMessageType(readMessageType)
                 .build();
-        return Response.success(messageService.readMessageBySearch(messageSearchRequestDto));
+        return Response.success(messageService.readMessageByCondition(messageSearchRequestDto));
     }
 
     private Member getMember() {
@@ -114,5 +96,15 @@ public class MessageController {
     private Member getReceiver(String receiver) {
         return memberRepository.findByNickname_Nickname(receiver)
                 .orElseThrow(MemberNotFoundException::new);
+    }
+
+    private static MessageSearchRequestDto setBuilder(ReadMessageType readMessageType, Pageable pageable, Member member) {
+        MessageSearchRequestDto messageSearchRequestDto = MessageSearchRequestDto.builder()
+                .member(member.getNickname())
+                .page(pageable.getPageNumber())
+                .size(pageable.getPageSize())
+                .readMessageType(readMessageType)
+                .build();
+        return messageSearchRequestDto;
     }
 }
