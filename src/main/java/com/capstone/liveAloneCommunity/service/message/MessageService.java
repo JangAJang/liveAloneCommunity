@@ -8,6 +8,7 @@ import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.message.Message;
 import com.capstone.liveAloneCommunity.exception.message.MessageNotFoundException;
 import com.capstone.liveAloneCommunity.exception.message.CanNotSameReceiverAndSenderException;
+import com.capstone.liveAloneCommunity.exception.message.NotMyMessageException;
 import com.capstone.liveAloneCommunity.exception.message.SenderAndMemberNotEqualsException;
 import com.capstone.liveAloneCommunity.repository.message.MessageRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +29,9 @@ public class MessageService {
         return MessageResponseDto.toDto(message);
     }
 
-    public MessageResponseDto readMessage(Long id) {
+    public MessageResponseDto readMessage(Member member, Long id) {
         Message message = messageRepository.findById(id).orElseThrow(MessageNotFoundException::new);
+        checkMessageMember(message, member);
         return MessageResponseDto.toDto(message);
     }
 
@@ -40,6 +42,12 @@ public class MessageService {
     private void isSameSenderAndReceiver(Member member, Member receiver) {
         if (member.equals(receiver)) {
             throw new CanNotSameReceiverAndSenderException();
+        }
+    }
+
+    private void checkMessageMember(Message message, Member member) {
+        if (!(message.checkMessageReceiver(message, member)) && !(message.checkMessageSender(message, member))) {
+            throw new NotMyMessageException();
         }
     }
 }
