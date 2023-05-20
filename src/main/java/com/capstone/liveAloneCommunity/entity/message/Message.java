@@ -52,4 +52,8 @@ public class Message extends BaseTimeEntity {
     public boolean checkMessageReceiver(Message message, Member member) {
         return message.getReceiver().equals(member);
     }
+
+    public boolean checkMessageSender(Message message, Member member) {
+        return message.getSender().equals(member);
+    }
 }
