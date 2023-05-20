@@ -48,4 +48,8 @@ public class Message extends BaseTimeEntity {
     public String getContent() {
         return this.content.getContent();
     }
+
+    public boolean checkMessageReceiver(Message message, Member member) {
+        return message.getReceiver().equals(member);
+    }
 }
