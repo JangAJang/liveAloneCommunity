@@ -28,6 +28,12 @@ public class DeleteMessageTest {
     @Autowired
     private MemberRepository memberRepository;
 
+    @BeforeEach
+    void initData() {
+        registerMember("sender");
+        registerMember("receiver");
+    }
+
 
     private void registerMember(String text) {
         authService.register(RegisterRequestDto.builder()
@@ -53,4 +59,3 @@ public class DeleteMessageTest {
         return authService.logIn(LogInRequestDto.builder().username(text).password(text).build()).getAccessToken();
     }
 }
-
