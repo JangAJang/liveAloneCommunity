@@ -106,6 +106,23 @@ public class ReadSingleMessageTest {
                 .andDo(print());
     }
 
+    @Test
+    @DisplayName("토큰이 있지만 없는 쪽지를 조회하는 경우 400코드와 해당 쪽지를 찾을 수 없다는 메세지가 반환된다.")
+    void readSingleMessage_Fail_NotFoundMessage() throws Exception{
+        // given
+        Member sender = getMember("sender");
+        Member receiver = getMember("receiver");
+        sendMessage(sender, receiver, 1);
+
+        // when // then
+        mvc.perform(get("/api/message?id=2")
+                        .header("Authorization", getAccessTokenAfterLogIn("sender")))
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.code").value(400))
+                .andExpect(jsonPath("$.result.failMessage").value("해당 쪽지를 찾을 수 없습니다."))
+                .andDo(print());
+    }
+
     private void registerMember(String text) {
         authService.register(RegisterRequestDto.builder()
                 .username(text)
