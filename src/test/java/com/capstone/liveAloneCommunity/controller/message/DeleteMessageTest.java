@@ -106,6 +106,24 @@ public class DeleteMessageTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("토큰이 있고 삭제 요청을 한 회원이 해당 쪽지의 수신자도 송신자도 아닌 경우 400코드와 권한이 없는 쪽지라는 메세지가 반환된다.")
+    void deleteMessage_Fail_NotMyMessage() throws Exception{
+        // given
+        Member sender = getMember("sender");
+        Member receiver = getMember("receiver");
+        sendMessage(sender, receiver, 1);
+        registerMember("member");
+
+        // when // then
+        mvc.perform(delete("/api/message?id=1")
+                        .header("Authorization", getAccessTokenAfterLogIn("member"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.code").value(400))
+                .andExpect(jsonPath("$.result.failMessage").value("권한이 없는 쪽지입니다."))
+                .andDo(print());
+    }
     private void registerMember(String text) {
         authService.register(RegisterRequestDto.builder()
                 .username(text)
