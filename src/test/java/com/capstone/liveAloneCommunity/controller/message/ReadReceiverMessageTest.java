@@ -6,6 +6,7 @@ import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
 import com.capstone.liveAloneCommunity.service.message.MessageService;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +26,12 @@ public class ReadReceiverMessageTest {
     private MessageService messageService;
     @Autowired
     private MemberRepository memberRepository;
+
+    @BeforeEach
+    void initData() {
+        registerMember("sender");
+        registerMember("receiver");
+    }
 
     private void registerMember(String text) {
         authService.register(RegisterRequestDto.builder()
