@@ -73,6 +73,29 @@ public class ReadSenderMessageTest {
     }
 
     @Test
+    @DisplayName("토큰이 있고 요청이 올바르게 왔을 경우 200코드와 회원이 삭제하지 않은 쪽지들의 정보가 반환된다.")
+    void readSenderMessage_Success_ExcludeDeletedMessage() throws Exception{
+        // given
+        Member sender = getMember("sender");
+        Member receiver = getMember("receiver");
+        sendMessage(sender, receiver, "senderToReceiver", 5);
+        sendMessage(receiver, sender, "receiverToSender", 5);
+        deleteMessage(sender, 1L);
+        deleteMessage(sender, 2L);
+
+        // when // then
+        mvc.perform(get("/api/message/sender?page=0&size=10&readMessageType=SENDER")
+                        .header("Authorization", getAccessTokenAfterLogIn("sender"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.result.data.result[0].content").value("senderToReceiver4"))
+                .andExpect(jsonPath("$.result.data.result[1].content").value("senderToReceiver3"))
+                .andExpect(jsonPath("$.result.data.result[2].content").value("senderToReceiver2"))
+                .andDo(print());
+    }
+
+    @Test
     @DisplayName("토큰이 없는 경우 401코드와 다시 로그인하라는 메세지가 반환된다.")
     void readSenderMessage_Fail_Unauthorized() throws Exception{
         // given
