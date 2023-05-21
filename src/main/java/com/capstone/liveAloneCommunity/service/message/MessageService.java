@@ -66,10 +66,10 @@ public class MessageService {
 
     private void checkDeletedMessage(Message message, Member member) {
         if (message.checkMessageSender(message, member) && message.isDeletedBySender()) {
-            throw new DeletedMessageException();
+            throw new MessageNotFoundException();
         }
         if (message.checkMessageReceiver(message, member) && message.isDeletedByReceiver()) {
-            throw new DeletedMessageException();
+            throw new MessageNotFoundException();
         }
     }
 }
