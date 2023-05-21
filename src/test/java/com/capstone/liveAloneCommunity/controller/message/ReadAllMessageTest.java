@@ -76,6 +76,25 @@ public class ReadAllMessageTest {
                 .andDo(print());
     }
 
+    @Test
+    @DisplayName("토큰이 없는 경우 401코드와 다시 로그인하라는 메세지가 반환된다.")
+    void readAllMessage_Fail_Unauthorized() throws Exception{
+        // given
+        Member sender = getMember("sender");
+        Member receiver = getMember("receiver");
+        sendMessage(sender, receiver, "senderToReceiver", 10);
+        sendMessage(receiver, sender, "receiverToSender", 10);
+
+        // when // then
+        mvc.perform(get("/api/message/all?page=0&size=10&readMessageType=ALL")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.code").value(401))
+                .andExpect(jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
     private void registerMember(String text) {
         authService.register(RegisterRequestDto.builder()
                 .username(text)
