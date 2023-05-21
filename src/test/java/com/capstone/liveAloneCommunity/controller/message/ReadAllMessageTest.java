@@ -56,11 +56,11 @@ public class ReadAllMessageTest {
         // given
         Member sender = getMember("sender");
         Member receiver = getMember("receiver");
-        sendMessage(sender, receiver, "senderToReceiver", 6);
+        sendMessage(sender, receiver, "senderToReceiver", 3);
         sendMessage(receiver, sender, "receiverToSender", 3);
 
         // when // then
-        mvc.perform(get("/api/message/receiver?page=0&size=10&readMessageType=RECEIVER")
+        mvc.perform(get("/api/message/all?page=0&size=10&readMessageType=ALL")
                         .header("Authorization", getAccessTokenAfterLogIn("sender"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.success").value(true))
@@ -68,6 +68,9 @@ public class ReadAllMessageTest {
                 .andExpect(jsonPath("$.result.data.result[0].content").value("receiverToSender2"))
                 .andExpect(jsonPath("$.result.data.result[1].content").value("receiverToSender1"))
                 .andExpect(jsonPath("$.result.data.result[2].content").value("receiverToSender0"))
+                .andExpect(jsonPath("$.result.data.result[3].content").value("senderToReceiver2"))
+                .andExpect(jsonPath("$.result.data.result[4].content").value("senderToReceiver1"))
+                .andExpect(jsonPath("$.result.data.result[5].content").value("senderToReceiver0"))
                 .andDo(print());
     }
 
