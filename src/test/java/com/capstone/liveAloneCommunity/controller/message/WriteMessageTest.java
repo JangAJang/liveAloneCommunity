@@ -31,5 +31,10 @@ public class WriteMessageTest {
                 .passwordCheck("test")
                 .build());
     }
+
+    @AfterEach
+    void clearDB() {
+        databaseCleanup.execute();
+    }
 }
 
