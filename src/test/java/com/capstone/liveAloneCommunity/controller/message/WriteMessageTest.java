@@ -66,6 +66,25 @@ public class WriteMessageTest {
                 .andDo(print());
     }
 
+    @Test
+    @DisplayName("토큰이 없는 경우 401코드와 다시 로그인하라는 메세지가 반환된다.")
+    void writeMessage_Fail_Unauthorized() throws Exception{
+        // given
+        registerMember("receiver");
+        WriteMessageRequestDto writeMessageRequestDto = new WriteMessageRequestDto("message", "receiver");
+
+        // when, // then
+        mvc.perform(post("/api/message")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(makeJson(writeMessageRequestDto)))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.code").value(401))
+                .andExpect(jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+
     private void registerMember(String text) {
         authService.register(RegisterRequestDto.builder()
                 .username(text)
