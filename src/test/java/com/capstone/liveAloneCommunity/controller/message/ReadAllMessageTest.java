@@ -2,6 +2,7 @@ package com.capstone.liveAloneCommunity.controller.message;
 
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
+import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
 import com.capstone.liveAloneCommunity.service.message.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class ReadAllMessageTest {
     @Autowired
     private MessageService messageService;
 
+
+
     private void registerMember(String text) {
         authService.register(RegisterRequestDto.builder()
                 .username(text)
@@ -36,5 +39,9 @@ public class ReadAllMessageTest {
         IntStream.range(0, count).forEach(i -> {
             messageService.writeMessage(sender, receiver, "message" + i);
         });
+    }
+
+    private void deleteMessage(Member member, Long id) {
+        messageService.deleteMessage(member, id);
     }
 }
