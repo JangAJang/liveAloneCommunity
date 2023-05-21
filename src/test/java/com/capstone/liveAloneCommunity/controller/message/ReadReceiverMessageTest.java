@@ -4,17 +4,28 @@ import com.capstone.liveAloneCommunity.DatabaseCleanup;
 import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
+import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
 import com.capstone.liveAloneCommunity.service.message.MessageService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.stream.IntStream;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -40,6 +51,27 @@ public class ReadReceiverMessageTest {
     @AfterEach
     void clearDB() {
         databaseCleanup.execute();
+    }
+
+    @Test
+    @DisplayName("토큰이 있고 요청이 올바르게 왔을 경우 200코드와 조회된 쪽지들의 정보가 반환된다.")
+    void readReceiverMessage_Success() throws Exception{
+        // given
+        Member sender = getMember("sender");
+        Member receiver = getMember("receiver");
+        sendMessage(sender, receiver, "senderToReceiver", 6);
+        sendMessage(receiver, sender, "receiverToSender", 3);
+
+        // when // then
+        mvc.perform(get("/api/message/receiver?page=0&size=10&readMessageType=RECEIVER")
+                        .header("Authorization", getAccessTokenAfterLogIn("sender"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.result.data.result[0].content").value("receiverToSender2"))
+                .andExpect(jsonPath("$.result.data.result[1].content").value("receiverToSender1"))
+                .andExpect(jsonPath("$.result.data.result[2].content").value("receiverToSender0"))
+                .andDo(print());
     }
 
     private void registerMember(String text) {
