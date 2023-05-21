@@ -1,7 +1,9 @@
 package com.capstone.liveAloneCommunity.controller.message;
 
 import com.capstone.liveAloneCommunity.DatabaseCleanup;
+import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
+import com.capstone.liveAloneCommunity.dto.message.WriteMessageRequestDto;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +43,10 @@ public class WriteMessageTest {
                 .password(text)
                 .passwordCheck(text)
                 .build());
+    }
+
+    private String getAccessTokenAfterLogIn(){
+        return authService.logIn(LogInRequestDto.builder().username("test").password("test").build()).getAccessToken();
     }
 }
 
