@@ -27,5 +27,9 @@ public class DeleteMessageTest {
                 .passwordCheck(text)
                 .build());
     }
+
+    private String getAccessTokenAfterLogIn(String text){
+        return authService.logIn(LogInRequestDto.builder().username(text).password(text).build()).getAccessToken();
+    }
 }
 
