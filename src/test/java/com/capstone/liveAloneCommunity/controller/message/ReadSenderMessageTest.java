@@ -15,7 +15,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+
 import java.util.stream.IntStream;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -67,6 +70,25 @@ public class ReadSenderMessageTest {
                 .andExpect(jsonPath("$.result.data.result[3].content").value("senderToReceiver1"))
                 .andExpect(jsonPath("$.result.data.result[4].content").value("senderToReceiver0"))
                 .andDo(print());
+    }
+
+    @Test
+    @DisplayName("토큰이 없는 경우 401코드와 다시 로그인하라는 메세지가 반환된다.")
+    void readSenderMessage_Fail_Unauthorized() throws Exception{
+        // given
+        Member sender = getMember("sender");
+        Member receiver = getMember("receiver");
+        sendMessage(sender, receiver, "senderToReceiver", 10);
+        sendMessage(receiver, sender, "receiverToSender", 10);
+
+        // when // then
+        mvc.perform(get("/api/message/sender?page=0&size=10&readMessageType=SENDER")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.code").value(401))
+                .andExpect(jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     private void registerMember(String text) {
