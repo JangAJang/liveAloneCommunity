@@ -3,6 +3,8 @@ package com.capstone.liveAloneCommunity.controller.message;
 import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
+import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
+import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
 import com.capstone.liveAloneCommunity.service.message.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ public class ReadSenderMessageTest {
     private AuthService authService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private MemberRepository memberRepository;
 
     private void registerMember(String text) {
         authService.register(RegisterRequestDto.builder()
@@ -45,5 +49,9 @@ public class ReadSenderMessageTest {
 
     private String getAccessTokenAfterLogIn(String text){
         return authService.logIn(LogInRequestDto.builder().username(text).password(text).build()).getAccessToken();
+    }
+
+    private Member getMember(String nickname) {
+        return memberRepository.findByNickname_Nickname(nickname).orElseThrow(MemberNotFoundException::new);
     }
 }
