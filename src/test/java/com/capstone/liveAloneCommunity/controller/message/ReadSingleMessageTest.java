@@ -106,7 +106,7 @@ public class ReadSingleMessageTest {
     }
 
     @Test
-    @DisplayName("토큰이 있지만 없는 쪽지를 조회하는 경우 404코드와 해당 쪽지를 찾을 수 없다는 메세지가 반환된다.")
+    @DisplayName("토큰이 있고 없는 쪽지를 조회하는 경우 404코드와 해당 쪽지를 찾을 수 없다는 메세지가 반환된다.")
     void readSingleMessage_Fail_NotFoundMessage() throws Exception{
         // given
         Member sender = getMember("sender");
@@ -115,6 +115,24 @@ public class ReadSingleMessageTest {
 
         // when // then
         mvc.perform(get("/api/message?id=2")
+                        .header("Authorization", getAccessTokenAfterLogIn("sender")))
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.code").value(404))
+                .andExpect(jsonPath("$.result.failMessage").value("해당 쪽지를 찾을 수 없습니다."))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("토큰이 있고 삭제한 쪽지를 조회하는 경우 404코드와 해당 쪽지를 찾을 수 없다는 메세지가 반환된다.")
+    void readSingleMessage_Fail_DeletedMessage() throws Exception{
+        // given
+        Member sender = getMember("sender");
+        Member receiver = getMember("receiver");
+        sendMessage(sender, receiver, 1);
+        deleteMessage(sender, 1L);
+
+        // when //then
+        mvc.perform(get("/api/message?id=1")
                         .header("Authorization", getAccessTokenAfterLogIn("sender")))
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.code").value(404))
@@ -136,6 +154,10 @@ public class ReadSingleMessageTest {
         IntStream.range(0, count).forEach(i -> {
             messageService.writeMessage(sender, receiver, "message" + i);
         });
+    }
+
+    private void deleteMessage(Member member, Long id) {
+        messageService.deleteMessage(member, id);
     }
 
     private String getAccessTokenAfterLogIn(String text){
