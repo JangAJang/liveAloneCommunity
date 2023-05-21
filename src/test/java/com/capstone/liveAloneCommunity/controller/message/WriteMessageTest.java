@@ -158,7 +158,7 @@ public class WriteMessageTest {
 
     @Test
     @DisplayName("토큰이 있고 쪽지 내용이 빈 칸인 경우 400에러와 쪽지 내용을 입력하라는 메세지가 반환된다.")
-    void writeMessage_Fail_Blank_Message() throws Exception{
+    void writeMessage_Fail_Empty_Message() throws Exception{
         // given
         registerMember("receiver");
         WriteMessageRequestDto writeMessageRequestDto = new WriteMessageRequestDto("", "receiver");
