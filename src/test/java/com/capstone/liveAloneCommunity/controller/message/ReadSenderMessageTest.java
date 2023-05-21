@@ -10,12 +10,16 @@ import com.capstone.liveAloneCommunity.service.auth.AuthService;
 import com.capstone.liveAloneCommunity.service.message.MessageService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-
 import java.util.stream.IntStream;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -41,6 +45,28 @@ public class ReadSenderMessageTest {
     @AfterEach
     void clearDB() {
         databaseCleanup.execute();
+    }
+
+    @Test
+    @DisplayName("토큰이 있고 요청이 올바르게 왔을 경우 200코드와 조회된 쪽지들의 정보가 반환된다.")
+    void readSenderMessage_Success() throws Exception{
+        // given
+        Member sender = getMember("sender");
+        Member receiver = getMember("receiver");
+        sendMessage(sender, receiver, "senderToReceiver", 5);
+        sendMessage(receiver, sender, "receiverToSender", 5);
+
+        // when // then
+        mvc.perform(get("/api/message/sender?page=0&size=10&readMessageType=SENDER")
+                        .header("Authorization", getAccessTokenAfterLogIn("sender")))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.result.data.result[0].content").value("senderToReceiver4"))
+                .andExpect(jsonPath("$.result.data.result[1].content").value("senderToReceiver3"))
+                .andExpect(jsonPath("$.result.data.result[2].content").value("senderToReceiver2"))
+                .andExpect(jsonPath("$.result.data.result[3].content").value("senderToReceiver1"))
+                .andExpect(jsonPath("$.result.data.result[4].content").value("senderToReceiver0"))
+                .andDo(print());
     }
 
     private void registerMember(String text) {
