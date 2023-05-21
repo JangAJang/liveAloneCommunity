@@ -1,5 +1,6 @@
 package com.capstone.liveAloneCommunity.controller.message;
 
+import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
@@ -41,4 +42,9 @@ public class ReadReceiverMessageTest {
     private void deleteMessage(Member member, Long id) {
         messageService.deleteMessage(member, id);
     }
+
+    private String getAccessTokenAfterLogIn(String text){
+        return authService.logIn(LogInRequestDto.builder().username(text).password(text).build()).getAccessToken();
+    }
+
 }
