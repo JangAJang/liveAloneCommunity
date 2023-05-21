@@ -1,5 +1,6 @@
 package com.capstone.liveAloneCommunity.controller.message;
 
+import com.capstone.liveAloneCommunity.DatabaseCleanup;
 import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
@@ -7,6 +8,7 @@ import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
 import com.capstone.liveAloneCommunity.service.message.MessageService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,11 +29,18 @@ public class ReadAllMessageTest {
     private MessageService messageService;
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private DatabaseCleanup databaseCleanup;
 
     @BeforeEach
     void initData() {
         registerMember("sender");
         registerMember("receiver");
+    }
+
+    @AfterEach
+    void clearDB() {
+        databaseCleanup.execute();
     }
 
     private void registerMember(String text) {
