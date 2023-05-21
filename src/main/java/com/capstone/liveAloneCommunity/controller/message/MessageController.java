@@ -54,7 +54,7 @@ public class MessageController {
     }
 
     @GetMapping("/sender")
-    @Operation(summary = "보낸 쪽지 조히", description = "보낸 쪽지를 조회한다.")
+    @Operation(summary = "보낸 쪽지 조회", description = "보낸 쪽지를 조회한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response readMessageBySender(@RequestParam ReadMessageType readMessageType, @PageableDefault Pageable pageable) {
         Member member = getMember();
@@ -108,9 +108,9 @@ public class MessageController {
                 .orElseThrow(MemberNotFoundException::new);
     }
 
-    private MessageSearchRequestDto setBuilder(ReadMessageType readMessageType, Pageable pageable, Member member) {
+    private MessageSearchRequestDto setBuilder(ReadMessageType readMessageType, Pageable pageable, Member requestMember) {
         return MessageSearchRequestDto.builder()
-                .requestMember(member.getNickname())
+                .requestMember(requestMember.getNickname())
                 .page(pageable.getPageNumber())
                 .size(pageable.getPageSize())
                 .readMessageType(readMessageType)
