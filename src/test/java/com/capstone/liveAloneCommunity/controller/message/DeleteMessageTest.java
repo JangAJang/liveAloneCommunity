@@ -124,6 +124,25 @@ public class DeleteMessageTest {
                 .andExpect(jsonPath("$.result.failMessage").value("권한이 없는 쪽지입니다."))
                 .andDo(print());
     }
+
+    @Test
+    @DisplayName("토큰이 있고 삭제하려는 쪽지가 존재하지 않는 쪽지일 경우 404코드와 쪽지를 찾을 수 없다는 메세지가 반환된다.")
+    void deleteMessage_Fail_NotFoundMessage() throws Exception{
+        // given
+        Member sender = getMember("sender");
+        Member receiver = getMember("receiver");
+        sendMessage(sender, receiver, 1);
+
+        // when // then
+        mvc.perform(delete("/api/message?id=2")
+                        .header("Authorization", getAccessTokenAfterLogIn("sender"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.code").value(404))
+                .andExpect(jsonPath("$.result.failMessage").value("해당 쪽지를 찾을 수 없습니다."))
+                .andDo(print());
+    }
+
     private void registerMember(String text) {
         authService.register(RegisterRequestDto.builder()
                 .username(text)
