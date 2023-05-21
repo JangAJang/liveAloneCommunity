@@ -1,6 +1,7 @@
 package com.capstone.liveAloneCommunity.controller.message;
 
 import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
+import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
@@ -24,6 +25,16 @@ public class ReadSingleMessageTest {
     private MemberRepository memberRepository;
     @Autowired
     private MessageService messageService;
+
+    private void registerMember(String text) {
+        authService.register(RegisterRequestDto.builder()
+                .username(text)
+                .nickname(text)
+                .email(text + "@" + text + ".com")
+                .password(text)
+                .passwordCheck(text)
+                .build());
+    }
 
     private void sendMessage(Member sender, Member receiver, int count) {
         IntStream.range(0, count).forEach(i -> {
