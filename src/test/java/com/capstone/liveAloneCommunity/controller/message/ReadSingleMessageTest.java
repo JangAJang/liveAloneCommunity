@@ -87,6 +87,25 @@ public class ReadSingleMessageTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
+    @Test
+    @DisplayName("토큰이 있지만 쪽지 조회를 요청하는 회원이 조회하는 쪽지의 수신자 또는 송신자가 아닌 경우 400코드와 쪽지를 열람할 수 없다는 메세지가 반환된다.")
+    void readSingleMessage_Fail_NotMyMessage() throws Exception{
+        // given
+        getMember("sender");
+        Member receiver = getMember("receiver");
+        registerMember("member1");
+        Member member = getMember("member1");
+        sendMessage(member, receiver, 1);
+
+        // when // then
+        mvc.perform(get("/api/message?id=1")
+                        .header("Authorization", getAccessTokenAfterLogIn("sender")))
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.code").value(400))
+                .andExpect(jsonPath("$.result.failMessage").value("열람할 수 없는 메세지입니다."))
+                .andDo(print());
+    }
+
     private void registerMember(String text) {
         authService.register(RegisterRequestDto.builder()
                 .username(text)
