@@ -15,10 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -73,7 +70,7 @@ public class WriteMessageTest {
         registerMember("receiver");
         WriteMessageRequestDto writeMessageRequestDto = new WriteMessageRequestDto("message", "receiver");
 
-        // when, // then
+        // when // then
         mvc.perform(post("/api/message")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(makeJson(writeMessageRequestDto)))
@@ -210,4 +207,3 @@ public class WriteMessageTest {
         return new ObjectMapper().writeValueAsString(object);
     }
 }
-

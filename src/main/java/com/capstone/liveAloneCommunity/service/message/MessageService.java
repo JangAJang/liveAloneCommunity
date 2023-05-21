@@ -1,11 +1,9 @@
 package com.capstone.liveAloneCommunity.service.message;
 
 import com.capstone.liveAloneCommunity.dto.message.MessageResponseDto;
-import com.capstone.liveAloneCommunity.dto.message.WriteMessageRequestDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.message.Message;
 import com.capstone.liveAloneCommunity.exception.message.CanNotSameReceiverAndSenderException;
-import com.capstone.liveAloneCommunity.exception.message.SenderAndMemberNotEqualsException;
 import com.capstone.liveAloneCommunity.repository.message.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
