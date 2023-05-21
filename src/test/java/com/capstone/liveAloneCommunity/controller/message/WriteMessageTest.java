@@ -20,5 +20,16 @@ public class WriteMessageTest {
     private AuthService authService;
     @Autowired
     private DatabaseCleanup databaseCleanup;
+
+    @BeforeEach
+    void initData() {
+        authService.register(RegisterRequestDto.builder()
+                .username("test")
+                .nickname("test")
+                .email("test@test.com")
+                .password("test")
+                .passwordCheck("test")
+                .build());
+    }
 }
 
