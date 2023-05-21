@@ -78,7 +78,7 @@ public class MessageController {
                                         @RequestParam ReadMessageType readMessageType, @PageableDefault Pageable pageable) {
         Member member = getMember();
         MessageSearchRequestDto messageSearchRequestDto = MessageSearchRequestDto.builder()
-                .member(member.getNickname())
+                .requestMember(member.getNickname())
                 .text(text)
                 .page(pageable.getPageNumber())
                 .size(pageable.getPageSize())
@@ -86,6 +86,15 @@ public class MessageController {
                 .readMessageType(readMessageType)
                 .build();
         return Response.success(messageService.readMessageByCondition(messageSearchRequestDto));
+    }
+
+    @DeleteMapping("")
+    @Operation(summary = "쪽지 삭제", description = "쪽지를 삭제한다.")
+    @ResponseStatus(HttpStatus.OK)
+    public Response deleteMessage(@RequestParam Long id) {
+        Member member = getMember();
+        messageService.deleteMessage(member, id);
+        return Response.success("쪽지 삭제 완료");
     }
 
     private Member getMember() {
@@ -101,7 +110,7 @@ public class MessageController {
 
     private MessageSearchRequestDto setBuilder(ReadMessageType readMessageType, Pageable pageable, Member member) {
         return MessageSearchRequestDto.builder()
-                .member(member.getNickname())
+                .requestMember(member.getNickname())
                 .page(pageable.getPageNumber())
                 .size(pageable.getPageSize())
                 .readMessageType(readMessageType)

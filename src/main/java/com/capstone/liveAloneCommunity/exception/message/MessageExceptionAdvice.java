@@ -12,7 +12,7 @@ public class MessageExceptionAdvice {
     @ExceptionHandler(MessageNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response MessageNotFoundException() {
-        return Response.failure(400, "해당 쪽지를 찾을 수 없습니다.");
+        return Response.failure(404, "해당 쪽지를 찾을 수 없습니다.");
     }
 
     @ExceptionHandler(CanNotSameReceiverAndSenderException.class)
@@ -30,7 +30,7 @@ public class MessageExceptionAdvice {
     @ExceptionHandler(NotMyMessageException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response NotMyMessageException() {
-        return Response.failure(400, "열람할 수 없는 메세지입니다.");
+        return Response.failure(400, "권한이 없는 쪽지입니다.");
     }
 
     @ExceptionHandler(DeletedMessageException.class)

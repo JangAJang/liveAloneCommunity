@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MessageSearchRequestDto {
 
-    private String member;
+    private String requestMember;
     private String text;
     private int page;
     private int size;

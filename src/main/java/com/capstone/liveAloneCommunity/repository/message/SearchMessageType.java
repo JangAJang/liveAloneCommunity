@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum SearchMessageType {
 
-    NAME, CONTENT, CALENDER;
+    NAME, CONTENT;
 
     @JsonValue
     public String getName(){

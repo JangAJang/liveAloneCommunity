@@ -6,7 +6,6 @@ import com.capstone.liveAloneCommunity.dto.message.QMessageResponseDto;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -32,7 +31,6 @@ public class MessageRepositoryCustomImpl implements MessageRepositoryCustom{
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
-
         return new PageImpl<>(result.getResults(), pageable, result.getTotal());
     }
 
@@ -49,12 +47,12 @@ public class MessageRepositoryCustomImpl implements MessageRepositoryCustom{
     }
 
     private BooleanExpression readReceiverCondition(MessageSearchRequestDto messageSearchRequestDto, ReadMessageType readMessageType) {
-        return message.receiver.nickname.nickname.eq(messageSearchRequestDto.getMember())
+        return message.receiver.nickname.nickname.eq(messageSearchRequestDto.getRequestMember())
                 .and(message.deletedByReceiver.not());
     }
 
     private BooleanExpression readSenderCondition(MessageSearchRequestDto messageSearchRequestDto, ReadMessageType readMessageType) {
-        return message.sender.nickname.nickname.eq(messageSearchRequestDto.getMember())
+        return message.sender.nickname.nickname.eq(messageSearchRequestDto.getRequestMember())
                 .and(message.deletedBySender.not());
     }
 
@@ -67,16 +65,6 @@ public class MessageRepositoryCustomImpl implements MessageRepositoryCustom{
         if (SearchMessageType.CONTENT.equals(searchMessageType)) {
             return message.content.content.contains(messageSearchRequestDto.getText());
         }
-        if (SearchMessageType.CALENDER.equals(searchMessageType)) {
-            return readByCalenderCondition(messageSearchRequestDto);
-        }
         return null;
-    }
-
-    private BooleanExpression readByCalenderCondition(MessageSearchRequestDto messageSearchRequestDto) {
-        String[] str = messageSearchRequestDto.getText().split("/");
-        return message.createdDate.year().eq(Integer.valueOf(str[0]))
-                .and(message.createdDate.month().eq(Integer.valueOf(str[1])))
-                .and(message.createdDate.dayOfMonth().eq(Integer.valueOf(str[2])));
     }
 }
