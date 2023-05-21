@@ -5,6 +5,7 @@ import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneCommunity.dto.message.WriteMessageRequestDto;
 import com.capstone.liveAloneCommunity.service.auth.AuthService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,6 +48,10 @@ public class WriteMessageTest {
 
     private String getAccessTokenAfterLogIn(){
         return authService.logIn(LogInRequestDto.builder().username("test").password("test").build()).getAccessToken();
+    }
+
+    private String makeJson(Object object)throws Exception{
+        return new ObjectMapper().writeValueAsString(object);
     }
 }
 
