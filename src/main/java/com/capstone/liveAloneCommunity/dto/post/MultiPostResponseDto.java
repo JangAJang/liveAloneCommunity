@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -12,5 +13,5 @@ import java.util.List;
 @Getter
 public class MultiPostResponseDto {
 
-    private List<PostResponseDto> result;
+    private Page<PostResponseDto> result;
 }

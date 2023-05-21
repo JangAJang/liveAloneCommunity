@@ -44,7 +44,7 @@ public class PostService {
     public MultiPostResponseDto searchPost(SearchPostRequestDto searchPostRequestDto){
         Page<PostResponseDto> searchResult = postRepository
                 .searchPost(searchPostRequestDto);
-        return new MultiPostResponseDto(searchResult.getContent());
+        return new MultiPostResponseDto(searchResult);
     }
 
     @Transactional(readOnly = true)
@@ -53,14 +53,13 @@ public class PostService {
                 .orElseThrow(MemberNotFoundException::new);
         Page<Post> membersPost = postRepository
                 .findAllByMemberOrderByCreatedDateDesc(member, PageRequest.of(membersPostRequestDto.getPage(), membersPostRequestDto.getSize()));
-        List<PostResponseDto> result = membersPost.getContent()
-                .stream().map(i-> PostResponseDto.toDto(i, member)).toList();
+        Page<PostResponseDto> result = membersPost.map(i-> PostResponseDto.toDto(i, member));
         return new MultiPostResponseDto(result);
     }
 
     @Transactional(readOnly = true)
     public MultiPostResponseDto getPostByCategory(PostByCategoryRequestDto postByCategoryRequestDto){
-        List<PostResponseDto> postByCategory = postRepository.getPostByCategory(postByCategoryRequestDto).getContent();
+        Page<PostResponseDto> postByCategory = postRepository.getPostByCategory(postByCategoryRequestDto);
         return new MultiPostResponseDto(postByCategory);
     }
 
