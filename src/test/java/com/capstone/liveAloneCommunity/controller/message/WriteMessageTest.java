@@ -102,6 +102,24 @@ public class WriteMessageTest {
                 .andDo(print());
     }
 
+    @Test
+    @DisplayName("토큰이 있고 수신자가 빈 문자열인 경우 400에러와 수신자를 입력하라는 메서지가 반환된다")
+    void writeMessage_Fail_Empty_Receiver() throws Exception{
+        // given
+        registerMember("receiver");
+        WriteMessageRequestDto writeMessageRequestDto = new WriteMessageRequestDto("message", "");
+
+        // when // then
+        mvc.perform(post("/api/message")
+                        .header("Authorization", getAccessTokenAfterLogIn("test"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(makeJson(writeMessageRequestDto)))
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.code").value(400))
+                .andExpect(jsonPath("$.result.failMessage").value("수신자를 입력해주세요."))
+                .andDo(print());
+    }
+
     private void registerMember(String text) {
         authService.register(RegisterRequestDto.builder()
                 .username(text)
