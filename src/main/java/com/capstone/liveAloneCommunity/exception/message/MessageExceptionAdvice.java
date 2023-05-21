@@ -9,6 +9,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class MessageExceptionAdvice {
 
+    @ExceptionHandler(MessageNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response MessageNotFoundException() {
+        return Response.failure(400, "해당 쪽지를 찾을 수 없습니다.");
+    }
+
     @ExceptionHandler(CanNotSameReceiverAndSenderException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Response CanNotSameReceiverAndSenderException() {
