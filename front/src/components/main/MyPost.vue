@@ -13,7 +13,7 @@ onMounted(() => {
       params: { page: page.value, size: size.value }
     })
     .then((res) => {
-      result.value = res.data.result.data.result
+      result.value = res.data.result.data.result.content
     })
 })
 </script>

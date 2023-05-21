@@ -10,6 +10,7 @@ import { RouterView } from 'vue-router'
 const category = ref('HOBBY_SHARE')
 const page = ref(1)
 const size = ref(5)
+const maxPage = ref(1)
 let posts = ref([])
 const text = ref('')
 const searchPostType = ref('')
@@ -37,32 +38,37 @@ const options = [
 ]
 
 const getHobby = function () {
+  page.value = 1
   category.value = 'HOBBY_SHARE'
   getPosts()
 }
 
 const getLost = function () {
+  page.value = 1
   category.value = 'LOST'
   getPosts()
 }
 
 const getVillageInfo = function () {
+  page.value = 1
   category.value = 'VILLAGE_INFO'
   getPosts()
 }
 
 const getSingleNews = function () {
+  page.value = 1
   category.value = 'SINGLE_NEWS'
   getPosts()
 }
 
 const getRequests = function () {
+  page.value = 1
   category.value = 'REQUESTS'
   getPosts()
 }
 
 const getPosts = function () {
-  page.value = 1
+  posts.value = []
   axios
     .get('/lan/post/category', {
       params: {
@@ -72,13 +78,15 @@ const getPosts = function () {
       }
     })
     .then((res) => {
-      console.log(res.data.result.data.result)
-      posts.value = res.data.result.data.result
+      maxPage.value = res.data.result.data.result.totalPages
+      posts.value = res.data.result.data.result.content
+      console.log(res.data.result.data.result.content)
+      console.log(posts.value)
     })
 }
 
 const searchPost = function () {
-  page.value = 1
+  posts.value = []
   category.value = 'Search'
   axios
     .get('/lan/post/search', {
@@ -90,8 +98,40 @@ const searchPost = function () {
       }
     })
     .then((res) => {
-      posts.value = res.data.result.data.result
+      console.log(res)
+      maxPage.value = res.data.result.data.result.totalPages
+      posts.value = res.data.result.data.result.content
+      console.log(res.data.result.data.result.content)
+      console.log(posts.value)
     })
+}
+
+const increasePage = function () {
+  if(page.value == maxPage.value){
+    alert("마지막 페이지입니다.")
+    return
+  }
+  if(category.value == 'Search') {
+    page.value++
+    searchPost()
+    return
+  }
+  page.value++
+  getPosts()
+}
+
+const decreasePage = function () {
+  if (page.value == 1) {
+    alert("1번 페이지입니다.")
+    return
+  }
+  if(category.value == 'Search') {
+    page.value--
+    searchPost()
+    return
+  }
+  page.value--
+  getPosts()
 }
 
 const goToWritePost = function () {
@@ -143,6 +183,11 @@ onMounted(() => getPosts())
       <el-button @click="searchPost">검색</el-button>
       <el-button @click="goToWritePost">글 작성</el-button>
     </div>
+    <div id="pageBox">
+      <el-button id="pageButton" @click="decreasePage">이전 페이지</el-button>
+      <el-text>{{page}}</el-text>
+      <el-button id="pageButton" @click="increasePage">다음 페이지</el-button>
+    </div>
   </div>
   <Profile />
   <MyPost />
@@ -169,6 +214,18 @@ onMounted(() => getPosts())
   grid-auto-flow: column;
   width: 70%;
   margin-left: 15%;
+}
+
+#pageBox {
+  margin-left: 40%;
+  width: 50%;
+  margin-top: 5%;
+  position: absolute;
+}
+
+#pageButton {
+  margin-left: 5%;
+  margin-right: 5%;
 }
 
 #searchText {
