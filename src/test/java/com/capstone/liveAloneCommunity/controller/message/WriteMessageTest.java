@@ -53,7 +53,7 @@ public class WriteMessageTest {
 
         // when // then
         mvc.perform(post("/api/message")
-                        .header("Authorization", getAccessTokenAfterLogIn())
+                        .header("Authorization", getAccessTokenAfterLogIn("test"))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(makeJson(writeMessageRequestDto)))
                 .andExpect(status().isOk())
@@ -76,8 +76,8 @@ public class WriteMessageTest {
                 .build());
     }
 
-    private String getAccessTokenAfterLogIn(){
-        return authService.logIn(LogInRequestDto.builder().username("test").password("test").build()).getAccessToken();
+    private String getAccessTokenAfterLogIn(String text){
+        return authService.logIn(LogInRequestDto.builder().username(text).password(text).build()).getAccessToken();
     }
 
     private String makeJson(Object object)throws Exception{
