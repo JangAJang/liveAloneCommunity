@@ -6,6 +6,7 @@ import com.capstone.liveAloneCommunity.dto.message.MultiMessageResponseDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.message.Message;
 import com.capstone.liveAloneCommunity.exception.message.*;
+import com.capstone.liveAloneCommunity.exception.message.CanNotSameReceiverAndSenderException;
 import com.capstone.liveAloneCommunity.repository.message.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
