@@ -68,6 +68,25 @@ public class DeleteMessageTest {
                 .andDo(print());
     }
 
+    @Test
+    @DisplayName("토큰이 있고 요청하는 회원이 삭제한 쪽지를 다시 삭제하려는 경우 404코드와 쪽지를 찾을 수 없다는 메세지가 반환된다.")
+    void deleteMessage_Fail_DeletedMessage() throws Exception{
+        // given
+        Member sender = getMember("sender");
+        Member receiver = getMember("receiver");
+        sendMessage(sender, receiver, 1);
+        messageService.deleteMessage(sender, 1L);
+
+        // when // then
+        mvc.perform(delete("/api/message?id=1")
+                        .header("Authorization", getAccessTokenAfterLogIn("sender"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.code").value(404))
+                .andExpect(jsonPath("$.result.failMessage").value("해당 쪽지를 찾을 수 없습니다."))
+                .andDo(print());
+    }
+
     private void registerMember(String text) {
         authService.register(RegisterRequestDto.builder()
                 .username(text)
