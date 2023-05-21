@@ -41,10 +41,10 @@ public class MessageService {
         Message message = messageRepository.findById(id).orElseThrow(MessageNotFoundException::new);
         checkMessageMember(message, member);
         checkDeletedMessage(message, member);
-        if (message.getSender().equals(member)) {
+        if (message.isSender(member)) {
             message.deletedBySender();
         }
-        if (message.getReceiver().equals(member)) {
+        if (message.isReceiver(member)) {
             message.deleteByReceiver();
         }
         if (message.isDeletedMessage()) {
@@ -59,16 +59,16 @@ public class MessageService {
     }
 
     private void checkMessageMember(Message message, Member member) {
-        if (!(message.checkMessageReceiver(message, member)) && !(message.checkMessageSender(message, member))) {
+        if (!(message.isReceiver(member)) && !(message.isSender(member))) {
             throw new NotMyMessageException();
         }
     }
 
     private void checkDeletedMessage(Message message, Member member) {
-        if (message.checkMessageSender(message, member) && message.isDeletedBySender()) {
+        if (message.isSender(member) && message.isDeletedBySender()) {
             throw new MessageNotFoundException();
         }
-        if (message.checkMessageReceiver(message, member) && message.isDeletedByReceiver()) {
+        if (message.isReceiver(member) && message.isDeletedByReceiver()) {
             throw new MessageNotFoundException();
         }
     }
