@@ -37,4 +37,8 @@ public class ReadReceiverMessageTest {
             messageService.writeMessage(sender, receiver, text + i);
         });
     }
+
+    private void deleteMessage(Member member, Long id) {
+        messageService.deleteMessage(member, id);
+    }
 }
