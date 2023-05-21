@@ -87,7 +87,7 @@ public class ReadSingleMessageTest {
     }
 
     @Test
-    @DisplayName("토큰이 있지만 쪽지 조회를 요청하는 회원이 조회하는 쪽지의 수신자 또는 송신자가 아닌 경우 400코드와 쪽지를 열람할 수 없다는 메세지가 반환된다.")
+    @DisplayName("토큰이 있고 쪽지 조회를 요청하는 회원이 조회하는 쪽지의 수신자 또는 송신자가 아닌 경우 400코드와 쪽지를 열람할 수 없다는 메세지가 반환된다.")
     void readSingleMessage_Fail_NotMyMessage() throws Exception{
         // given
         getMember("sender");
@@ -101,12 +101,12 @@ public class ReadSingleMessageTest {
                         .header("Authorization", getAccessTokenAfterLogIn("sender")))
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.code").value(400))
-                .andExpect(jsonPath("$.result.failMessage").value("열람할 수 없는 메세지입니다."))
+                .andExpect(jsonPath("$.result.failMessage").value("권한이 없는 쪽지입니다."))
                 .andDo(print());
     }
 
     @Test
-    @DisplayName("토큰이 있지만 없는 쪽지를 조회하는 경우 400코드와 해당 쪽지를 찾을 수 없다는 메세지가 반환된다.")
+    @DisplayName("토큰이 있지만 없는 쪽지를 조회하는 경우 404코드와 해당 쪽지를 찾을 수 없다는 메세지가 반환된다.")
     void readSingleMessage_Fail_NotFoundMessage() throws Exception{
         // given
         Member sender = getMember("sender");
@@ -117,7 +117,7 @@ public class ReadSingleMessageTest {
         mvc.perform(get("/api/message?id=2")
                         .header("Authorization", getAccessTokenAfterLogIn("sender")))
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.code").value(400))
+                .andExpect(jsonPath("$.code").value(404))
                 .andExpect(jsonPath("$.result.failMessage").value("해당 쪽지를 찾을 수 없습니다."))
                 .andDo(print());
     }
