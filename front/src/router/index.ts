@@ -47,6 +47,12 @@ const router = createRouter({
       name: 'editPost',
       component: () => import('../components/post/EditPostView.vue'),
       props: true
+    },
+    {
+      path: '/comment/of/:postId',
+      name: 'commentOfPost',
+      component: () => import('../components/comment/CommentOfPost.vue'),
+      props: true
     }
   ]
 })
