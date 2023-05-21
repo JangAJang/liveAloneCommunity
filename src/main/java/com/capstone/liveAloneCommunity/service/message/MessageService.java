@@ -40,6 +40,7 @@ public class MessageService {
     public void deleteMessage(Member member, Long id) {
         Message message = messageRepository.findById(id).orElseThrow(MessageNotFoundException::new);
         checkMessageMember(message, member);
+        checkDeletedMessage(message, member);
         if (message.getSender().equals(member)) {
             message.deletedBySender();
         }
