@@ -77,6 +77,34 @@ public class ReadAllMessageTest {
     }
 
     @Test
+    @DisplayName("토큰이 있고 요청이 올바르게 왔을 경우 200코드와 회원이 삭제하지 않은 쪽지들의 정보가 반환된다.")
+    void readAllMessage_Success_ExcludeDeletedMessage() throws Exception{
+        // given
+        Member sender = getMember("sender");
+        Member receiver = getMember("receiver");
+        sendMessage(sender, receiver, "senderToReceiver", 5);
+        sendMessage(receiver, sender, "receiverToSender", 5);
+        deleteMessage(sender, 1L);
+        deleteMessage(sender, 2L);
+        deleteMessage(sender, 6L);
+        deleteMessage(sender, 7L);
+
+        // when // then
+        mvc.perform(get("/api/message/all?page=0&size=10&readMessageType=ALL")
+                        .header("Authorization", getAccessTokenAfterLogIn("sender"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.result.data.result[0].content").value("receiverToSender4"))
+                .andExpect(jsonPath("$.result.data.result[1].content").value("receiverToSender3"))
+                .andExpect(jsonPath("$.result.data.result[2].content").value("receiverToSender2"))
+                .andExpect(jsonPath("$.result.data.result[3].content").value("senderToReceiver4"))
+                .andExpect(jsonPath("$.result.data.result[4].content").value("senderToReceiver3"))
+                .andExpect(jsonPath("$.result.data.result[5].content").value("senderToReceiver2"))
+                .andDo(print());
+    }
+
+    @Test
     @DisplayName("토큰이 없는 경우 401코드와 다시 로그인하라는 메세지가 반환된다.")
     void readAllMessage_Fail_Unauthorized() throws Exception{
         // given
