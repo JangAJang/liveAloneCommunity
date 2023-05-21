@@ -17,12 +17,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.stream.IntStream;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -52,7 +54,7 @@ public class ReadAllMessageTest {
 
     @Test
     @DisplayName("토큰이 있고 요청이 올바르게 왔을 경우 200코드와 조회된 쪽지들의 정보가 반환된다.")
-    void readReceiverMessage_Success() throws Exception{
+    void readAllMessage_Success() throws Exception{
         // given
         Member sender = getMember("sender");
         Member receiver = getMember("receiver");
