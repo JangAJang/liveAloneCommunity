@@ -45,7 +45,9 @@ public class CommentController {
     @GetMapping("/post")
     @Operation(summary = "게시물로 댓글 조회", description = "게시물 id로 회원이 작성한 댓글을 조회한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response readCommentByPostId(@Valid @RequestBody ReadCommentByPostRequestDto readCommentByPostRequestDto) {
+    public Response readCommentByPostId(@RequestParam Long postId, @PageableDefault Pageable pageable) {
+        ReadCommentByPostRequestDto readCommentByPostRequestDto =
+                new ReadCommentByPostRequestDto(postId, new CommentPageInfoRequestDto(pageable.getPageNumber(), pageable.getPageSize()));
         return Response.success(commentService.readCommentByPostId(readCommentByPostRequestDto));
     }
 
