@@ -103,7 +103,7 @@ public class ReadReceiverMessageTest {
         sendMessage(receiver, sender, "receiverToSender", 10);
 
         // when // then
-        mvc.perform(get("/api/message/receiver")
+        mvc.perform(get("/api/message/receiver?page=0&size=10&readMessageType=RECEIVER")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
