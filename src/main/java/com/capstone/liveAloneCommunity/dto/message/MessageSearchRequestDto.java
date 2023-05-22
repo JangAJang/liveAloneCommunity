@@ -3,7 +3,6 @@ package com.capstone.liveAloneCommunity.dto.message;
 import com.capstone.liveAloneCommunity.repository.message.ReadMessageType;
 import com.capstone.liveAloneCommunity.repository.message.SearchMessageType;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter

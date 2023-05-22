@@ -1,4 +1,5 @@
 package com.capstone.liveAloneCommunity.entity.message;
+
 import com.capstone.liveAloneCommunity.domain.post.Content;
 import com.capstone.liveAloneCommunity.entity.BaseTimeEntity;
 import com.capstone.liveAloneCommunity.entity.member.Member;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,14 +30,17 @@ public class Message extends BaseTimeEntity {
     @JoinColumn(name = "sender_name")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Member sender;
+
     public Message(Member sender, Member receiver, String content) {
         this.sender = sender;
         this.receiver = receiver;
         this.content = new Content(content);
     }
+
     public String getReceiverNickname() {
         return this.receiver.getNickname();
     }
+
     public String getSenderNickname() {
         return this.sender.getNickname();
     }

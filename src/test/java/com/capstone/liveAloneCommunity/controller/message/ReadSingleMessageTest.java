@@ -37,11 +37,13 @@ public class ReadSingleMessageTest {
     private MessageService messageService;
     @Autowired
     private DatabaseCleanup databaseCleanup;
+
     @BeforeEach
     void initData() {
         registerMember("sender");
         registerMember("receiver");
     }
+
     @AfterEach
     void clearDB() {
         databaseCleanup.execute();

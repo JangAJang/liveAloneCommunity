@@ -17,12 +17,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
 import java.util.stream.IntStream;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -114,7 +110,6 @@ public class ReadSearchMessageTest {
         deleteMessage(sender, 4L);
         deleteMessage(sender, 6L);
 
-
         // when // then
         mvc.perform(get("/api/message/search?text=er&page=1&size=10&readMessageType=ALL&searchMessageType=NAME")
                         .header("Authorization", getAccessTokenAfterLogIn("sender"))
@@ -146,7 +141,6 @@ public class ReadSearchMessageTest {
                 .andExpect(jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
                 .andDo(MockMvcResultHandlers.print());
     }
-
 
     private void registerMember(String text) {
         authService.register(RegisterRequestDto.builder()
