@@ -102,6 +102,32 @@ public class ReadSearchMessageTest {
     }
 
     @Test
+    @DisplayName("토큰이 있고 요청이 올바르게 왔을 경우 200코드와 회원이 삭제하지 않은 쪽지들의 정보가 반환된다.")
+    void readSearchMessage_Success_ExcludeDeletedMessage() throws Exception{
+        // given
+        Member sender = getMember("sender");
+        Member receiver = getMember("receiver");
+        sendMessage(sender, receiver, "apple(S -> R)", 2);
+        sendMessage(receiver, sender, "apple(R -> S)", 2);
+        sendMessage(sender, receiver, "banana(S -> R)", 2);
+        deleteMessage(sender, 1L);
+        deleteMessage(sender, 4L);
+        deleteMessage(sender, 6L);
+
+
+        // when // then
+        mvc.perform(get("/api/message/search?text=er&page=1&size=10&readMessageType=ALL&searchMessageType=NAME")
+                        .header("Authorization", getAccessTokenAfterLogIn("sender"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.result.data.result[0].content").value("banana(S -> R)0"))
+                .andExpect(jsonPath("$.result.data.result[1].content").value("apple(R -> S)0"))
+                .andExpect(jsonPath("$.result.data.result[2].content").value("apple(S -> R)1"))
+                .andDo(print());
+    }
+
+    @Test
     @DisplayName("토큰이 없는 경우 401코드와 다시 로그인하라는 메세지가 반환된다.")
     void readSearchMessage_Fail_Unauthorized() throws Exception{
         // given
