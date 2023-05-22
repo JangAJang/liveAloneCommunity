@@ -76,6 +76,31 @@ public class ReadSearchMessageTest {
                 .andDo(print());
     }
 
+    @Test
+    @DisplayName("토큰이 있고 NAME 검색 조건으로 올바르게 요청이 들어왔을 때 200코드와 조회된 쪽지들의 정보가 반환된다.")
+    void readSearchMessage_Success_SearchByNAME() throws Exception{
+        // given
+        Member sender = getMember("sender");
+        Member receiver = getMember("receiver");
+        sendMessage(sender, receiver, "apple(S -> R)", 2);
+        sendMessage(receiver, sender, "apple(R -> S)", 2);
+        sendMessage(sender, receiver, "banana(S -> R)", 2);
+
+        // when // then
+        mvc.perform(get("/api/message/search?text=er&page=1&size=10&readMessageType=ALL&searchMessageType=NAME")
+                        .header("Authorization", getAccessTokenAfterLogIn("sender"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.result.data.result[0].content").value("banana(S -> R)1"))
+                .andExpect(jsonPath("$.result.data.result[1].content").value("banana(S -> R)0"))
+                .andExpect(jsonPath("$.result.data.result[2].content").value("apple(R -> S)1"))
+                .andExpect(jsonPath("$.result.data.result[3].content").value("apple(R -> S)0"))
+                .andExpect(jsonPath("$.result.data.result[4].content").value("apple(S -> R)1"))
+                .andExpect(jsonPath("$.result.data.result[5].content").value("apple(S -> R)0"))
+                .andDo(print());
+    }
+
     private void registerMember(String text) {
         authService.register(RegisterRequestDto.builder()
                 .username(text)
