@@ -101,6 +101,27 @@ public class ReadSearchMessageTest {
                 .andDo(print());
     }
 
+    @Test
+    @DisplayName("토큰이 없는 경우 401코드와 다시 로그인하라는 메세지가 반환된다.")
+    void readSearchMessage_Fail_Unauthorized() throws Exception{
+        // given
+        Member sender = getMember("sender");
+        Member receiver = getMember("receiver");
+        sendMessage(sender, receiver, "apple(S -> R)", 2);
+        sendMessage(receiver, sender, "apple(R -> S)", 2);
+        sendMessage(sender, receiver, "banana(S -> R)", 2);
+
+        // when // then
+        mvc.perform(get("/api/message/search?text=er&page=1&size=10&readMessageType=ALL&searchMessageType=NAME")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.code").value(401))
+                .andExpect(jsonPath("$.result.failMessage").value("다시 로그인해주세요."))
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+
     private void registerMember(String text) {
         authService.register(RegisterRequestDto.builder()
                 .username(text)
