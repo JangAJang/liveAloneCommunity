@@ -99,6 +99,17 @@ const saveText = function (comment) {
       .catch((reason) => alert(reason.response.data.result.failMessage))
 }
 
+const deleteComment = function (comment) {
+  axios.delete("/lan/comment", {params: {
+    id: comment.id
+    }})
+      .then(() => {
+        alert("댓글이 삭제되었습니다.")
+        router.push({name: 'readPost', params:{postId: props.postId}})
+      })
+      .catch((reason) => alert(reason.response.data.result.failMessage))
+}
+
 </script>
 
 <template>
@@ -122,7 +133,7 @@ const saveText = function (comment) {
           </form>
           <el-button-group>
             <el-button v-if="isMyComment(comment)" @click="placeText(index)">수정</el-button>
-            <el-button v-if="isMyComment(comment)">삭제</el-button>
+            <el-button v-if="isMyComment(comment)" @click="deleteComment(comment)">삭제</el-button>
           </el-button-group>
         </div>
       </li>

@@ -62,9 +62,9 @@ public class CommentController {
     @DeleteMapping("")
     @Operation(summary = "댓글 삭제", description = "댓글 작성자는 자신의 댓글을 삭제할 수 있다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response deleteComment(@Valid @RequestBody DeleteCommentRequestDto deleteCommentRequestDto) {
+    public Response deleteComment(@RequestParam Long id) {
         Member member = getMember();
-        commentService.deleteComment(member, deleteCommentRequestDto);
+        commentService.deleteComment(member, new DeleteCommentRequestDto(id));
         return Response.success("삭제 완료");
     }
 
