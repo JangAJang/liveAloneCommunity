@@ -9,12 +9,14 @@ import java.time.LocalDateTime;
 @Getter
 public class ReadCommentResponseDto {
 
+    private Long id;
     private String createdDate;
     private String nickname;
     private String content;
 
     public static ReadCommentResponseDto toDto(Comment comment) {
         return ReadCommentResponseDto.builder()
+                .id(comment.getId())
                 .content(comment.getContent())
                 .nickname(comment.getWriterName())
                 .createdDate(getCreatedDateToString(comment.getCreatedDate()))
