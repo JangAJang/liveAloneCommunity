@@ -22,7 +22,7 @@ public class MessageRepositoryCustomImpl implements MessageRepositoryCustom{
     public Page<MessageResponseDto> searchMessage(MessageSearchRequestDto messageSearchRequestDto) {
         Pageable pageable = PageRequest.of(messageSearchRequestDto.getPage(), messageSearchRequestDto.getSize());
         QueryResults<MessageResponseDto> result = jpaQueryFactory
-                .select(new QMessageResponseDto(message.content.content, message.receiver.nickname.nickname,
+                .select(new QMessageResponseDto(message.id, message.content.content, message.receiver.nickname.nickname,
                         message.sender.nickname.nickname, message.createdDate))
                 .from(message)
                 .where(checkReadCondition(messageSearchRequestDto, messageSearchRequestDto.getReadMessageType()),

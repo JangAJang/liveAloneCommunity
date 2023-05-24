@@ -55,6 +55,11 @@ const router = createRouter({
       props: true
     },
     {
+      path: '/message',
+      name: 'messageMain',
+      component: () => import('../components/message/MessageMain.vue')
+    },
+    {
       path: '/message/write',
       name: 'writeMessage',
       component: ()=> import('../components/message/WriteMessage.vue')
