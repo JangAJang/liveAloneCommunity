@@ -53,6 +53,11 @@ const router = createRouter({
       name: 'commentOfPost',
       component: () => import('../components/comment/CommentOfPost.vue'),
       props: true
+    },
+    {
+      path: '/message/write',
+      name: 'writeMessage',
+      component: ()=> import('../components/message/WriteMessage.vue')
     }
   ]
 })
