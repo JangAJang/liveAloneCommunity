@@ -1,8 +1,11 @@
 package com.capstone.liveAloneCommunity.service.message;
 
 import com.capstone.liveAloneCommunity.dto.message.MessageResponseDto;
+import com.capstone.liveAloneCommunity.dto.message.MessageSearchRequestDto;
+import com.capstone.liveAloneCommunity.dto.message.MultiMessageResponseDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.entity.message.Message;
+import com.capstone.liveAloneCommunity.exception.message.*;
 import com.capstone.liveAloneCommunity.exception.message.CanNotSameReceiverAndSenderException;
 import com.capstone.liveAloneCommunity.repository.message.MessageRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +26,50 @@ public class MessageService {
         return MessageResponseDto.toDto(message);
     }
 
+    public MessageResponseDto readMessage(Member member, Long id) {
+        Message message = messageRepository.findById(id).orElseThrow(MessageNotFoundException::new);
+        checkMessageMember(message, member);
+        checkDeletedMessage(message, member);
+        return MessageResponseDto.toDto(message);
+    }
+
+    public MultiMessageResponseDto readMessageByCondition(MessageSearchRequestDto messageSearchRequestDto) {
+        return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto).getContent());
+    }
+
+    public void deleteMessage(Member member, Long id) {
+        Message message = messageRepository.findById(id).orElseThrow(MessageNotFoundException::new);
+        checkMessageMember(message, member);
+        checkDeletedMessage(message, member);
+        if (message.isSender(member)) {
+            message.deleteBySender();
+        }
+        if (message.isReceiver(member)) {
+            message.deleteByReceiver();
+        }
+        if (message.isDeletedMessage()) {
+            messageRepository.delete(message);
+        }
+    }
+
     private void isSameSenderAndReceiver(Member member, Member receiver) {
         if (member.equals(receiver)) {
             throw new CanNotSameReceiverAndSenderException();
+        }
+    }
+
+    private void checkMessageMember(Message message, Member member) {
+        if (!(message.isReceiver(member)) && !(message.isSender(member))) {
+            throw new NotMyMessageException();
+        }
+    }
+
+    private void checkDeletedMessage(Message message, Member member) {
+        if (message.isSender(member) && message.isDeletedBySender()) {
+            throw new MessageNotFoundException();
+        }
+        if (message.isReceiver(member) && message.isDeletedByReceiver()) {
+            throw new MessageNotFoundException();
         }
     }
 }
