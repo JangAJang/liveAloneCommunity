@@ -54,9 +54,8 @@ const getComment = function () {
       size: 10
     }
   }).then(res => {
-    console.log("댓글 조회 완료")
-    console.log(res)
-    comments.value = res.data.result.data.readCommentResponseDto
+    comments.value = res.data.result.data.readCommentResponseDto.content
+    maxPage.value = res.data.result.data.readCommentResponseDto.totalPages
   })
 }
 
@@ -125,7 +124,7 @@ const deleteComment = function (comment) {
           <br/>
           <el-text>작성일자 : {{comment.createdDate}}</el-text>
           <br/>
-          <el-text>내용 : {{comment.content}}</el-text>
+          <el-text v-if="!isEditingComment(index)">내용 : {{comment.content}}</el-text>
           <br/>
           <form v-if="isEditingComment(index)" id="writeCommentBox">
             <textarea v-if="isMyComment(comment)" v-model="editContent"></textarea>

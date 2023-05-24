@@ -39,14 +39,14 @@ public class CommentService {
     @Transactional(readOnly = true)
     public MultiReadCommentResponseDto readCommentByMemberId(Member member, CommentPageInfoRequestDto commentPageInfoRequestDto) {
         Page<Comment> commentByMember = commentRepository.findCommentByMemberId(member.getId(), getPageRequestComment(commentPageInfoRequestDto));
-        return collectComment(commentByMember.getContent());
+        return collectComment(commentByMember);
     }
 
     @Transactional(readOnly = true)
     public MultiReadCommentResponseDto readCommentByPostId(ReadCommentByPostRequestDto readCommentByPostRequestDto) {
         Page<Comment> commentByPostId = commentRepository.findCommentByPostId(readCommentByPostRequestDto.getPostId(),
                 getPageRequestComment(readCommentByPostRequestDto.getCommentPageInfoRequestDto()));
-        return collectComment(commentByPostId.getContent());
+        return collectComment(commentByPostId);
     }
 
     public CommentResponseDto editComment(Member member, EditCommentRequestDto editCommentRequestDto) {
@@ -67,10 +67,8 @@ public class CommentService {
                 .orElseThrow(PostNotFoundException::new);
     }
 
-    private MultiReadCommentResponseDto collectComment(List<Comment> findComment) {
-        return new MultiReadCommentResponseDto(findComment.stream()
-                .map(ReadCommentResponseDto::toDto)
-                .collect(Collectors.toList()));
+    private MultiReadCommentResponseDto collectComment(Page<Comment> findComment) {
+        return new MultiReadCommentResponseDto(findComment.map(ReadCommentResponseDto::toDto));
     }
 
     private Pageable getPageRequestComment(CommentPageInfoRequestDto commentPageInfoRequestDto) {
