@@ -8,7 +8,7 @@ import { RouterLink, RouterView } from 'vue-router'
     <nav>
       <RouterLink to="/" style="margin-left: 2%">게시판</RouterLink>
       <RouterLink to="/member" style="margin-left: 2%">마이 페이지</RouterLink>
-      <RouterLink to="" style="margin-left: 2%">쪽지</RouterLink>
+      <RouterLink to="/message" style="margin-left: 2%">쪽지</RouterLink>
     </nav>
     <nav>
       <ul>

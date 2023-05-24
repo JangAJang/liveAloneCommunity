@@ -17,7 +17,7 @@ public class Message extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @Embedded
     private Content content;
     private boolean deletedByReceiver = false;
@@ -44,8 +44,28 @@ public class Message extends BaseTimeEntity {
     public String getSenderNickname() {
         return this.sender.getNickname();
     }
-
+    
     public String getContent() {
         return this.content.getContent();
+    }
+
+    public void deleteBySender() {
+        this.deletedBySender = true;
+    }
+
+    public void deleteByReceiver() {
+        this.deletedByReceiver = true;
+    }
+
+    public boolean isDeletedMessage() {
+        return deletedBySender && deletedByReceiver;
+    }
+
+    public boolean isReceiver(Member member) {
+        return this.receiver.getNickname().equals(member.getNickname());
+    }
+
+    public boolean isSender(Member member) {
+        return this.sender.getNickname().equals(member.getNickname());
     }
 }
