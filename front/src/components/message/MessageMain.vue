@@ -58,6 +58,23 @@ const limitContent = function (content) {
   return content.substring(0, 10);
 }
 
+const increasePage = function () {
+  if(page.value == maxPage.value){
+    alert("마지막 페이지입니다.")
+    return
+  }
+  readMessage();
+}
+
+const decreasePage = function () {
+  if (page.value == 1) {
+    alert("1번 페이지입니다.")
+    return
+  }
+  page.value--
+  readMessage()
+}
+
 </script>
 <template>
   <div id="messageBlock">
@@ -83,10 +100,13 @@ const limitContent = function (content) {
               <br/>
             </div>
             <el-text>내용 : {{limitContent(message.content)}}</el-text>
-            <br/>
-            <el-text>전송일자 : {{message.createDate}}</el-text>
           </li>
         </ul>
+      </div>
+      <div id>
+        <el-button id="pageButton" @click="decreasePage">이전 페이지</el-button>
+        <el-text>{{page}}</el-text>
+        <el-button id="pageButton" @click="increasePage">다음 페이지</el-button>
       </div>
     </div>
   </div>
