@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
 import axios from "axios";
+import router from "@/router";
 
 const messages = ref([])
 const readMessageType = ref('ALL')
@@ -19,6 +20,10 @@ onMounted(() => {
         me.value = res.data.result.data.nickname
       })
 })
+
+const moveToWrite = function () {
+  router.push({name: 'writeMessage'})
+}
 
 const receivedMessage = function () {
   readMessageType.value = 'RECEIVER'
@@ -79,8 +84,8 @@ const decreasePage = function () {
 <template>
   <div id="messageBlock">
     <div id="messageContent">
-      <div>
-        <el-button-group id="messageTypeButton">
+      <div id="messageTypeButton">
+        <el-button-group>
           <div id="searchBox">
             <el-input placeholder="검색어를 입력해주세요." v-model="text"/>
             <el-button>검색</el-button>
@@ -91,15 +96,17 @@ const decreasePage = function () {
         </el-button-group>
         <ul>
           <li v-for="message in messages">
-            <div v-if="isSentMessage(message)">
-              <el-text>받은 사람 : {{message.receiver}}</el-text>
-              <br/>
+            <div id="messageEach">
+              <div v-if="isSentMessage(message)">
+                <el-text>받은 사람 : {{message.receiver}}</el-text>
+                <br/>
+              </div>
+              <div v-if="!isSentMessage(message)">
+                <el-text>보낸 사람 : {{message.sender}}</el-text>
+                <br/>
+              </div>
+              <el-text>내용 : {{limitContent(message.content)}}</el-text>
             </div>
-            <div v-if="!isSentMessage(message)">
-              <el-text>보낸 사람 : {{message.sender}}</el-text>
-              <br/>
-            </div>
-            <el-text>내용 : {{limitContent(message.content)}}</el-text>
           </li>
         </ul>
       </div>
@@ -109,9 +116,9 @@ const decreasePage = function () {
         <el-button id="pageButton" @click="increasePage">다음 페이지</el-button>
       </div>
     </div>
+    <el-button @click="moveToWrite">쪽지 작성</el-button>
+
   </div>
-
-
 </template>
 <style>
 
@@ -125,6 +132,11 @@ const decreasePage = function () {
   margin-top: 3%;
   margin-left: 12.5%;
   background-color: #ffe87c;
+}
+
+#messageEach {
+  margin-top: 2%;
+  background-color: #ffc520;
 }
 
 #messageContent {
