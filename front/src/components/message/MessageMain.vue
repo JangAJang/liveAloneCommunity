@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
-import axios from "axios";
+import { onMounted, ref } from 'vue'
+import axios from 'axios'
+import router from '@/router'
+import MessageView from '@/components/message/MessageView.vue'
 
 const messages = ref([])
 const readMessageType = ref('ALL')
@@ -9,16 +11,20 @@ const maxPage = ref(1)
 const size = 10
 const me = ref('')
 const text = ref('')
+const messageId = ref(1)
 
 onMounted(() => {
   page.value = 1
   readMessageType.value = 'ALL'
   readMessage()
-  axios.get("/lan/member/me")
-      .then(res=> {
-        me.value = res.data.result.data.nickname
-      })
+  axios.get('/lan/member/me').then((res) => {
+    me.value = res.data.result.data.nickname
+  })
 })
+
+const moveToWrite = function () {
+  router.push({ name: 'writeMessage' })
+}
 
 const receivedMessage = function () {
   readMessageType.value = 'RECEIVER'
@@ -43,46 +49,49 @@ const isSentMessage = function (message) {
 }
 
 const readMessage = function () {
-  axios.get("/lan/message/read", {params: {
-      readMessageType: readMessageType.value,
-      page: page.value,
-      size: size
-    }})
-      .then(res => {
-        messages.value = res.data.result.data.result.content
-        maxPage.value = res.data.result.data.result.totalPages
-      })
+  axios
+    .get('/lan/message/read', {
+      params: {
+        readMessageType: readMessageType.value,
+        page: page.value,
+        size: size
+      }
+    })
+    .then((res) => {
+      messages.value = res.data.result.data.result.content
+      messageId.value = res.data.result.data.result.content[0].id
+      maxPage.value = res.data.result.data.result.totalPages
+    })
 }
 
 const limitContent = function (content) {
-  return content.substring(0, 10);
+  return content.substring(0, 10)
 }
 
 const increasePage = function () {
-  if(page.value == maxPage.value){
-    alert("마지막 페이지입니다.")
+  if (page.value == maxPage.value) {
+    alert('마지막 페이지입니다.')
     return
   }
-  readMessage();
+  readMessage()
 }
 
 const decreasePage = function () {
   if (page.value == 1) {
-    alert("1번 페이지입니다.")
+    alert('1번 페이지입니다.')
     return
   }
   page.value--
   readMessage()
 }
-
 </script>
 <template>
   <div id="messageBlock">
     <div id="messageContent">
-      <div>
-        <el-button-group id="messageTypeButton">
+      <div id="messageTypeButton">
+        <el-button-group>
           <div id="searchBox">
-            <el-input placeholder="검색어를 입력해주세요." v-model="text"/>
+            <el-input placeholder="검색어를 입력해주세요." v-model="text" />
             <el-button>검색</el-button>
           </div>
           <el-button @click="allMessage">전체 쪽지함</el-button>
@@ -91,30 +100,31 @@ const decreasePage = function () {
         </el-button-group>
         <ul>
           <li v-for="message in messages">
-            <div v-if="isSentMessage(message)">
-              <el-text>받은 사람 : {{message.receiver}}</el-text>
-              <br/>
+            <div id="messageEach">
+              <div v-if="isSentMessage(message)">
+                <el-text>받은 사람 : {{ message.receiver }}</el-text>
+                <br />
+              </div>
+              <div v-if="!isSentMessage(message)">
+                <el-text>보낸 사람 : {{ message.sender }}</el-text>
+                <br />
+              </div>
+              <el-text>내용 : {{ limitContent(message.content) }}</el-text>
             </div>
-            <div v-if="!isSentMessage(message)">
-              <el-text>보낸 사람 : {{message.sender}}</el-text>
-              <br/>
-            </div>
-            <el-text>내용 : {{limitContent(message.content)}}</el-text>
           </li>
         </ul>
       </div>
       <div id>
         <el-button id="pageButton" @click="decreasePage">이전 페이지</el-button>
-        <el-text>{{page}}</el-text>
+        <el-text>{{ page }}</el-text>
         <el-button id="pageButton" @click="increasePage">다음 페이지</el-button>
       </div>
     </div>
+    <el-button @click="moveToWrite">쪽지 작성</el-button>
   </div>
-
-
+  <MessageView :messageId="messageId" />
 </template>
 <style>
-
 #searchBox {
   display: grid;
   grid-auto-flow: column;
@@ -125,6 +135,11 @@ const decreasePage = function () {
   margin-top: 3%;
   margin-left: 12.5%;
   background-color: #ffe87c;
+}
+
+#messageEach {
+  margin-top: 2%;
+  background-color: #ffc520;
 }
 
 #messageContent {
@@ -138,5 +153,4 @@ const decreasePage = function () {
   display: grid;
   grid-auto-flow: row;
 }
-
 </style>

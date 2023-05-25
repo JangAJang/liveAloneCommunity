@@ -29,7 +29,7 @@ const router = createRouter({
     {
       path: '/member',
       name: 'myPage',
-      component: ()=> import('../components/member/MyPage.vue'),
+      component: () => import('../components/member/MyPage.vue')
     },
     {
       path: '/post/write',
@@ -62,7 +62,13 @@ const router = createRouter({
     {
       path: '/message/write',
       name: 'writeMessage',
-      component: ()=> import('../components/message/WriteMessage.vue')
+      component: () => import('../components/message/WriteMessage.vue')
+    },
+    {
+      path: '/message/:messageId',
+      name: 'messageView',
+      component: () => import('../components/message/MessageView.vue'),
+      props: true
     }
   ]
 })

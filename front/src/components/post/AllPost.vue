@@ -107,11 +107,11 @@ const searchPost = function () {
 }
 
 const increasePage = function () {
-  if(page.value == maxPage.value){
-    alert("마지막 페이지입니다.")
+  if (page.value == maxPage.value) {
+    alert('마지막 페이지입니다.')
     return
   }
-  if(category.value == 'Search') {
+  if (category.value == 'Search') {
     page.value++
     searchPost()
     return
@@ -122,10 +122,10 @@ const increasePage = function () {
 
 const decreasePage = function () {
   if (page.value == 1) {
-    alert("1번 페이지입니다.")
+    alert('1번 페이지입니다.')
     return
   }
-  if(category.value == 'Search') {
+  if (category.value == 'Search') {
     page.value--
     searchPost()
     return
@@ -185,7 +185,7 @@ onMounted(() => getPosts())
     </div>
     <div id="pageBox">
       <el-button id="pageButton" @click="decreasePage">이전 페이지</el-button>
-      <el-text>{{page}}</el-text>
+      <el-text>{{ page }}</el-text>
       <el-button id="pageButton" @click="increasePage">다음 페이지</el-button>
     </div>
   </div>
