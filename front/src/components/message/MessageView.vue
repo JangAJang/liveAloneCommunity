@@ -12,6 +12,10 @@ const props = defineProps({
   }
 })
 
+const containsMessage = function () {
+  return message.value.nickname !== null;
+}
+
 const getPostData = function () {
   axios
     .get('/lan/message', {
@@ -20,9 +24,10 @@ const getPostData = function () {
       }
     })
     .then((res) => {
-      console.log(res)
       message.value = res.data.result.data;
-    })
+    }).catch(() => {
+      message.value = { nickname: null}
+  })
 }
 
 const deleteMessage = function () {
@@ -45,7 +50,7 @@ onMounted(() => getPostData())
   <p>{{message.createDate}}</p>
 </div>
   <el-button-group>
-    <el-button @click="deleteMessage">삭제하기</el-button>
+    <el-button v-if="containsMessage" @click="deleteMessage">삭제하기</el-button>
   </el-button-group>
 </template>
 <style></style>

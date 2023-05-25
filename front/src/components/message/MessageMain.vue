@@ -6,12 +6,23 @@ import MessageView from '@/components/message/MessageView.vue'
 
 const messages = ref([])
 const readMessageType = ref('ALL')
+const searchMessageType = ref(null)
 const page = ref(1)
 const maxPage = ref(1)
 const size = 10
 const me = ref('')
 const text = ref('')
-const messageId = ref(1)
+const messageId = ref()
+const options = [
+  {
+    value: 'NAME',
+    label: '작성자명'
+  },
+  {
+    value: 'CONTENT',
+    label: '내용'
+  }
+]
 
 onMounted(() => {
   page.value = 1
@@ -49,6 +60,7 @@ const isSentMessage = function (message) {
 }
 
 const readMessage = function () {
+  searchMessageType.value = null
   axios
     .get('/lan/message/read', {
       params: {
@@ -64,6 +76,31 @@ const readMessage = function () {
     })
 }
 
+const startSearch = function () {
+  page.value = 1;
+  searchMessage();
+}
+
+const searchMessage = function () {
+  axios.get("/lan/message/search", {
+    params: {
+      text: text.value,
+      searchMessageType: searchMessageType.value,
+      readMessageType: readMessageType.value,
+      page: page.value,
+      size: 10
+    }
+  })
+      .then(res => {
+        messages.value = res.data.result.data.result.content
+        messageId.value = res.data.result.data.result.content[0].id
+        maxPage.value = res.data.result.data.result.totalPages
+      })
+      .catch(e => {
+        console.log(e)
+      })
+}
+
 const limitContent = function (content) {
   return content.substring(0, 10)
 }
@@ -73,7 +110,12 @@ const increasePage = function () {
     alert('마지막 페이지입니다.')
     return
   }
-  readMessage()
+  page.value++
+  if(isReadMessage()){
+    readMessage()
+    return;
+  }
+  searchMessage();
 }
 
 const decreasePage = function () {
@@ -82,7 +124,15 @@ const decreasePage = function () {
     return
   }
   page.value--
-  readMessage()
+  if(isReadMessage()){
+    readMessage()
+    return;
+  }
+  searchMessage();
+}
+
+const isReadMessage = function () {
+  return searchMessageType.value === null
 }
 </script>
 <template>
@@ -91,8 +141,16 @@ const decreasePage = function () {
       <div id="messageTypeButton">
         <el-button-group>
           <div id="searchBox">
+            <el-select v-model="searchMessageType" placeholder="검색방식">
+              <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+              />
+            </el-select>
             <el-input placeholder="검색어를 입력해주세요." v-model="text" />
-            <el-button>검색</el-button>
+            <el-button @click="startSearch">검색</el-button>
           </div>
           <el-button @click="allMessage">전체 쪽지함</el-button>
           <el-button @click="receivedMessage">받은 쪽지함</el-button>
