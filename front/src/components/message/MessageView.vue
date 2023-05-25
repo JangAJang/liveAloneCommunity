@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import axios from "axios";
-import {onMounted} from "vue";
+import axios from 'axios'
+import {onMounted, ref} from 'vue'
+import router from "@/router";
+
+const message = ref({})
 
 const props = defineProps({
   messageId: {
@@ -10,17 +13,39 @@ const props = defineProps({
 })
 
 const getPostData = function () {
-  axios.get("/lan/message", {params: {
-    id: props.messageId
+  axios
+    .get('/lan/message', {
+      params: {
+        id: props.messageId
+      }
+    })
+    .then((res) => {
+      console.log(res)
+      message.value = res.data.result.data;
+    })
+}
+
+const deleteMessage = function () {
+  axios.delete("/lan/message", {params: {
+    id: message.value.id
     }})
-      .then(res=> console.log(res))
+      .then(() => {
+        alert("쪽지를 삭제했습니다.")
+        router.push({name: 'messageMain'})
+      })
 }
 
 onMounted(() => getPostData())
 </script>
 <template>
-
+<div>
+  <p>{{message.sender}}</p>
+  <p>{{message.receiver}}</p>
+  <p>{{message.content}}</p>
+  <p>{{message.createDate}}</p>
+</div>
+  <el-button-group>
+    <el-button @click="deleteMessage">삭제하기</el-button>
+  </el-button-group>
 </template>
-<style>
-
-</style>
+<style></style>
