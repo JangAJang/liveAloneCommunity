@@ -63,6 +63,12 @@ const router = createRouter({
       path: '/message/write',
       name: 'writeMessage',
       component: ()=> import('../components/message/WriteMessage.vue')
+    },
+    {
+      path: '/message/:messageId',
+      name: 'messageView',
+      component: ()=> import('../components/message/MessageView.vue'),
+      props: true
     }
   ]
 })

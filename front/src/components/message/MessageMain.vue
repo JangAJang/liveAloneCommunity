@@ -2,6 +2,7 @@
 import {onMounted, ref} from "vue";
 import axios from "axios";
 import router from "@/router";
+import MessageView from "@/components/message/MessageView.vue";
 
 const messages = ref([])
 const readMessageType = ref('ALL')
@@ -10,6 +11,7 @@ const maxPage = ref(1)
 const size = 10
 const me = ref('')
 const text = ref('')
+const messageId = ref(1)
 
 onMounted(() => {
   page.value = 1
@@ -55,6 +57,7 @@ const readMessage = function () {
     }})
       .then(res => {
         messages.value = res.data.result.data.result.content
+        messageId.value = res.data.result.data.result.content[0].id
         maxPage.value = res.data.result.data.result.totalPages
       })
 }
@@ -117,7 +120,7 @@ const decreasePage = function () {
       </div>
     </div>
     <el-button @click="moveToWrite">쪽지 작성</el-button>
-
+    <MessageView :messageId = "messageId" />
   </div>
 </template>
 <style>
