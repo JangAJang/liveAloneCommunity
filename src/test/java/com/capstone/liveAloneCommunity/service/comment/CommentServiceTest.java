@@ -95,7 +95,7 @@ class CommentServiceTest {
         MultiReadCommentResponseDto multiReadCommentResponseDto = commentService.readCommentByMemberId(member1, commentPageInfoRequestDto);
 
         //then
-        assertThat(multiReadCommentResponseDto.getReadCommentResponseDto().size()).isEqualTo( 999);
+        assertThat(multiReadCommentResponseDto.getReadCommentResponseDto().getContent().size()).isEqualTo( 999);
     }
 
     @Test
@@ -121,8 +121,8 @@ class CommentServiceTest {
         MultiReadCommentResponseDto multiReadCommentResponseDto = commentService.readCommentByPostId(readCommentByPostRequestDto);
 
         //then
-        assertThat(multiReadCommentResponseDto.getReadCommentResponseDto().get(0).getTitle()).isEqualTo(post1.getTitle());
-        assertThat(multiReadCommentResponseDto.getReadCommentResponseDto().size()).isEqualTo(50);
+        assertThat(multiReadCommentResponseDto.getReadCommentResponseDto().getContent().get(0).getContent()).isEqualTo(post1.getTitle());
+        assertThat(multiReadCommentResponseDto.getReadCommentResponseDto().getContent().size()).isEqualTo(50);
     }
 
     @Test
