@@ -13,6 +13,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.core.parameters.P;
 
 import static com.capstone.liveAloneCommunity.domain.post.Category.*;
 
@@ -23,10 +24,13 @@ public class PostTest {
 
     @BeforeEach
     void initializeInstance(){
-        member = new Member(new Username("username"),
-                new Nickname("nickname"),
-                new Email("email@email.com"),
-                new Password("p"), Role.USER);
+        member = Member.builder()
+                .username(new Username("username"))
+                .nickname(new Nickname("nickname"))
+                .email(new Email("email@email.com"))
+                .password(new Password("p"))
+                .role(Role.USER)
+                .build();
         post = new Post(new Title("title"), new Content("content"), member, COOKING);
     }
 
@@ -72,10 +76,13 @@ public class PostTest {
     @DisplayName("isWriter 메서드를 통해 해당 게시물을 작성한 멤버일 경우엔 True, 아닐 경우 False를 반환받는다.")
     public void isWriterTest() throws Exception{
         //given
-        Member member1 = new Member(new Username("username1"),
-                new Nickname("nickname"),
-                new Email("email@email.com"),
-                new Password("p1"), Role.USER);
+        Member member1 = Member.builder()
+                .username(new Username("username1"))
+                .nickname(new Nickname("nickname"))
+                .email(new Email("email@email.com"))
+                .password(new Password("p1"))
+                .role(Role.USER)
+                .build();
         //when
 
         //then
