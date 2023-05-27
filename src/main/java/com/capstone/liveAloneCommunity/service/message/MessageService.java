@@ -34,7 +34,7 @@ public class MessageService {
     }
 
     public MultiMessageResponseDto readMessageByCondition(MessageSearchRequestDto messageSearchRequestDto) {
-        return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto).getContent());
+        return new MultiMessageResponseDto(messageRepository.searchMessage(messageSearchRequestDto));
     }
 
     public void deleteMessage(Member member, Long id) {

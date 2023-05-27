@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 public class MessageResponseDto {
 
+    private Long id;
     private String content;
     private String receiver;
     private String sender;
@@ -19,7 +20,8 @@ public class MessageResponseDto {
     }
 
     @QueryProjection
-    public MessageResponseDto(String content, String receiver, String sender, LocalDateTime createDate) {
+    public MessageResponseDto(Long id, String content, String receiver, String sender, LocalDateTime createDate) {
+        this.id = id;
         this.content = content;
         this.receiver = receiver;
         this.sender = sender;
@@ -28,6 +30,7 @@ public class MessageResponseDto {
 
     public static MessageResponseDto toDto(Message message) {
         return new MessageResponseDto(
+                message.getId(),
                 message.getContent(),
                 message.getReceiverNickname(),
                 message.getSenderNickname(),

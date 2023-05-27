@@ -28,7 +28,12 @@ public class MemberTest {
         Nickname nickname = new Nickname("nickname");
         Email email = new Email("email");
         //when
-        Member member = new Member(username, nickname, email, password, Role.USER);
+        Member member = Member.builder()
+                .username(username)
+                .password(password)
+                .nickname(nickname)
+                .email(email)
+                .role(Role.USER).build();
         //then
         Assertions.assertThat(member.getUsername()).isEqualTo(username.getUsername());
         Assertions.assertThat(member.getPassword()).isEqualTo(password.getPassword());
@@ -46,7 +51,12 @@ public class MemberTest {
         Nickname nickname = new Nickname("nickname");
         Email email = new Email("email");
         //when
-        Member member = new Member(username, nickname, email, password, Role.USER);
+        Member member = Member.builder()
+                .username(username)
+                .password(password)
+                .nickname(nickname)
+                .email(email)
+                .role(Role.USER).build();
         //then
         Assertions.assertThat(member.isRightPassword("password", passwordEncoder)).isTrue();
     }
@@ -60,7 +70,12 @@ public class MemberTest {
         Nickname nickname = new Nickname("nickname");
         Email email = new Email("email");
         //when
-        Member member = new Member(username, nickname, email, password, Role.USER);
+        Member member = Member.builder()
+                .username(username)
+                .password(password)
+                .nickname(nickname)
+                .email(email)
+                .role(Role.USER).build();
         //then
         Assertions.assertThat(member.isRightPassword("password1", passwordEncoder)).isFalse();
     }

@@ -21,6 +21,17 @@ const router = createRouter({
       meta: { unauthorized: true }
     },
     {
+      path: '/auth/kakao-login',
+      name: 'kakaoAuth',
+      component: () => import('../components/auth/KakaoLogIn.vue'),
+      meta: { unauthorized: true }
+    },
+    {
+      path: '/member',
+      name: 'myPage',
+      component: () => import('../components/member/MyPage.vue')
+    },
+    {
       path: '/post/write',
       name: 'writePost',
       component: () => import('../components/post/WritePost.vue')
@@ -35,6 +46,28 @@ const router = createRouter({
       path: '/post/edit/:postId',
       name: 'editPost',
       component: () => import('../components/post/EditPostView.vue'),
+      props: true
+    },
+    {
+      path: '/comment/of/:postId',
+      name: 'commentOfPost',
+      component: () => import('../components/comment/CommentOfPost.vue'),
+      props: true
+    },
+    {
+      path: '/message',
+      name: 'messageMain',
+      component: () => import('../components/message/MessageMain.vue')
+    },
+    {
+      path: '/message/write',
+      name: 'writeMessage',
+      component: () => import('../components/message/WriteMessage.vue')
+    },
+    {
+      path: '/message/:messageId',
+      name: 'messageView',
+      component: () => import('../components/message/MessageView.vue'),
       props: true
     }
   ]

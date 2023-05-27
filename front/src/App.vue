@@ -7,9 +7,8 @@ import { RouterLink, RouterView } from 'vue-router'
     <h1>Live Alone Network</h1>
     <nav>
       <RouterLink to="/" style="margin-left: 2%">게시판</RouterLink>
-      <RouterLink to="" style="margin-left: 2%">위치</RouterLink>
-      <RouterLink to="" style="margin-left: 2%">정보</RouterLink>
-      <RouterLink to="" style="margin-left: 2%">친구</RouterLink>
+      <RouterLink to="/member" style="margin-left: 2%">마이 페이지</RouterLink>
+      <RouterLink to="/message" style="margin-left: 2%">쪽지</RouterLink>
     </nav>
     <nav>
       <ul>

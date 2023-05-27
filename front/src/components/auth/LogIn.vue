@@ -6,7 +6,6 @@ import VueCookies from 'vue-cookies'
 
 const username = ref('')
 const password = ref('')
-
 const signIn = function () {
   axios
     .post('/lan/auth/logIn', {
@@ -22,6 +21,14 @@ const signIn = function () {
     })
     .catch((reason) => alert(reason.response.data.result.failMessage))
 }
+
+const kakaoLogIn = function () {
+  Kakao.init('229db5180010ffc0378044aa071a7a5c')
+  Kakao.Auth.authorize({
+    redirectUri: 'http://localhost:5173/auth/kakao-login',
+    prompts: 'login'
+  })
+}
 </script>
 <template>
   <div id="logInPart">
@@ -30,8 +37,8 @@ const signIn = function () {
     <el-button type="primary" @click="signIn()" id="logInButton">로그인</el-button>
   </div>
   <form>
-    <a href="https://kauth.kakao.com/oauth/authorize?client_id=8ca91c36f6c867eabd678eb00abb06e3&redirect_uri=http://localhost:8080/api/auth/kakao/callback&response_type=code">
-        <img src="@/assets/image/kakao_login_medium_narrow.png" />
+    <a v-on:click="kakaoLogIn">
+      <img src="@/assets/image/kakao_login_medium_narrow.png" />
     </a>
   </form>
 </template>

@@ -5,6 +5,7 @@ import MyPost from '@/components/main/MyPost.vue'
 import Profile from '@/components/main/Profile.vue'
 import MyComment from '@/components/main/MyComment.vue'
 import router from '@/router'
+import CommentOfPost from '@/components/comment/CommentOfPost.vue'
 
 const props = defineProps({
   postId: {
@@ -68,6 +69,7 @@ const deletePost = function () {
         <el-button @click="requestDelete">글 삭제</el-button>
       </el-button-group>
     </div>
+    <CommentOfPost :post-id="props.postId" />
   </div>
 
   <Profile />

@@ -35,7 +35,8 @@ public class KakaoAuthService {
 
     public LogInRequestDto getLogInRequestByCode(String code){
         KakaoProfile kakaoProfile = getKakaoInfo(code);
-        Member member = memberRepository.findByUsername_Username("KAKAO_" + kakaoProfile.getEmail()).orElse(createMemberByKakaoInfo(kakaoProfile));
+        Member member = memberRepository.findByUsername_Username("KAKAO_" + kakaoProfile.getEmail())
+                .orElseGet(()-> createMemberByKakaoInfo(kakaoProfile));
         return LogInRequestDto.builder()
                 .username(member.getUsername())
                 .password("KAKAO_" + kakaoProfile.getId()).build();
@@ -63,7 +64,6 @@ public class KakaoAuthService {
     }
 
     private OAuthToken getKakaoToken(String code, ObjectMapper objectMapper){
-        OAuthToken oAuthToken;
         try {
             return objectMapper.readValue(getKakaoToken(code).getBody(), OAuthToken.class);
         } catch (
@@ -89,7 +89,7 @@ public class KakaoAuthService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", "8ca91c36f6c867eabd678eb00abb06e3");
-        params.add("redirect_uri", "http://localhost:8080/api/auth/kakao/callback");
+        params.add("redirect_uri", "http://localhost:5173/auth/kakao-login");
         params.add("code", code);
         return params;
     }

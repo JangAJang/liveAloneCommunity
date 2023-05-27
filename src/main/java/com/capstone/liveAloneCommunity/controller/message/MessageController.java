@@ -44,26 +44,8 @@ public class MessageController {
         return Response.success(messageService.readMessage(member, id));
     }
 
-    @GetMapping("/receiver")
-    @Operation(summary = "받은 쪽지 조회", description = "받은 쪽지를 조회한다.")
-    @ResponseStatus(HttpStatus.OK)
-    public Response readMessageByReceiver(@RequestParam ReadMessageType readMessageType, @PageableDefault Pageable pageable) {
-        Member member = getMember();
-        MessageSearchRequestDto messageSearchRequestDto = setBuilder(readMessageType, pageable, member);
-        return Response.success(messageService.readMessageByCondition(messageSearchRequestDto));
-    }
-
-    @GetMapping("/sender")
-    @Operation(summary = "보낸 쪽지 조회", description = "보낸 쪽지를 조회한다.")
-    @ResponseStatus(HttpStatus.OK)
-    public Response readMessageBySender(@RequestParam ReadMessageType readMessageType, @PageableDefault Pageable pageable) {
-        Member member = getMember();
-        MessageSearchRequestDto messageSearchRequestDto = setBuilder(readMessageType, pageable, member);
-        return Response.success(messageService.readMessageByCondition(messageSearchRequestDto));
-    }
-
-    @GetMapping("/all")
-    @Operation(summary = "전체 쪽지 조회", description = "전체 쪽지를 조회한다.")
+    @GetMapping("/read")
+    @Operation(summary = "쪽지 다건 조회", description = "ReadMessageType을 통해 전체조회, 받은 쪽지 조회, 보낸 쪽지 조회를 수행한다.")
     @ResponseStatus(HttpStatus.OK)
     public Response readMessageAll(@RequestParam ReadMessageType readMessageType, @PageableDefault Pageable pageable) {
         Member member = getMember();
