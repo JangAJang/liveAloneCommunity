@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { onMounted, ref } from 'vue'
-import MyPost from '@/components/main/MyPost.vue'
 import Profile from '@/components/main/Profile.vue'
-import MyComment from '@/components/main/MyComment.vue'
 import router from '@/router'
 import { RouterView } from 'vue-router'
+import MyData from "@/components/main/MyData.vue";
 
 const category = ref('HOBBY_SHARE')
 const page = ref(1)
@@ -141,6 +140,8 @@ const goToWritePost = function () {
 onMounted(() => getPosts())
 </script>
 <template>
+  <MyData/>
+  <Profile />
   <div id="postBox">
     <div>
       <el-button-group>
@@ -189,9 +190,6 @@ onMounted(() => getPosts())
       <el-button id="pageButton" @click="increasePage">다음 페이지</el-button>
     </div>
   </div>
-  <Profile />
-  <MyPost />
-  <MyComment />
 </template>
 
 <style>
