@@ -4,7 +4,7 @@ import axios from 'axios'
 import { RouterView } from 'vue-router'
 import Profile from '@/components/main/Profile.vue'
 import router from '@/router'
-import MyPage from "@/components/member/MyPage.vue";
+import MyData from "@/components/main/MyData.vue";
 
 const title = ref('')
 const content = ref('')
@@ -48,35 +48,61 @@ const savePost = function () {
 </script>
 
 <template>
-  <MyPage/>
-  <div id="postBox">
-    <div id="upper">
-      <div id="title">
-        <el-input v-model="title" placeholder="제목" />
+  <MyData/>
+  <div id="writePostBox">
+    <div id="writePostArea">
+      <div id="upper">
+        <div id="writeTitle">
+          <el-input v-model="title" placeholder="제목" />
+        </div>
+        <div id="category">
+          <el-select v-model="category" placeholder="카테고리">
+            <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            />
+          </el-select>
+        </div>
       </div>
-      <div id="category">
-        <el-select v-model="category" placeholder="카테고리">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
+      <div>
+        <textarea v-model="content" placeholder="내용" id="content" />
       </div>
     </div>
-    <div>
-      <textarea v-model="content" placeholder="내용" id="content" />
-    </div>
-    <el-button id="button" @click="savePost">저장</el-button>
   </div>
-
+  <button id="savePostButton" @click="savePost">
+    <p id="savePostText">
+      저장
+    </p>
+  </button>
   <Profile />
 </template>
 
 <style>
-#button {
+#savePostButton {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
   position: absolute;
+  left: 46%;
+  width: 8%;
+  margin-top: 45%;
+  background: #FFEB35;
+  border: 3px solid #000000;
+  border-radius: 15px;
+  align-items: center;
+}
+
+#savePostText{
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 15px;
+  align-content: center;
+  color: #000000;
+  margin-left: 29%;
 }
 
 #upper {
@@ -85,27 +111,38 @@ const savePost = function () {
   grid-auto-flow: column;
 }
 
-#postBox {
-  margin-top: 2%;
+#writePostBox {
+  box-sizing: border-box;
+  position: absolute;
   width: 60%;
   margin-left: 20%;
-  background-color: #ffe87c;
-  position: absolute;
+  background: #FFFFFF;
+  border: 3px solid #000000;
+  border-radius: 15px;
+  height: 75%
 }
 
 #category {
   margin-left: 2%;
 }
 
-#title {
-  width: 40%;
-  margin-left: 2%;
+#writeTitle {
+  width: 58%;
+  margin-left: 32%;
+  position: absolute;
 }
 
 #content {
+  position: absolute;
   margin-left: 2%;
   margin-top: 1%;
-  height: 400px;
-  width: 80%;
+  height: 73%;
+  width: 87%;
+}
+
+#writePostArea{
+  margin-top: 5%;
+  margin-left: 5%;
+  width: 90%;
 }
 </style>
