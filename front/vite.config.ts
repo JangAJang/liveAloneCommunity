@@ -15,9 +15,10 @@ export default defineConfig({
   server: {
     proxy: {
       "/lan": {
-        target: "http://localhost:8080/api",
+        target: "http://34.219.46.112:8080/api",
         rewrite: (path)=> path.replace(/^\/lan/, ""),
       }
     },
   }
 })
+
