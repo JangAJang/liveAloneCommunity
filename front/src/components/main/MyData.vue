@@ -24,7 +24,8 @@ onMounted(() => {
         }
       })
       .then((res) => {
-        commentResult.value = res.data.result.data.readCommentResponseDto
+        console.log(res)
+        commentResult.value = res.data.result.data.readCommentResponseDto.content
       })
 })
 </script>
