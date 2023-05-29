@@ -2,17 +2,17 @@
 import { onMounted, ref } from 'vue'
 import axios from 'axios'
 import router from '@/router'
-import MessageView from '@/components/message/MessageView.vue'
 
 const messages = ref([])
+const message = ref({})
 const readMessageType = ref('ALL')
 const searchMessageType = ref(null)
 const page = ref(1)
 const maxPage = ref(1)
-const size = 10
+const size = 5
 const me = ref('')
 const text = ref('')
-const messageId = ref()
+const messageId = ref(1)
 const options = [
   {
     value: 'NAME',
@@ -31,6 +31,7 @@ onMounted(() => {
   axios.get('/lan/member/me').then((res) => {
     me.value = res.data.result.data.nickname
   })
+  getSingleMessage()
 })
 
 const moveToWrite = function () {
@@ -73,12 +74,29 @@ const readMessage = function () {
       messages.value = res.data.result.data.result.content
       messageId.value = res.data.result.data.result.content[0].id
       maxPage.value = res.data.result.data.result.totalPages
+      console.log(messageId.value)
     })
 }
 
 const startSearch = function () {
   page.value = 1
   searchMessage()
+}
+
+const getSingleMessage = function () {
+  axios
+      .get('/lan/message', {
+        params: {
+          id: messageId.value
+        }
+      })
+      .then((res) => {
+        message.value = res.data.result.data
+        message.value.content = message.value.content.split('\n').join("<br/>");
+      })
+      .catch(() => {
+        message.value = { nickname: null }
+      })
 }
 
 const searchMessage = function () {
@@ -96,6 +114,7 @@ const searchMessage = function () {
       messages.value = res.data.result.data.result.content
       messageId.value = res.data.result.data.result.content[0].id
       maxPage.value = res.data.result.data.result.totalPages
+      console.log(messageId.value)
     })
     .catch((e) => {
       console.log(e)
@@ -103,7 +122,8 @@ const searchMessage = function () {
 }
 
 const limitContent = function (content) {
-  return content.substring(0, 10)
+  if ( content.length > 10) return content.substring(0, 10) + '...'
+  return content
 }
 
 const increasePage = function () {
@@ -132,6 +152,24 @@ const decreasePage = function () {
   searchMessage()
 }
 
+const deleteMessage = function () {
+  if (confirm('쪽지를 삭제하시겠습니까?')) {
+    axios
+        .delete('/lan/message?id='+messageId.value)
+        .then(() => {
+          alert('쪽지를 삭제했습니다..')
+          router.replace({ name: 'messageMain' })
+        })
+        .catch((reason) => alert(reason.response.data.result.failMessage))
+  }
+}
+
+const chooseMessage = function (message) {
+  messageId.value = message.id
+  console.log(messageId.value)
+  getSingleMessage()
+}
+
 const isReadMessage = function () {
   return searchMessageType.value === null
 }
@@ -143,10 +181,24 @@ const isReadMessage = function () {
     <button id="buttonBox" @click="sentMessage">보낸 쪽지</button>
   </div>
   <div id="messageList">
-
+    <ul>
+      <li v-for="message in messages">
+        <div @click="chooseMessage(message)">
+          <h3 v-if="!isSentMessage(message)">보낸사람 : {{message.sender}}</h3>
+          <h3 v-if="isSentMessage(message)">받은 사람 : {{message.receiver}}</h3>
+          <p>전송일자 : {{message.createDate}}</p>
+          <p>{{limitContent(message.content)}}</p>
+        </div>
+      </li>
+    </ul>
   </div>
   <div id="messageView">
-
+    <div id="messageContent">
+      <p>보낸 사람 : {{message.sender}}</p>
+      <p>받는 사람 : {{message.receiver}}</p>
+      <p>전송일자 : {{message.createDate}}</p>
+      <p v-html="message.content"></p>
+    </div>
   </div>
   <div id="messagePageBox">
     <el-button id="pageButton" @click="decreasePage">이전 페이지</el-button>
@@ -287,5 +339,10 @@ const isReadMessage = function () {
   width: 50%;
   margin-left: 50%;
   height: 100%;
+}
+
+#messageContent {
+  margin-left: 2%;
+  margin-top: 2%;
 }
 </style>
