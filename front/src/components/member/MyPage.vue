@@ -16,18 +16,6 @@ onMounted(() => {
     username.value = res.data.result.data.username
   })
 })
-
-const deleteMember = function () {
-  if (confirm('회원을 삭제하시겠습니까?')) {
-    axios
-      .delete('/lan/member/delete')
-      .then(() => {
-        alert('회원을 탈퇴했습니다. 그동한 L.A.N과 함꼐 해주셔서 감사합니다.')
-        router.push({ name: 'logIn' })
-      })
-      .catch((reason) => alert(reason.response.data.result.failMessage))
-  }
-}
 </script>
 
 <template>
@@ -49,7 +37,7 @@ const deleteMember = function () {
       <div id="tag2List">
         <RouterLink to="/member/edit/nickname" id="changeNickname" ><p id="tag2Component">닉네임 변경</p></RouterLink>
         <RouterLink to="/member/edit/password" id="changePassword"><p id="tag2Component">비밀번호 변경</p></RouterLink>
-        <RouterLink to="" id="deleteMember"><p id="tag2Component">회원탈퇴</p></RouterLink>
+        <RouterLink to="/member/delete" id="deleteMember"><p id="tag2Component">회원탈퇴</p></RouterLink>
       </div>
     </div>
   </div>
