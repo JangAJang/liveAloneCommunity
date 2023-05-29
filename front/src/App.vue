@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import router from "@/router";
+import router from '@/router'
 </script>
 
 <template>
@@ -12,12 +12,12 @@ import router from "@/router";
     </nav>
     <nav id="RectangleBase">
       <div id="Rectangle1">
-        <button @click="router.push({name: 'logIn'})" >
+        <button id="buttonStatus" @click="router.push({ name: 'logIn' })">
           <p id="logInText">로그인</p>
         </button>
       </div>
       <div id="Rectangle2">
-        <button @click="router.push({name: 'register'})">
+        <button id="buttonStatus" @click="router.push({ name: 'register' })">
           <p id="logInText">회원가입</p>
         </button>
       </div>
@@ -33,12 +33,12 @@ header {
   left: 0%;
   right: 0%;
   top: 0%;
-  background: #A4D9FF;
+  background: #a4d9ff;
 }
 
-#RectangleBase{
+#RectangleBase {
   margin-left: 80%;
-  width:20%;
+  width: 20%;
   box-sizing: border-box;
   position: absolute;
   left: 0%;
@@ -47,7 +47,7 @@ header {
   bottom: 0%;
 }
 
-#Rectangle1{
+#Rectangle1 {
   width: 50%;
   box-sizing: border-box;
   position: absolute;
@@ -55,12 +55,12 @@ header {
   right: 0%;
   top: 0%;
   bottom: 0%;
-  background: #FFFFFF;
-  border: 1px solid #18A0FB;
+  background: #ffffff;
+  border: 1px solid #18a0fb;
   border-radius: 6px;
 }
 
-#Rectangle2{
+#Rectangle2 {
   margin-left: 50%;
   width: 50%;
   box-sizing: border-box;
@@ -69,12 +69,12 @@ header {
   right: 0%;
   top: 0%;
   bottom: 0%;
-  background: #FFFFFF;
-  border: 1px solid #18A0FB;
+  background: #ffffff;
+  border: 1px solid #18a0fb;
   border-radius: 6px;
 }
 
-#logInText{
+#logInText {
   width: 50%;
   margin-left: 25%;
   height: 100%;
@@ -86,10 +86,10 @@ header {
   display: flex;
   align-items: center;
   text-align: center;
-  color: #18A0FB;
+  color: #18a0fb;
 }
 
-#RegisterText{
+#RegisterText {
   width: 50%;
   margin-left: 25%;
   height: 100%;
@@ -124,7 +124,7 @@ header {
   color: #000000;
 }
 
-button {
+#buttonStatus {
   position: absolute;
   left: 0%;
   right: 0%;
@@ -142,4 +142,3 @@ button {
   color: #000000;
 }
 </style>
-
