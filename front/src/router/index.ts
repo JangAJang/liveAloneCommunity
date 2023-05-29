@@ -27,6 +27,11 @@ const router = createRouter({
       meta: { unauthorized: true }
     },
     {
+      path: '/auth/logOut',
+      name: 'logOut',
+      component: () => import('../components/auth/LogOut.vue')
+    },
+    {
       path: '/member',
       name: 'myPage',
       component: () => import('../components/member/MyPage.vue')

@@ -34,7 +34,7 @@ onMounted(() =>
       <button @click="router.push({name:'myPage'})" id="myPageButton">
         <p id="buttonText">마이페이지</p>
       </button>
-      <button id="myPageButton">
+      <button id="myPageButton" @click="router.push({name:'logOut'})">
         <p id="buttonText">로그아웃</p>
       </button>
     </div>

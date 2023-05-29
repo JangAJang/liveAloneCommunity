@@ -68,7 +68,7 @@ const deleteMember = function () {
         <p>이메일 : {{email}}</p>
         <p>닉네임 : {{nickname}}</p>
       </div>
-      <button @click="" id="logOutButton">
+      <button @click="router.push({name: 'logOut'})" id="logOutButton">
         <p id="logOutText">로그아웃</p>
       </button>
     </div>
