@@ -73,10 +73,12 @@ const deleteMember = function () {
       </button>
     </div>
     <div id="tag2">
-
-    </div>
-    <div id="tag3">
-
+      <p id="myPageTagTitle">계정</p>
+      <div id="tag2List">
+        <RouterLink to="" id="changeNickname" ><p id="tag2Component">닉네임 변경</p></RouterLink>
+        <RouterLink to="" id="changePassword"><p id="tag2Component">비밀번호 변경</p></RouterLink>
+        <RouterLink to="" id="deleteMember"><p id="tag2Component">회원탈퇴</p></RouterLink>
+      </div>
     </div>
   </div>
   <Profile />
@@ -87,7 +89,7 @@ const deleteMember = function () {
   position: absolute;
   width: 60%;
   margin-left: 20%;
-  height: 100%;
+  height: 70%;
   background: #FEEFCA;
   border-radius: 15px;
 }
@@ -97,7 +99,7 @@ const deleteMember = function () {
   width: 90%;
   margin-left: 5%;
   margin-top: 3%;
-  height: 30%;
+  height: 40%;
   background: #FFFFFF;
 }
 
@@ -105,17 +107,8 @@ const deleteMember = function () {
   position: absolute;
   width: 90%;
   margin-left: 5%;
-  margin-top: 34%;
-  height: 30%;
-  background: #FFFFFF;
-}
-
-#tag3{
-  position: absolute;
-  width: 90%;
-  margin-left: 5%;
-  margin-top: 65%;
-  height: 30%;
+  margin-top: 33%;
+  height: 40%;
   background: #FFFFFF;
 }
 
@@ -132,7 +125,7 @@ const deleteMember = function () {
 
 #myPageMe {
   position: absolute;
-  margin-left: 1%;
+  margin-left: 3%;
   margin-top: 5%;
 }
 
@@ -146,7 +139,17 @@ const deleteMember = function () {
   border-radius: 15px;
 }
 
+#tag2Component{
+  margin-top: 2%;
+  margin-left: 1%;
+}
+
 #logOutText {
   color: #FFFFFF;
+}
+
+#tag2List {
+  margin-top: 7%;
+  margin-left: 2%;
 }
 </style>
