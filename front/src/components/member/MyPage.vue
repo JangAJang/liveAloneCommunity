@@ -8,9 +8,7 @@ import MyData from "@/components/main/MyData.vue";
 const nickname = ref('')
 const username = ref('')
 const email = ref('')
-const currentPassword = ref('')
-const newPassword = ref('')
-const newPasswordCheck = ref('')
+
 onMounted(() => {
   axios.get('/lan/member/me').then((res) => {
     nickname.value = res.data.result.data.nickname
@@ -18,22 +16,6 @@ onMounted(() => {
     username.value = res.data.result.data.username
   })
 })
-
-
-
-const changePassword = function () {
-  axios
-    .patch('/lan/member/changePassword', {
-      currentPassword: currentPassword.value,
-      newPassword: newPassword.value,
-      newPasswordCheck: newPasswordCheck.value
-    })
-    .then(() => {
-      alert('비밀번호 변경에 성공했습니다.')
-      router.push({ name: 'myPage' })
-    })
-    .catch((reason) => alert(reason.response.data.result.failMessage))
-}
 
 const deleteMember = function () {
   if (confirm('회원을 삭제하시겠습니까?')) {
@@ -66,7 +48,7 @@ const deleteMember = function () {
       <p id="myPageTagTitle">계정</p>
       <div id="tag2List">
         <RouterLink to="/member/edit/nickname" id="changeNickname" ><p id="tag2Component">닉네임 변경</p></RouterLink>
-        <RouterLink to="" id="changePassword"><p id="tag2Component">비밀번호 변경</p></RouterLink>
+        <RouterLink to="/member/edit/password" id="changePassword"><p id="tag2Component">비밀번호 변경</p></RouterLink>
         <RouterLink to="" id="deleteMember"><p id="tag2Component">회원탈퇴</p></RouterLink>
       </div>
     </div>
