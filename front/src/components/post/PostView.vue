@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { onMounted, ref } from 'vue'
-import MyPost from '@/components/main/MyPost.vue'
 import Profile from '@/components/main/Profile.vue'
-import MyComment from '@/components/main/MyComment.vue'
 import router from '@/router'
 import CommentOfPost from '@/components/comment/CommentOfPost.vue'
+import MyData from "@/components/main/MyData.vue";
 
 const props = defineProps({
   postId: {
@@ -57,6 +56,7 @@ const deletePost = function () {
 </script>
 
 <template>
+  <MyData/>
   <div id="background">
     <div id="post">
       <h3>제목 : {{ title }}</h3>
@@ -73,8 +73,6 @@ const deletePost = function () {
   </div>
 
   <Profile />
-  <MyPost />
-  <MyComment />
 </template>
 
 <style>

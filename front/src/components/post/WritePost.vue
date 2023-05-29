@@ -2,10 +2,9 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import { RouterView } from 'vue-router'
-import MyPost from '@/components/main/MyPost.vue'
 import Profile from '@/components/main/Profile.vue'
-import MyComment from '@/components/main/MyComment.vue'
 import router from '@/router'
+import MyPage from "@/components/member/MyPage.vue";
 
 const title = ref('')
 const content = ref('')
@@ -49,6 +48,7 @@ const savePost = function () {
 </script>
 
 <template>
+  <MyPage/>
   <div id="postBox">
     <div id="upper">
       <div id="title">
@@ -72,8 +72,6 @@ const savePost = function () {
   </div>
 
   <Profile />
-  <MyPost />
-  <MyComment />
 </template>
 
 <style>
