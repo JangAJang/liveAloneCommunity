@@ -22,7 +22,7 @@ onMounted(() => {
   axios.get(`/lan/post?id=${props.postId}`).then((res) => {
     console.log(res.data.result.data)
     title.value = res.data.result.data.title
-    content.value = res.data.result.data.content
+    content.value = res.data.result.data.content.split('\n').join("<br/>");
     writer.value = res.data.result.data.writer
     createdDate.value = res.data.result.data.createdDate
     category.value = res.data.result.data.categoryName
@@ -61,7 +61,7 @@ const deletePost = function () {
     <div id="post">
       <h3>제목 : {{ title }}</h3>
       <h3>{{ category }}</h3>
-      <h3>내용 : {{ content }}</h3>
+      <h3 v-html="content"></h3>
       <h3>글쓴이 : {{ writer }}</h3>
       <h3>작성일자 : {{ createdDate }}</h3>
       <el-button-group id="buttons">
