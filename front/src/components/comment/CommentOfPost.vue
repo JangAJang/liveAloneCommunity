@@ -26,7 +26,7 @@ const writeComment = function () {
     .then((res) => {
       console.log(res)
       alert('댓글이 저장되었습니다.')
-      router.replace({ name: 'readPost', params: { postId: props.postId } })
+      router.push({ name: 'readPost', params: { postId: props.postId } })
     })
 }
 
@@ -97,7 +97,7 @@ const saveText = function (comment) {
     })
     .then((res) => {
       alert('댓글 수정이 완료되었습니다.')
-      router.replace({ name: 'readPost', params: { postId: props.postId } })
+      router.push({ name: 'readPost', params: { postId: props.postId } })
     })
     .catch((reason) => alert(reason.response.data.result.failMessage))
 }
@@ -125,34 +125,32 @@ const deleteComment = function (comment) {
   <div>
     <ul class="mt-5">
       <li v-for="(comment, index) in comments" :key="index">
-        <div id="commentEach">
-          <el-text>작성자 : {{ comment.nickname }}</el-text>
-          <br />
-          <el-text>작성일자 : {{ comment.createdDate }}</el-text>
-          <br />
-          <el-text v-if="!isEditingComment(index)">내용 : {{ comment.content }}</el-text>
-          <br />
+        <div>
+          <p>{{ comment.nickname }}</p>
+          <p>작성일자 : {{ comment.createdDate }}</p>
+          <p v-if="!isEditingComment(index)">내용 : {{ comment.content }}</p>
           <form v-if="isEditingComment(index)" id="writeCommentBox">
             <textarea v-if="isMyComment(comment)" v-model="editContent"></textarea>
             <el-button v-if="isMyComment(comment)" @click="saveText(comment)">저장</el-button>
           </form>
-          <el-button-group>
-            <el-button v-if="isMyComment(comment)" @click="placeText(index)">수정</el-button>
-            <el-button v-if="isMyComment(comment)" @click="deleteComment(comment)">삭제</el-button>
-          </el-button-group>
+          <div id="customComment">
+            <p v-if="isMyComment(comment)" @click="placeText(index)" id="customCommentText">수정</p>
+            <p v-if="isMyComment(comment)" @click="deleteComment(comment)" id="customCommentText">삭제</p>
+          </div>
         </div>
       </li>
     </ul>
-  </div>
-  <div id="pageBox">
-    <el-button id="pageButton" @click="decreasePage">이전 페이지</el-button>
-    <el-text>{{ page }}</el-text>
-    <el-button id="pageButton" @click="increasePage">다음 페이지</el-button>
+    <div id="pageBox">
+      <el-button id="pageButton" @click="decreasePage">이전 페이지</el-button>
+      <el-text>{{ page }}</el-text>
+      <el-button id="pageButton" @click="increasePage">다음 페이지</el-button>
+    </div>
   </div>
 </template>
 
 <style>
 #writeCommentBox {
+  margin-top: 2%;
   display: grid;
   grid-auto-flow: column;
   margin-left: 20%;
@@ -166,14 +164,6 @@ const deleteComment = function (comment) {
   height: 120%;
 }
 
-#commentEach {
-  margin-top: 2%;
-  width: 80%;
-  margin-left: 10%;
-  background-color: #ffc520;
-  align-content: center;
-}
-
 #pageBox {
   margin-left: 40%;
   width: 50%;
@@ -184,5 +174,22 @@ const deleteComment = function (comment) {
 #pageButton {
   margin-left: 5%;
   margin-right: 5%;
+}
+
+#customComment {
+  display: grid;
+  grid-auto-flow: column;
+  width: 30%;
+  margin-left: 70%;
+  position: absolute;
+  margin-top: -15%;
+}
+
+#customCommentText {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: rgba(0, 0, 0, 0.42);
 }
 </style>

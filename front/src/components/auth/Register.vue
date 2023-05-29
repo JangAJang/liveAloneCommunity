@@ -22,7 +22,10 @@ const join = function () {
         password: password.value,
         passwordCheck: passwordCheck.value
       })
-      .then(() => router.push({ name: 'logIn' }))
+      .then(() => {
+        alert("회원가입을 성공했습니다.")
+        router.push({name: 'logIn'})
+      })
       .catch((reason) => alert(reason.response.data.result.failMessage))
   } else alert('이메일 인증을 먼저 진행해주세요.')
 }
@@ -65,9 +68,9 @@ const verifyEmail = function () {
       </div>
 
       <p id="passwordInfo">비밀번호</p>
-      <input id="passwordInput" v-model="password" type="text"/>
+      <input id="passwordInput" v-model="password" type="password"/>
       <p id="passwordCheckInfo">비밀번호 확인</p>
-      <input id="passwordCheckInput" v-model="passwordCheck" type="text"/>
+      <input id="passwordCheckInput" v-model="passwordCheck" type="password"/>
       <div>
         <p id="nicknameInfo">닉네임</p>
         <input id="nicknameInput" v-model="nickname" type="text"/>
@@ -76,15 +79,15 @@ const verifyEmail = function () {
       <input id="emailInput" v-model="email" type="text"/>
       <p id="authNumInfo">인증번호</p>
       <input id="authNumInput" v-model="authNum" type="text"/>
-      <button id="sendEmail">
+      <button id="sendEmail" @click="sendEmail">
         <p id="sendEmailText">
           인증번호
         </p>
       </button>
-      <button id="checkAuth">
+      <button id="checkAuth" @click="verifyEmail">
         <p id="checkAuthText">확인</p>
       </button>
-      <button id="tryRegister">
+      <button id="tryRegister" @click="join">
         <p id="tryRegisterText">
           회원가입
         </p>

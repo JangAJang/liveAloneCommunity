@@ -41,7 +41,7 @@ const kakaoLogIn = function () {
         <p id="password_text">비밀번호</p>
         <input v-model="password" type="password" id="password_input"/>
       </div>
-      <button id="logIn_button">
+      <button id="logIn_button" @click="signIn">
         <p id="logIn_text">로그인</p>
       </button>
 
