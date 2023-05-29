@@ -19,17 +19,7 @@ onMounted(() => {
   })
 })
 
-const changeNickname = function () {
-  axios
-    .patch('/lan/member/edit', {
-      nickname: nickname.value
-    })
-    .then(() => {
-      alert('닉네임 변경에 성공했습니다.')
-      router.push({ name: 'myPage' })
-    })
-    .catch((reason) => alert(reason.response.data.result.failMessage))
-}
+
 
 const changePassword = function () {
   axios
@@ -75,7 +65,7 @@ const deleteMember = function () {
     <div id="tag2">
       <p id="myPageTagTitle">계정</p>
       <div id="tag2List">
-        <RouterLink to="" id="changeNickname" ><p id="tag2Component">닉네임 변경</p></RouterLink>
+        <RouterLink to="/member/edit/nickname" id="changeNickname" ><p id="tag2Component">닉네임 변경</p></RouterLink>
         <RouterLink to="" id="changePassword"><p id="tag2Component">비밀번호 변경</p></RouterLink>
         <RouterLink to="" id="deleteMember"><p id="tag2Component">회원탈퇴</p></RouterLink>
       </div>
