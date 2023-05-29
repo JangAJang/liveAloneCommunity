@@ -77,28 +77,29 @@ const readMessage = function () {
 }
 
 const startSearch = function () {
-  page.value = 1;
-  searchMessage();
+  page.value = 1
+  searchMessage()
 }
 
 const searchMessage = function () {
-  axios.get("/lan/message/search", {
-    params: {
-      text: text.value,
-      searchMessageType: searchMessageType.value,
-      readMessageType: readMessageType.value,
-      page: page.value,
-      size: 10
-    }
-  })
-      .then(res => {
-        messages.value = res.data.result.data.result.content
-        messageId.value = res.data.result.data.result.content[0].id
-        maxPage.value = res.data.result.data.result.totalPages
-      })
-      .catch(e => {
-        console.log(e)
-      })
+  axios
+    .get('/lan/message/search', {
+      params: {
+        text: text.value,
+        searchMessageType: searchMessageType.value,
+        readMessageType: readMessageType.value,
+        page: page.value,
+        size: 10
+      }
+    })
+    .then((res) => {
+      messages.value = res.data.result.data.result.content
+      messageId.value = res.data.result.data.result.content[0].id
+      maxPage.value = res.data.result.data.result.totalPages
+    })
+    .catch((e) => {
+      console.log(e)
+    })
 }
 
 const limitContent = function (content) {
@@ -111,11 +112,11 @@ const increasePage = function () {
     return
   }
   page.value++
-  if(isReadMessage()){
+  if (isReadMessage()) {
     readMessage()
-    return;
+    return
   }
-  searchMessage();
+  searchMessage()
 }
 
 const decreasePage = function () {
@@ -124,11 +125,11 @@ const decreasePage = function () {
     return
   }
   page.value--
-  if(isReadMessage()){
+  if (isReadMessage()) {
     readMessage()
-    return;
+    return
   }
-  searchMessage();
+  searchMessage()
 }
 
 const isReadMessage = function () {
@@ -143,10 +144,10 @@ const isReadMessage = function () {
           <div id="searchBox">
             <el-select v-model="searchMessageType" placeholder="검색방식">
               <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
               />
             </el-select>
             <el-input placeholder="검색어를 입력해주세요." v-model="text" />
