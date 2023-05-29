@@ -137,79 +137,155 @@ const isReadMessage = function () {
 }
 </script>
 <template>
-  <div id="messageBlock">
-    <div id="messageContent">
-      <div id="messageTypeButton">
-        <el-button-group>
-          <div id="searchBox">
-            <el-select v-model="searchMessageType" placeholder="검색방식">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-            <el-input placeholder="검색어를 입력해주세요." v-model="text" />
-            <el-button @click="startSearch">검색</el-button>
-          </div>
-          <el-button @click="allMessage">전체 쪽지함</el-button>
-          <el-button @click="receivedMessage">받은 쪽지함</el-button>
-          <el-button @click="sentMessage">보낸 쪽지함</el-button>
-        </el-button-group>
-        <ul>
-          <li v-for="message in messages">
-            <div id="messageEach">
-              <div v-if="isSentMessage(message)">
-                <el-text>받은 사람 : {{ message.receiver }}</el-text>
-                <br />
-              </div>
-              <div v-if="!isSentMessage(message)">
-                <el-text>보낸 사람 : {{ message.sender }}</el-text>
-                <br />
-              </div>
-              <el-text>내용 : {{ limitContent(message.content) }}</el-text>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div id>
-        <el-button id="pageButton" @click="decreasePage">이전 페이지</el-button>
-        <el-text>{{ page }}</el-text>
-        <el-button id="pageButton" @click="increasePage">다음 페이지</el-button>
-      </div>
-    </div>
-    <el-button @click="moveToWrite">쪽지 작성</el-button>
+  <div id="typeBox">
+    <button id="buttonBox" @click="allMessage">전체</button>
+    <button id="buttonBox" @click="receivedMessage">받은 쪽지</button>
+    <button id="buttonBox" @click="sentMessage">보낸 쪽지</button>
   </div>
-  <MessageView :messageId="messageId" />
+  <div id="messageList">
+
+  </div>
+  <div id="messageView">
+
+  </div>
+  <div id="messagePageBox">
+    <el-button id="pageButton" @click="decreasePage">이전 페이지</el-button>
+    <el-text>{{ page }}</el-text>
+    <el-button id="pageButton" @click="increasePage">다음 페이지</el-button>
+  </div>
+  <div id="messageSearchBox">
+    <select v-model="searchMessageType" id="messageTypeSelector">
+      <option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"/>
+    </select>
+    <input v-model="text" type="text" placeholder="검색어를 입력해주세요." id="messageText"/>
+    <button @click="startSearch" id="searchButton">검색</button>
+  </div>
+  <div id="messageButtons">
+    <button id="writeMessage" @click="moveToWrite">쪽지 작성</button>
+    <button id="deleteMessage" @click="deleteMessage">쪽지 삭제</button>
+  </div>
 </template>
 <style>
-#searchBox {
-  display: grid;
-  grid-auto-flow: column;
+
+#typeBox {
+  box-sizing: border-box;
+  position: absolute;
+  margin-left: 2%;
+  margin-top: 5%;
+  width: 25%;
+  height: 7%;
 }
 
-#messageBlock {
-  width: 85%;
-  margin-top: 3%;
-  margin-left: 12.5%;
-  background-color: #ffe87c;
+#buttonBox {
+  box-sizing: border-box;
+  width: 33.3%;
+  height: 100%;
+  background: #FFFFFF;
+  border: 3px solid #000000;
+  border-radius: 15px;
 }
 
-#messageEach {
-  margin-top: 2%;
-  background-color: #ffc520;
+#messageList {
+  box-sizing: border-box;
+  position: absolute;
+  margin-left: 2%;
+  margin-top: 10%;
+  width: 25%;
+  height: 70%;
+  background: #FFFFFF;
+  border: 3px solid #000000;
+  border-radius: 15px;
 }
 
-#messageContent {
-  width: 95%;
-  margin-top: 2.5%;
-  margin-left: 2.5%;
+#messageView {
+  box-sizing: border-box;
+  position: absolute;
+  margin-left: 29%;
+  margin-top: 10%;
+  width: 69%;
+  height: 70%;
+  background: #FFFFFF;
+  border: 3px solid #000000;
+  border-radius: 15px;
 }
 
-#messageTypeButton {
+#messagePageBox {
+  box-sizing: border-box;
+  position: absolute;
+  margin-left: 2%;
+  margin-top: 52%;
+  width: 25%;
+  height: 8%;
+}
+
+#messageSearchBox {
+  box-sizing: border-box;
+  position: absolute;
+  margin-left: 29%;
+  margin-top: 5%;
+  width: 69%;
+  height: 7%;
+}
+
+#pageButton {
+  height: 100%;
+  background: #FFFFFF;
+  border: 3px solid #000000;
+  border-radius: 15px;
+}
+
+#messageTypeSelector {
+  height: 100%;
+  background: #FFFFFF;
+  border: 3px solid #000000;
+  border-radius: 15px;
   width: 30%;
-  display: grid;
-  grid-auto-flow: row;
+}
+#messageText {
+  width: 50%;
+  height:80%;
+  background: #FFFFFF;
+  border: 3px solid #000000;
+  border-radius: 15px;
+}
+
+#searchButton {
+  background: #FFFFFF;
+  position: absolute;
+  border: 3px solid #000000;
+  border-radius: 15px;
+  height: 100%;
+  width: 20%;
+}
+
+#messageButtons {
+  position: absolute;
+  margin-left: 80%;
+  width: 18%;
+  height: 7%;
+  margin-top: 52%;
+}
+
+#writeMessage {
+  background: #FFFFFF;
+  position: absolute;
+  border: 3px solid #000000;
+  border-radius: 15px;
+  width: 50%;
+  height: 100%;
+}
+
+#deleteMessage {
+  background: #FFFFFF;
+  position: absolute;
+  border: 3px solid #000000;
+  border-radius: 15px;
+  width: 50%;
+  margin-left: 50%;
+  height: 100%;
 }
 </style>
