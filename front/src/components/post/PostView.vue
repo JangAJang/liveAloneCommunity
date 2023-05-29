@@ -57,6 +57,9 @@ const deletePost = function () {
 
 <template>
   <MyData/>
+  <div>
+
+  </div>
   <div id="background">
     <div id="post">
       <h3>제목 : {{ title }}</h3>
@@ -90,6 +93,8 @@ const deletePost = function () {
   display: grid;
   grid-auto-flow: column;
 }
+
+
 
 #post {
   margin-left: 2%;
