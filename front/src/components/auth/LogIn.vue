@@ -31,27 +31,134 @@ const kakaoLogIn = function () {
 }
 </script>
 <template>
-  <div id="logInPart">
-    <el-input v-model="username" type="text" placeholder="아이디를 입력하세요" />
-    <el-input v-model="password" type="password" placeholder="비밀번호를 입력하세요" />
-    <el-button type="primary" @click="signIn()" id="logInButton">로그인</el-button>
+  <div id="logInBox">
+    <div>
+      <div>
+        <p id="username_text">아이디</p>
+        <input v-model="username" type="text" id="username_input"/>
+      </div>
+      <div>
+        <p id="password_text">비밀번호</p>
+        <input v-model="password" type="password" id="password_input"/>
+      </div>
+      <button id="logIn_button">
+        <p id="logIn_text">로그인</p>
+      </button>
+
+    </div>
+    <p id="kakao_text">카카오톡으로 로그인</p>
+    <form id="kakao_img">
+      <a v-on:click="kakaoLogIn">
+        <img src="@/assets/image/kakao_login_medium_narrow.png" />
+      </a>
+    </form>
   </div>
-  <form>
-    <a v-on:click="kakaoLogIn">
-      <img src="@/assets/image/kakao_login_medium_narrow.png" />
-    </a>
-  </form>
 </template>
 <style>
-#logInPart {
-  width: 50%;
-  height: 50%;
-  margin-top: 5%;
-  margin-left: 25%;
+
+#logInBox {
+  box-sizing: border-box;
+  position: absolute;
+  width: 80%;
+  height: 60%;
+  left: 10%;
+  top: 20%;
+  background: #FEEFCA;
+  border: 1px solid #000000;
+  border-radius: 15px;
 }
-#logInButton {
-  margin-left: 35%;
-  width: 30%;
-  height: 10%;
+
+#username_text {
+  position: absolute;
+  margin-top: 10%;
+  margin-left: 8%;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 24px;
+  color: #000000;
+}
+
+#username_input {
+  position: absolute;
+  margin-top: 14%;
+  margin-left: 8%;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 24px;
+  color: #000000;
+}
+
+#password_text{
+  position: absolute;
+  margin-top: 20%;
+  margin-left: 8%;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 24px;
+  color: #000000;
+}
+
+#password_input{
+  position: absolute;
+  margin-top: 24%;
+  margin-left: 8%;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 24px;
+  color: #000000;
+}
+
+#logIn_button {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 8px;
+  gap: 8px;
+  position: absolute;
+  width: 12%;
+  height: 14%;
+  left: 40%;
+  top: 70%;
+  background: #FFEB35;
+  border: 3px solid #000000;
+  border-radius: 15px;
+}
+
+#logIn_text{
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 30px;
+  color: #000000;
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  margin-top: -5%;
+}
+
+#kakao_text {
+  position: absolute;
+  margin-top: 10%;
+  margin-left: 58%;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 24px;
+  color: #000000;
+}
+
+#kakao_img {
+  margin-top: 20%;
+  margin-left: 58%;
 }
 </style>
