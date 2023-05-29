@@ -6,7 +6,6 @@ let postResult = ref([])
 let commentResult = ref([])
 const page = ref(0)
 const size = ref(5)
-const id = ref(1)
 
 onMounted(() => {
   axios
@@ -34,7 +33,7 @@ onMounted(() => {
   <div id="postInfo">
     <div id="myPostInfo">
       <h3 id="myPostTitle">나의 게시글</h3>
-      <RouterLink to="" id="myPostMore">더보기</RouterLink>
+      <RouterLink to="/post/read/mine" id="myPostMore">더보기</RouterLink>
     </div>
     <div id="postBackground">
       <ul>
