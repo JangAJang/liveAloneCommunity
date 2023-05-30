@@ -2,114 +2,120 @@
 import { onMounted, ref } from 'vue'
 import axios from 'axios'
 import Profile from '@/components/main/Profile.vue'
-import MyComment from '@/components/main/MyComment.vue'
 import router from '@/router'
+import MyData from '@/components/main/MyData.vue'
 
 const nickname = ref('')
-const currentPassword = ref('')
-const newPassword = ref('')
-const newPasswordCheck = ref('')
+const username = ref('')
+const email = ref('')
+
 onMounted(() => {
   axios.get('/lan/member/me').then((res) => {
     nickname.value = res.data.result.data.nickname
+    email.value = res.data.result.data.email
+    username.value = res.data.result.data.username
   })
 })
-
-const changeNickname = function () {
-  axios
-    .patch('/lan/member/edit', {
-      nickname: nickname.value
-    })
-    .then(() => {
-      alert('닉네임 변경에 성공했습니다.')
-      router.push({ name: 'myPage' })
-    })
-    .catch((reason) => alert(reason.response.data.result.failMessage))
-}
-
-const changePassword = function () {
-  axios
-    .patch('/lan/member/changePassword', {
-      currentPassword: currentPassword.value,
-      newPassword: newPassword.value,
-      newPasswordCheck: newPasswordCheck.value
-    })
-    .then(() => {
-      alert('비밀번호 변경에 성공했습니다.')
-      router.push({ name: 'myPage' })
-    })
-    .catch((reason) => alert(reason.response.data.result.failMessage))
-}
-
-const deleteMember = function () {
-  if (confirm('회원을 삭제하시겠습니까?')) {
-    axios
-      .delete('/lan/member/delete')
-      .then(() => {
-        alert('회원을 탈퇴했습니다. 그동한 L.A.N과 함꼐 해주셔서 감사합니다.')
-        router.push({ name: 'logIn' })
-      })
-      .catch((reason) => alert(reason.response.data.result.failMessage))
-  }
-}
 </script>
 
 <template>
-  <div id="pageBox">
-    <h2 id="MemberInfo">회원 정보</h2>
-    <div id="nickname">
-      <el-text id="frontTap">닉네임</el-text>
-      <el-input v-model="nickname" type="text"></el-input>
-      <el-button @click="changeNickname">닉네임 변경</el-button>
+  <MyData />
+  <div id="myPageBackground">
+    <div id="tag1">
+      <p id="myPageTagTitle">내 정보</p>
+      <div id="myPageMe">
+        <p>아이디 : {{ username }}</p>
+        <p>이메일 : {{ email }}</p>
+        <p>닉네임 : {{ nickname }}</p>
+      </div>
+      <button @click="router.push({ name: 'logOut' })" id="logOutButton">
+        <p id="logOutText">로그아웃</p>
+      </button>
     </div>
-    <br />
-    <h2 id="MemberInfo">비밀번호 수정</h2>
-    <div id="nickname">
-      <el-text id="frontTap">기존 비밀번호</el-text>
-      <el-input v-model="currentPassword" type="password"></el-input>
-    </div>
-    <div id="nickname">
-      <el-text id="frontTap">새 비밀번호</el-text>
-      <el-input v-model="newPassword" type="password"></el-input>
-    </div>
-    <div id="nickname">
-      <el-text id="frontTap">새 비밀번호 재입력</el-text>
-      <el-input v-model="newPasswordCheck" type="password"></el-input>
-    </div>
-    <div id="nickname">
-      <el-button @click="changePassword">비밀번호 변경</el-button>
-    </div>
-    <h2 id="MemberInfo">회원 삭제</h2>
-    <div id="nickname">
-      <el-button @click="deleteMember">회원 삭제</el-button>
+    <div id="tag2">
+      <p id="myPageTagTitle">계정</p>
+      <div id="tag2List">
+        <RouterLink to="/member/edit/nickname" id="changeNickname"
+          ><p id="tag2Component">닉네임 변경</p></RouterLink
+        >
+        <RouterLink to="/member/edit/password" id="changePassword"
+          ><p id="tag2Component">비밀번호 변경</p></RouterLink
+        >
+        <RouterLink to="/member/delete" id="deleteMember"
+          ><p id="tag2Component">회원탈퇴</p></RouterLink
+        >
+      </div>
     </div>
   </div>
   <Profile />
-  <MyPost />
-  <MyComment />
 </template>
 
 <style>
-#MemberInfo {
-  text-align: center;
-}
-
-#pageBox {
-  margin-top: 2%;
+#myPageBackground {
+  position: absolute;
   width: 60%;
   margin-left: 20%;
-  background-color: #ffe87c;
+  height: 70%;
+  background: #feefca;
+  border-radius: 15px;
+}
+
+#tag1 {
   position: absolute;
-  height: 50%;
+  width: 90%;
+  margin-left: 5%;
+  margin-top: 3%;
+  height: 40%;
+  background: #ffffff;
 }
 
-#frontTap {
-  margin-left: 40%;
+#tag2 {
+  position: absolute;
+  width: 90%;
+  margin-left: 5%;
+  margin-top: 33%;
+  height: 40%;
+  background: #ffffff;
 }
 
-#nickname {
-  width: 70%;
-  display: grid;
-  grid-auto-flow: column;
+#myPageTagTitle {
+  position: absolute;
+  margin-left: 1%;
+  margin-top: 1%;
+  font-family: 'Inter';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  color: #000000;
+}
+
+#myPageMe {
+  position: absolute;
+  margin-left: 3%;
+  margin-top: 5%;
+}
+
+#logOutButton {
+  position: absolute;
+  background-color: black;
+  margin-left: 83%;
+  margin-top: 1%;
+  width: 15%;
+  height: 17%;
+  border-radius: 15px;
+}
+
+#tag2Component {
+  margin-top: 2%;
+  margin-left: 1%;
+}
+
+#logOutText {
+  color: #ffffff;
+}
+
+#tag2List {
+  margin-top: 7%;
+  margin-left: 2%;
 }
 </style>

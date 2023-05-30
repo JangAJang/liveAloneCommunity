@@ -6,7 +6,7 @@ import VueCookies from 'vue-cookies'
 
 onMounted(() => {
   console.log('MOUNTED')
-  const code = window.location.href.substring(44)
+  const code = window.location.href.split('code=')[1]
   console.log(code)
   axios
     .get('/lan/auth/kakao/callback', { params: { code: code } })

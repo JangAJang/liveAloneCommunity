@@ -22,7 +22,10 @@ const join = function () {
         password: password.value,
         passwordCheck: passwordCheck.value
       })
-      .then(() => router.push({ name: 'logIn' }))
+      .then(() => {
+        alert('회원가입을 성공했습니다.')
+        router.push({ name: 'logIn' })
+      })
       .catch((reason) => alert(reason.response.data.result.failMessage))
   } else alert('이메일 인증을 먼저 진행해주세요.')
 }
@@ -57,54 +60,223 @@ const verifyEmail = function () {
 
 <template>
   <div id="RegisterModel">
+    <h2 id="registerTitle">회원가입</h2>
     <div id="RegisterInput">
-      <div class="mt-1">
-        <el-input v-model="username" type="text" placeholder="아이디를 입력해주세요." />
+      <div>
+        <p id="usernameInfo">아이디</p>
+        <input id="usernameInput" v-model="username" type="text" />
       </div>
-      <div class="mt-1">
-        <el-input v-model="nickname" type="text" placeholder="닉네임을 입력해주세요." />
+
+      <p id="passwordInfo">비밀번호</p>
+      <input id="passwordInput" v-model="password" type="password" />
+      <p id="passwordCheckInfo">비밀번호 확인</p>
+      <input id="passwordCheckInput" v-model="passwordCheck" type="password" />
+      <div>
+        <p id="nicknameInfo">닉네임</p>
+        <input id="nicknameInput" v-model="nickname" type="text" />
       </div>
-      <div class="mt-1">
-        <el-input v-model="email" type="email" placeholder="이메일을 입력해주세요." />
-        <div>
-          <el-button id="buttonState" type="primary" @click="sendEmail()">인증번호 전송</el-button>
-          <el-input v-model="authNum" type="text" placeholder="인증 번호를 입력해주세요." />
-        </div>
-        <el-button id="buttonState" type="primary" @click="verifyEmail()">인증번호 확인</el-button>
-      </div>
-      <div class="mt-1">
-        <el-input v-model="password" type="password" placeholder="비밀번호를 입력해주세요." />
-      </div>
-      <div class="mt-1">
-        <el-input
-          v-model="passwordCheck"
-          type="password"
-          placeholder="비밀번호를 다시 입력해주세요."
-        />
-      </div>
-      <div class="mt-1">
-        <el-button id="buttonState" type="primary" @click="join()">회원 가입</el-button>
-      </div>
+      <p id="emailInfo">이메일</p>
+      <input id="emailInput" v-model="email" type="text" />
+      <p id="authNumInfo">인증번호</p>
+      <input id="authNumInput" v-model="authNum" type="text" />
+      <button id="sendEmail" @click="sendEmail">
+        <p id="sendEmailText">인증번호</p>
+      </button>
+      <button id="checkAuth" @click="verifyEmail">
+        <p id="checkAuthText">확인</p>
+      </button>
+      <button id="tryRegister" @click="join">
+        <p id="tryRegisterText">회원가입</p>
+      </button>
     </div>
   </div>
 </template>
 
 <style>
 #RegisterModel {
-  width: 60%;
-  margin-left: 20%;
+  box-sizing: border-box;
+  position: absolute;
+  width: 70%;
+  height: 85%;
+  left: 15%;
+  top: 15%;
+  background: #feefca;
+  border: 1px solid #000000;
+  border-radius: 15px;
+}
+
+#registerTitle {
+  margin-left: 5%;
   margin-top: 5%;
-  background-color: #ffe87c;
 }
 
 #RegisterInput {
   width: 50%;
   margin-left: 25%;
-  margin-top: 20%;
 }
 
-#buttonState {
-  width: 50%;
-  margin-left: 25%;
+#usernameInfo {
+  position: absolute;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  color: #000000;
+  margin-top: 1%;
+}
+
+#usernameInput {
+  position: absolute;
+  background: #ffffff;
+  margin-top: 4%;
+}
+
+#passwordInfo {
+  position: absolute;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  color: #000000;
+  margin-top: 7%;
+}
+
+#passwordInput {
+  position: absolute;
+  background: #ffffff;
+  margin-top: 10%;
+}
+
+#passwordCheckInfo {
+  position: absolute;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  color: #000000;
+  margin-top: 13%;
+}
+
+#passwordCheckInput {
+  position: absolute;
+  background: #ffffff;
+  margin-top: 16%;
+}
+
+#nicknameInfo {
+  position: absolute;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  color: #000000;
+  margin-top: 19%;
+}
+
+#nicknameInput {
+  position: absolute;
+  background: #ffffff;
+  margin-top: 22%;
+}
+
+#emailInfo {
+  position: absolute;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  color: #000000;
+  margin-top: 25%;
+}
+
+#emailInput {
+  position: absolute;
+  background: #ffffff;
+  margin-top: 28%;
+}
+
+#authNumInfo {
+  position: absolute;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  color: #000000;
+  margin-top: 31%;
+}
+
+#authNumInput {
+  position: absolute;
+  background: #ffffff;
+  margin-top: 34%;
+}
+
+#sendEmail {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  gap: 8px;
+  position: absolute;
+  margin-left: 23%;
+  margin-top: 28%;
+  width: 15%;
+  background: #a4d9ff;
+  border-radius: 15px;
+}
+#sendEmailText {
+  position: absolute;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 24px;
+  color: #000000;
+}
+
+#checkAuth {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  gap: 8px;
+  position: absolute;
+  margin-left: 23%;
+  margin-top: 34%;
+  width: 15%;
+  background: #a4d9ff;
+  border-radius: 15px;
+}
+#checkAuthText {
+  position: absolute;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 24px;
+  color: #000000;
+}
+
+#tryRegister {
+  align-self: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  gap: 8px;
+  position: absolute;
+  margin-left: 10%;
+  margin-top: 40%;
+  width: 30%;
+  height: 7.5%;
+  background: #ffeb35;
+  border: 3px solid #000000;
+  border-radius: 15px;
+}
+#tryRegisterText {
+  position: absolute;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 24px;
+  color: #000000;
 }
 </style>

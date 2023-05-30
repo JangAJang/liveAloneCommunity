@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { onMounted, ref } from 'vue'
-import MyPost from '@/components/main/MyPost.vue'
 import Profile from '@/components/main/Profile.vue'
-import MyComment from '@/components/main/MyComment.vue'
 import router from '@/router'
 import { RouterView } from 'vue-router'
+import MyData from '@/components/main/MyData.vue'
 
 const category = ref('HOBBY_SHARE')
 const page = ref(1)
@@ -14,6 +13,7 @@ const maxPage = ref(1)
 let posts = ref([])
 const text = ref('')
 const searchPostType = ref('')
+const categoryName = ref('취미 공유')
 const options = [
   {
     value: 'TITLE',
@@ -38,30 +38,35 @@ const options = [
 ]
 
 const getHobby = function () {
+  categoryName.value = '취미 공유'
   page.value = 1
   category.value = 'HOBBY_SHARE'
   getPosts()
 }
 
 const getLost = function () {
+  categoryName.value = '분실물'
   page.value = 1
   category.value = 'LOST'
   getPosts()
 }
 
 const getVillageInfo = function () {
+  categoryName.value = '동네 정보'
   page.value = 1
   category.value = 'VILLAGE_INFO'
   getPosts()
 }
 
 const getSingleNews = function () {
+  categoryName.value = '1인 가구 소식'
   page.value = 1
   category.value = 'SINGLE_NEWS'
   getPosts()
 }
 
 const getRequests = function () {
+  categoryName.value = '건의 사항'
   page.value = 1
   category.value = 'REQUESTS'
   getPosts()
@@ -141,15 +146,28 @@ const goToWritePost = function () {
 onMounted(() => getPosts())
 </script>
 <template>
+  <MyData />
+  <Profile />
+  <div id="allPostCategory">
+    <p id="allPostCategoryText">{{ categoryName }}</p>
+  </div>
   <div id="postBox">
-    <div>
-      <el-button-group>
-        <el-button id="botton" @click="getHobby">취미 공유</el-button>
-        <el-button id="botton" @click="getVillageInfo">동네 정보</el-button>
-        <el-button id="botton" @click="getLost">분실물</el-button>
-        <el-button id="botton" @click="getSingleNews">1인 가구 소식</el-button>
-        <el-button id="botton" @click="getRequests">건의 사항</el-button>
-      </el-button-group>
+    <div id="categoryBox">
+      <button id="categoryButton" @click="getHobby">
+        <p id="categoryText">취미 공유</p>
+      </button>
+      <button id="categoryButton" @click="getVillageInfo">
+        <p id="categoryText">동네 정보</p>
+      </button>
+      <button id="categoryButton" @click="getSingleNews">
+        <p id="categoryText">1인 가구 소식</p>
+      </button>
+      <button id="categoryButton" @click="getLost">
+        <p id="categoryText">분실물</p>
+      </button>
+      <button id="categoryButton" @click="getRequests">
+        <p id="categoryText">건의사항</p>
+      </button>
     </div>
     <div>
       <ul>
@@ -169,7 +187,7 @@ onMounted(() => getPosts())
       </ul>
     </div>
     <div id="searchBox">
-      <el-select v-model="searchPostType" placeholder="Select">
+      <el-select v-model="searchPostType" placeholder="Select" id="postSearchSelect">
         <el-option
           v-for="item in options"
           :key="item.value"
@@ -189,37 +207,48 @@ onMounted(() => getPosts())
       <el-button id="pageButton" @click="increasePage">다음 페이지</el-button>
     </div>
   </div>
-  <Profile />
-  <MyPost />
-  <MyComment />
 </template>
 
 <style>
+#allPostCategory {
+  box-sizing: border-box;
+  position: absolute;
+  margin-left: 20%;
+  width: 60%;
+  margin-top: -10%;
+  height: 10%;
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 15px;
+}
+
+#allPostCategoryText {
+  position: absolute;
+  margin-left: 37.5%;
+  margin-top: -0.05%;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 48px;
+  color: #000000;
+}
+
 #postBox {
-  margin-top: 2%;
+  box-sizing: border-box;
+  margin-top: -2%;
+  position: absolute;
   width: 60%;
   margin-left: 20%;
-  background-color: #ffe87c;
-  position: absolute;
-}
-
-#botton {
-  background-color: #ffc520;
-  width: 20%;
-}
-
-#searchBox {
-  position: absolute;
-  display: grid;
-  grid-auto-flow: column;
-  width: 70%;
-  margin-left: 15%;
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 15px;
 }
 
 #pageBox {
-  margin-left: 40%;
+  margin-left: 25%;
   width: 50%;
-  margin-top: 5%;
+  margin-top: 10%;
   position: absolute;
 }
 
@@ -228,7 +257,50 @@ onMounted(() => getPosts())
   margin-right: 5%;
 }
 
-#searchText {
-  align-content: center;
+#categoryBox {
+  box-sizing: border-box;
+  width: 101%;
+  margin-left: -0.5%;
+  margin-top: -0.5%;
+  height: 65px;
+  background: #a4d9ff;
+  border: 3px solid #000000;
+  border-radius: 15px 15px 0px 0px;
+  display: flex;
+  flex-direction: row;
+}
+
+#categoryButton {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 8px;
+  gap: 8px;
+  height: 80%;
+  width: 14%;
+  margin-top: 1%;
+  margin-left: 5%;
+  background: #ffffff;
+  border: 1px solid #000000;
+  border-radius: 15px;
+  align-items: center;
+}
+
+#categoryText {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 36px;
+  color: #000000;
+}
+#searchBox {
+  position: absolute;
+  display: grid;
+  grid-auto-flow: column;
+  margin-top: 3%;
+  width: 70%;
+  margin-left: 15%;
 }
 </style>

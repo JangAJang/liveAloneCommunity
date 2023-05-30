@@ -27,9 +27,29 @@ const router = createRouter({
       meta: { unauthorized: true }
     },
     {
+      path: '/auth/logOut',
+      name: 'logOut',
+      component: () => import('../components/auth/LogOut.vue')
+    },
+    {
       path: '/member',
       name: 'myPage',
       component: () => import('../components/member/MyPage.vue')
+    },
+    {
+      path: '/member/edit/nickname',
+      name: 'editNickname',
+      component: () => import('../components/member/EditNickname.vue')
+    },
+    {
+      path: '/member/edit/password',
+      name: 'editPassword',
+      component: () => import('../components/member/EditPassword.vue')
+    },
+    {
+      path: '/member/delete',
+      name: 'deleteMember',
+      component: () => import('../components/member/DeleteMember.vue')
     },
     {
       path: '/post/write',
@@ -41,6 +61,11 @@ const router = createRouter({
       name: 'readPost',
       component: () => import('../components/post/PostView.vue'),
       props: true
+    },
+    {
+      path: '/post/read/mine',
+      name: 'myPost',
+      component: () => import('../components/member/MyPost.vue')
     },
     {
       path: '/post/edit/:postId',

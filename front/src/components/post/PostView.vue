@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { onMounted, ref } from 'vue'
-import MyPost from '@/components/main/MyPost.vue'
 import Profile from '@/components/main/Profile.vue'
-import MyComment from '@/components/main/MyComment.vue'
 import router from '@/router'
 import CommentOfPost from '@/components/comment/CommentOfPost.vue'
+import MyData from '@/components/main/MyData.vue'
 
 const props = defineProps({
   postId: {
@@ -23,7 +22,7 @@ onMounted(() => {
   axios.get(`/lan/post?id=${props.postId}`).then((res) => {
     console.log(res.data.result.data)
     title.value = res.data.result.data.title
-    content.value = res.data.result.data.content
+    content.value = res.data.result.data.content.split('\n').join('<br/>')
     writer.value = res.data.result.data.writer
     createdDate.value = res.data.result.data.createdDate
     category.value = res.data.result.data.categoryName
@@ -57,44 +56,70 @@ const deletePost = function () {
 </script>
 
 <template>
-  <div id="background">
-    <div id="post">
-      <h3>제목 : {{ title }}</h3>
-      <h3>{{ category }}</h3>
-      <h3>내용 : {{ content }}</h3>
-      <h3>글쓴이 : {{ writer }}</h3>
-      <h3>작성일자 : {{ createdDate }}</h3>
-      <el-button-group id="buttons">
-        <el-button @click="goToEdit">글 수정</el-button>
-        <el-button @click="requestDelete">글 삭제</el-button>
-      </el-button-group>
+  <MyData />
+  <div></div>
+  <div id="readPostBackground">
+    <div id="postDataView">
+      <div id="postGap">
+        <div>
+          <h3>글쓴이 : {{ writer }}</h3>
+          <h3>{{ createdDate }}</h3>
+        </div>
+        <h2>{{ title }}</h2>
+        <p v-html="content"></p>
+      </div>
     </div>
     <CommentOfPost :post-id="props.postId" />
   </div>
-
+  <p @click="goToEdit" id="editPostLink">수정하기</p>
+  <p @click="requestDelete" id="deletePostLink">삭제하기</p>
   <Profile />
-  <MyPost />
-  <MyComment />
 </template>
 
 <style>
-#background {
-  margin-top: 2%;
+#readPostBackground {
+  box-sizing: border-box;
+  position: absolute;
   width: 60%;
   margin-left: 20%;
-  background-color: #ffe87c;
-  position: absolute;
+  background: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 15px;
 }
 
-#buttons {
-  position: absolute;
-  margin-left: 85%;
-  display: grid;
-  grid-auto-flow: column;
+#postDataView {
+  box-sizing: border-box;
+  width: 98%;
+  margin-top: 3%;
+  margin-left: 1%;
+  background: #ffffff;
+  border: 3px solid #000000;
 }
 
-#post {
-  margin-left: 2%;
+#postGap {
   margin-top: 2%;
+  margin-left: 2%;
+}
+
+#editPostLink {
+  position: absolute;
+  margin-left: 65%;
+  margin-top: 5%;
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: rgba(0, 0, 0, 0.42);
+}
+
+#deletePostLink {
+  position: absolute;
+  margin-left: 72%;
+  margin-top: 5%;
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: rgba(0, 0, 0, 0.42);
 }
 </style>

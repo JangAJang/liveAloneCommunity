@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import axios from 'axios'
+import router from '@/router'
 
 const username = ref('')
 const nickname = ref('')
@@ -12,42 +13,74 @@ onMounted(() =>
   axios
     .get('/lan/member/me')
     .then((response) => {
-      username.value = '아이디 : ' + response.data.result.data.username
-      nickname.value = '닉네임 : ' + response.data.result.data.nickname
-      email.value = '이메일 : ' + response.data.result.data.email
+      nickname.value = response.data.result.data.nickname
       id.value = response.data.result.data.id
     })
     .catch((e) => {
       alert(e)
-      username.value = ''
       nickname.value = '로그인 후 이용 가능합니다.'
-      email.value = ''
     })
 )
 </script>
 
 <template>
-  <div id="commentInfo">
-    <br />
-    <el-text id="text">{{ username }}</el-text>
+  <div id="profile">
+    <div id="profileImage"></div>
     <br />
     <el-text id="text">{{ nickname }}</el-text>
     <br />
-    <el-text id="text">{{ email }}</el-text>
+    <div class="mt-3">
+      <button @click="router.push({ name: 'myPage' })" id="myPageButton">
+        <p id="buttonText">마이페이지</p>
+      </button>
+      <button id="myPageButton" @click="router.push({ name: 'logOut' })">
+        <p id="buttonText">로그아웃</p>
+      </button>
+    </div>
   </div>
 </template>
 
 <style>
-#commentInfo {
+#profile {
+  position: relative;
   margin-left: 83%;
-  margin-top: 5%;
+  margin-top: 7%;
   width: 15%;
-  background-color: #ffe87c;
+  background: #feefca;
+  border-radius: 15px;
   height: 100px;
   text-align: center;
 }
 
+#profileImage {
+  width: 80%;
+  margin-top: 10%;
+  margin-left: 10%;
+}
+
+#myPageButton {
+  width: 40%;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  background: #a4d9ff;
+  border: 1px solid #000000;
+  border-radius: 15px;
+}
+
 #text {
   align-content: center;
+}
+
+#buttonText {
+  font-family: 'Montserrat';
+  font-size: 5px;
+  font-style: normal;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: -0.015em;
+  color: #000000;
 }
 </style>
