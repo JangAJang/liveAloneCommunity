@@ -2,26 +2,21 @@ package com.capstone.liveAloneCommunity.service.auth;
 
 import com.capstone.liveAloneCommunity.config.jwt.TokenProvider;
 import com.capstone.liveAloneCommunity.dto.token.ReissueRequestDto;
-import com.capstone.liveAloneCommunity.entity.RefreshToken;
-import com.capstone.liveAloneCommunity.exception.token.TokenUnmatchWithMemberException;
+import com.capstone.liveAloneCommunity.entity.token.RefreshToken;
 import com.capstone.liveAloneCommunity.exception.token.UnvalidRefreshTokenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
+@Component
 public class TokenValidator {
 
     private final TokenProvider tokenProvider;
 
-    public void validateRefreshToken(ReissueRequestDto reissueRequestDto){
-        if (!tokenProvider.validateToken(reissueRequestDto.getRefreshToken())) {
+    public void validateRefreshToken(RefreshToken refreshToken){
+        if (!tokenProvider.validateToken(refreshToken.getValue())) {
             throw new UnvalidRefreshTokenException();
-        }
-    }
-
-    public void validateTokenInfo(RefreshToken refreshToken, ReissueRequestDto reissueRequestDto){
-        if (!refreshToken.getValue().equals(reissueRequestDto.getRefreshToken())) {
-            throw new TokenUnmatchWithMemberException();
         }
     }
 

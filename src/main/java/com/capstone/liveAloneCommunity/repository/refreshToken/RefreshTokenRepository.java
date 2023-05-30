@@ -1,6 +1,6 @@
 package com.capstone.liveAloneCommunity.repository.refreshToken;
 
-import com.capstone.liveAloneCommunity.entity.RefreshToken;
+import com.capstone.liveAloneCommunity.entity.token.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

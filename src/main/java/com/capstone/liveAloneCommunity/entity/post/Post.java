@@ -1,8 +1,9 @@
 package com.capstone.liveAloneCommunity.entity.post;
 
+import com.capstone.liveAloneCommunity.domain.post.Category;
 import com.capstone.liveAloneCommunity.domain.post.Content;
 import com.capstone.liveAloneCommunity.domain.post.Title;
-import com.capstone.liveAloneCommunity.entity.category.Category;
+import com.capstone.liveAloneCommunity.entity.BaseTimeEntity;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -15,7 +16,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Post {
+public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +28,7 @@ public class Post {
     @Embedded
     private Content content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CATEGORY_ID")
+    @Enumerated(value = EnumType.STRING)
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)

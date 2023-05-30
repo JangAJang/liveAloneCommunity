@@ -1,32 +1,21 @@
 package com.capstone.liveAloneCommunity.dto.post;
 
+import com.capstone.liveAloneCommunity.domain.post.Category;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Builder
 public class WritePostRequestDto {
 
-    private Long categoryId;
-
-    @NotNull(message = "제목을 입력하세요.")
-    @NotEmpty(message = "제목을 입력하세요.")
+    @NotNull(message = "카테고리를 선택해주세요.")
+    private Category category;
     @NotBlank(message = "제목을 입력하세요.")
     private String title;
-    @NotNull(message = "내용을 입력하세요.")
-    @NotEmpty(message = "내용을 입력하세요.")
     @NotBlank(message = "내용을 입력하세요.")
     private String content;
-
-    @Builder
-    public WritePostRequestDto(Long categoryId, String title, String content){
-        this.categoryId = categoryId;
-        this.title = title;
-        this.content = content;
-    }
 }

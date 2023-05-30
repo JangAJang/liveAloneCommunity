@@ -3,16 +3,17 @@ package com.capstone.liveAloneCommunity.service.member;
 import com.capstone.liveAloneCommunity.dto.auth.LogInRequestDto;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
 import com.capstone.liveAloneCommunity.dto.member.ChangePasswordRequestDto;
-import com.capstone.liveAloneCommunity.dto.member.EditMemberInfoDto;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.exception.member.*;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
+@Component
 public class MemberValidator {
 
     private final MemberRepository memberRepository;
@@ -33,11 +34,6 @@ public class MemberValidator {
             throw new PasswordNotMatchingException();
     }
 
-    public void validateEditInfoRequest(EditMemberInfoDto editMemberInfoDto){
-        validateNickname(editMemberInfoDto.getNickname());
-        validateEmail(editMemberInfoDto.getEmail());
-    }
-
     public void validateChangePasswordRequest(Member member, ChangePasswordRequestDto changePasswordRequestDto){
         validatePassword(changePasswordRequestDto.getNewPassword(), changePasswordRequestDto.getNewPasswordCheck());
         if(!member.isRightPassword(changePasswordRequestDto.getCurrentPassword(), passwordEncoder))
@@ -45,12 +41,12 @@ public class MemberValidator {
     }
 
     public void validateNickname(String nickname){
-        if(memberRepository.findByMemberInfo_Nickname(nickname).isPresent())
+        if(memberRepository.findByNickname_Nickname(nickname).isPresent())
             throw new NicknameAlreadyInUseException();
     }
 
     public void validateEmail(String email){
-        if(memberRepository.findByMemberInfo_Email(email).isPresent())
+        if(memberRepository.findByEmail_Email(email).isPresent())
             throw new EmailAlreadyInUseException();
         if(isEmailNotFormat(email)) throw new EmailNotFormatException();
     }

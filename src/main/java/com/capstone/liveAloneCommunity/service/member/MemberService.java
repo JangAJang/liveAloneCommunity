@@ -4,10 +4,8 @@ import com.capstone.liveAloneCommunity.dto.member.*;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,12 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private MemberValidator memberValidator;
-
-    @PostConstruct
-    private void initiateValidator(){
-        memberValidator = new MemberValidator(memberRepository, passwordEncoder);
-    }
+    private final MemberValidator memberValidator;
 
     @Transactional(readOnly = true)
     public MemberResponseDto getMemberInfo(Long id) {
@@ -32,29 +25,24 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public MemberSearchResultDto searchMember(SearchMemberDto searchMemberDto, Pageable pageable){
-        Page<MemberResponseDto> result = memberRepository.searchMember(searchMemberDto, pageable);
+    public MemberSearchResultDto searchMember(SearchMemberDto searchMemberDto){
+        Page<MemberResponseDto> result = memberRepository.searchMember(searchMemberDto);
         return new MemberSearchResultDto(result);
     }
 
-    public MemberResponseDto editMember(Long id, EditMemberInfoDto editMemberInfoDto, Member current){
-        Member member = findMemberById(id);
-        memberValidator.validateAuthorization(current, member);
-        memberValidator.validateEditInfoRequest(editMemberInfoDto);
-        member.editInfo(editMemberInfoDto.getNickname(), editMemberInfoDto.getEmail());
-        return MemberResponseDto.toDto(member);
+    public MemberResponseDto editNickname(EditNicknameDto editNicknameDto, Member current){
+        memberValidator.validateNickname(editNicknameDto.getNickname());
+        current.editNickname(editNicknameDto.getNickname());
+        return MemberResponseDto.toDto(current);
     }
 
-    public void changePassword(Long id, Member member, ChangePasswordRequestDto changePasswordRequestDto){
-        memberValidator.validateAuthorization(findMemberById(id), member);
+    public void changePassword(Member member, ChangePasswordRequestDto changePasswordRequestDto){
         memberValidator.validateChangePasswordRequest(member, changePasswordRequestDto);
         member.changePassword(changePasswordRequestDto.getNewPassword(), passwordEncoder);
     }
 
-    public void deleteMember(Long id, Member currentMember){
-        Member target = findMemberById(id);
-        memberValidator.validateAuthorization(currentMember, target);
-        memberRepository.delete(target);
+    public void deleteMember(Member currentMember){
+        memberRepository.delete(currentMember);
     }
 
     private Member findMemberById(Long id){

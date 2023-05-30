@@ -1,1 +1,6 @@
-/src/main/resources/application.yml
+src/main/resources/application.yml
+out
+src/main/java/com/capstone/liveAloneCommunity/service/email/EmailAuthComponent.java
+build
+.gradle
+nodeenv-18

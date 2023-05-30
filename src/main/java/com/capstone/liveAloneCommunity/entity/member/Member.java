@@ -14,33 +14,39 @@ public class Member{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Embedded
     private Username username;
-
     @Embedded
-    private MemberInfo memberInfo;
-
+    private Nickname nickname;
+    @Embedded
+    private Email email;
     @Embedded
     private Password password;
-
     @Column(name = "MEMBER_ROLE")
     @Enumerated(value = EnumType.STRING)
     private Role role;
+    @Column(nullable = true)
+    private String providerId;
+    @Column
+    private String provider;
 
     public Member(RegisterRequestDto registerRequestDto, PasswordEncoder passwordEncoder){
         this.username = new Username(registerRequestDto.getUsername());
-        this.memberInfo = new MemberInfo(registerRequestDto.getNickname(), registerRequestDto.getEmail());
+        this.nickname = new Nickname(registerRequestDto.getNickname());
+        this.email = new Email(registerRequestDto.getEmail());
         this.password = new Password(passwordEncoder.encode(registerRequestDto.getPassword()));
         this.role = Role.USER;
     }
 
     @Builder
-    public Member(Username username, MemberInfo memberInfo, Password password, Role role) {
+    public Member(Username username, Nickname nickname, Email email, Password password, Role role, String provider, String providerId) {
         this.username = username;
-        this.memberInfo = memberInfo;
+        this.nickname = nickname;
+        this.email = email;
         this.password = password;
         this.role = role;
+        this.provider = provider;
+        this.providerId = providerId;
     }
 
     public String getUsername(){
@@ -56,15 +62,15 @@ public class Member{
     }
 
     public String getNickname(){
-        return memberInfo.getNickname();
+        return nickname.getNickname();
     }
 
     public String getEmail(){
-        return memberInfo.getEmail();
+        return email.getEmail();
     }
 
-    public void editInfo(String nickname, String email) {
-        this.memberInfo = new MemberInfo(nickname, email);
+    public void editNickname(String nickname) {
+        this.nickname = new Nickname(nickname);
     }
 
     public void changePassword(String newPassword, PasswordEncoder passwordEncoder) {
