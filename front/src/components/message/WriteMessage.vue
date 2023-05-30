@@ -17,22 +17,20 @@ const sendMessage = function () {
       alert('쪽지를 성공적으로 발송했습니다.')
       router.push({ name: 'messageMain' })
     })
-      .catch((reason) => alert(reason.response.data.result.failMessage))
+    .catch((reason) => alert(reason.response.data.result.failMessage))
 }
 </script>
 <template>
   <div id="writeMessageForm">
     <h2 id="writeMessageTitle">쪽지 보내기</h2>
     <div id="receiverData">
-      <p>받는 사람 <input v-model="receiver"/></p>
+      <p>받는 사람 <input v-model="receiver" /></p>
     </div>
     <div id="writeMessagePlate">
-      <input id="writeMessageInput" v-model="message"/>
+      <input id="writeMessageInput" v-model="message" />
     </div>
   </div>
-  <button @click="sendMessage" id="sendMessageButton">
-    쪽지 보내기
-  </button>
+  <button @click="sendMessage" id="sendMessageButton">쪽지 보내기</button>
 </template>
 <style>
 #writeMessageForm {
@@ -42,7 +40,7 @@ const sendMessage = function () {
   margin-left: 15%;
   margin-top: 7%;
   height: 70%;
-  background: #FEEFCA;
+  background: #feefca;
   border: 1px solid #000000;
   border-radius: 15px;
 }
@@ -58,7 +56,7 @@ const sendMessage = function () {
   width: 80%;
   margin-top: 13%;
   height: 65%;
-  background: #FFFFFF;
+  background: #ffffff;
 }
 
 #receiverData {
@@ -78,7 +76,7 @@ const sendMessage = function () {
   position: absolute;
   margin-left: 70%;
   margin-top: 43%;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 3px solid #000000;
   border-radius: 15px;
 }

@@ -26,7 +26,7 @@ const writeComment = function () {
     .then((res) => {
       console.log(res)
       alert('댓글이 저장되었습니다.')
-      router.push({ name: 'readPost', params: { postId: props.postId } })
+      router.go(0)
     })
 }
 
@@ -97,7 +97,7 @@ const saveText = function (comment) {
     })
     .then((res) => {
       alert('댓글 수정이 완료되었습니다.')
-      router.push({ name: 'readPost', params: { postId: props.postId } })
+      router.go(0)
     })
     .catch((reason) => alert(reason.response.data.result.failMessage))
 }
@@ -111,7 +111,7 @@ const deleteComment = function (comment) {
     })
     .then(() => {
       alert('댓글이 삭제되었습니다.')
-      router.push({ name: 'readPost', params: { postId: props.postId } })
+      router.go(0)
     })
     .catch((reason) => alert(reason.response.data.result.failMessage))
 }
@@ -135,7 +135,9 @@ const deleteComment = function (comment) {
           </form>
           <div id="customComment">
             <p v-if="isMyComment(comment)" @click="placeText(index)" id="customCommentText">수정</p>
-            <p v-if="isMyComment(comment)" @click="deleteComment(comment)" id="customCommentText">삭제</p>
+            <p v-if="isMyComment(comment)" @click="deleteComment(comment)" id="customCommentText">
+              삭제
+            </p>
           </div>
         </div>
       </li>

@@ -49,7 +49,7 @@ const router = createRouter({
     {
       path: '/member/delete',
       name: 'deleteMember',
-      component: ()=> import('../components/member/DeleteMember.vue')
+      component: () => import('../components/member/DeleteMember.vue')
     },
     {
       path: '/post/write',

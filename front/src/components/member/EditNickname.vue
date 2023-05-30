@@ -1,26 +1,31 @@
 <script setup lang="ts">
-import axios from "axios";
-import router from "@/router";
-import {ref} from "vue";
+import axios from 'axios'
+import router from '@/router'
+import { ref } from 'vue'
 
 const nickname = ref('')
 
 const changeNickname = function () {
   axios
-      .patch('/lan/member/edit', {
-        nickname: nickname.value
-      })
-      .then(() => {
-        alert('닉네임 변경에 성공했습니다.')
-        router.push({ name: 'myPage' })
-      })
-      .catch((reason) => alert(reason.response.data.result.failMessage))
+    .patch('/lan/member/edit', {
+      nickname: nickname.value
+    })
+    .then(() => {
+      alert('닉네임 변경에 성공했습니다.')
+      router.push({ name: 'myPage' })
+    })
+    .catch((reason) => alert(reason.response.data.result.failMessage))
 }
 </script>
 <template>
   <div id="editNicknameBackground">
     <div id="editNicknamePlace">
-      <input v-model="nickname" type="text" id="editNicknameInput" placeholder="변경할 닉네임을 입력해주세요."/>
+      <input
+        v-model="nickname"
+        type="text"
+        id="editNicknameInput"
+        placeholder="변경할 닉네임을 입력해주세요."
+      />
     </div>
     <button id="editNicknameButton" @click="changeNickname">닉네임 변경</button>
   </div>
@@ -32,19 +37,19 @@ const changeNickname = function () {
   width: 60%;
   margin-left: 20%;
   height: 15%;
-  background: #FEEFCA;
+  background: #feefca;
   border-radius: 15px;
 }
 
-#editNicknamePlace{
+#editNicknamePlace {
   position: absolute;
   width: 90%;
   margin-left: 5%;
   margin-top: 3%;
   height: 40%;
-  background: #FFFFFF;
+  background: #ffffff;
 }
-#editNicknameInput{
+#editNicknameInput {
   position: absolute;
   margin-top: 1%;
   margin-left: 8%;
@@ -65,7 +70,7 @@ const changeNickname = function () {
   box-sizing: border-box;
   justify-content: center;
   align-items: center;
-  background: #A4D9FF;
+  background: #a4d9ff;
   border: 1px solid #000000;
   border-radius: 15px;
 }

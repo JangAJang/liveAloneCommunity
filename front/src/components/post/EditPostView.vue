@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 import axios from 'axios'
 import Profile from '@/components/main/Profile.vue'
 import router from '@/router'
-import MyData from "@/components/main/MyData.vue";
+import MyData from '@/components/main/MyData.vue'
 
 const props = defineProps({
   postId: {
@@ -39,10 +39,10 @@ const savePost = function () {
 </script>
 
 <template>
-  <MyData/>
+  <MyData />
   <div id="writePostBox">
     <div id="writePostArea">
-      <input v-model="title" placeholder="제목" id="editTitle"/>
+      <input v-model="title" placeholder="제목" id="editTitle" />
       <div>
         <textarea v-model="content" placeholder="내용" id="editContent" />
       </div>
@@ -64,13 +64,13 @@ const savePost = function () {
   left: 46%;
   width: 8%;
   margin-top: 45%;
-  background: #FFEB35;
+  background: #ffeb35;
   border: 3px solid #000000;
   border-radius: 15px;
   align-items: center;
 }
 
-#savePostText{
+#savePostText {
   font-family: 'Inter';
   font-style: normal;
   font-weight: 800;
@@ -85,10 +85,10 @@ const savePost = function () {
   position: absolute;
   width: 60%;
   margin-left: 20%;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 3px solid #000000;
   border-radius: 15px;
-  height: 75%
+  height: 75%;
 }
 
 #editTitle {
@@ -103,7 +103,7 @@ const savePost = function () {
   width: 87%;
 }
 
-#writePostArea{
+#writePostArea {
   margin-top: 5%;
   margin-left: 5%;
   width: 90%;

@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue'
 import Profile from '@/components/main/Profile.vue'
 import router from '@/router'
 import { RouterView } from 'vue-router'
-import MyData from "@/components/main/MyData.vue";
+import MyData from '@/components/main/MyData.vue'
 
 const category = ref('HOBBY_SHARE')
 const page = ref(1)
@@ -146,10 +146,10 @@ const goToWritePost = function () {
 onMounted(() => getPosts())
 </script>
 <template>
-  <MyData/>
+  <MyData />
   <Profile />
   <div id="allPostCategory">
-    <p id="allPostCategoryText">{{categoryName}}</p>
+    <p id="allPostCategoryText">{{ categoryName }}</p>
   </div>
   <div id="postBox">
     <div id="categoryBox">
@@ -189,10 +189,10 @@ onMounted(() => getPosts())
     <div id="searchBox">
       <el-select v-model="searchPostType" placeholder="Select" id="postSearchSelect">
         <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
         />
       </el-select>
       <div id="searchText">
@@ -210,14 +210,14 @@ onMounted(() => getPosts())
 </template>
 
 <style>
-#allPostCategory{
+#allPostCategory {
   box-sizing: border-box;
   position: absolute;
   margin-left: 20%;
   width: 60%;
   margin-top: -10%;
   height: 10%;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 3px solid #000000;
   border-radius: 15px;
 }
@@ -240,7 +240,7 @@ onMounted(() => getPosts())
   position: absolute;
   width: 60%;
   margin-left: 20%;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 3px solid #000000;
   border-radius: 15px;
 }
@@ -257,13 +257,13 @@ onMounted(() => getPosts())
   margin-right: 5%;
 }
 
-#categoryBox{
+#categoryBox {
   box-sizing: border-box;
   width: 101%;
   margin-left: -0.5%;
   margin-top: -0.5%;
   height: 65px;
-  background: #A4D9FF;
+  background: #a4d9ff;
   border: 3px solid #000000;
   border-radius: 15px 15px 0px 0px;
   display: flex;
@@ -281,13 +281,13 @@ onMounted(() => getPosts())
   width: 14%;
   margin-top: 1%;
   margin-left: 5%;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid #000000;
   border-radius: 15px;
   align-items: center;
 }
 
-#categoryText{
+#categoryText {
   font-family: 'Inter';
   font-style: normal;
   font-weight: 800;

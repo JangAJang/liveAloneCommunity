@@ -85,18 +85,18 @@ const startSearch = function () {
 
 const getSingleMessage = function () {
   axios
-      .get('/lan/message', {
-        params: {
-          id: messageId.value
-        }
-      })
-      .then((res) => {
-        message.value = res.data.result.data
-        message.value.content = message.value.content.split('\n').join("<br/>");
-      })
-      .catch(() => {
-        message.value = { nickname: null }
-      })
+    .get('/lan/message', {
+      params: {
+        id: messageId.value
+      }
+    })
+    .then((res) => {
+      message.value = res.data.result.data
+      message.value.content = message.value.content.split('\n').join('<br/>')
+    })
+    .catch(() => {
+      message.value = { nickname: null }
+    })
 }
 
 const searchMessage = function () {
@@ -122,7 +122,7 @@ const searchMessage = function () {
 }
 
 const limitContent = function (content) {
-  if ( content.length > 10) return content.substring(0, 10) + '...'
+  if (content.length > 10) return content.substring(0, 10) + '...'
   return content
 }
 
@@ -155,12 +155,12 @@ const decreasePage = function () {
 const deleteMessage = function () {
   if (confirm('쪽지를 삭제하시겠습니까?')) {
     axios
-        .delete('/lan/message?id='+messageId.value)
-        .then(() => {
-          alert('쪽지를 삭제했습니다..')
-          router.replace({ name: 'messageMain' })
-        })
-        .catch((reason) => alert(reason.response.data.result.failMessage))
+      .delete('/lan/message?id=' + messageId.value)
+      .then(() => {
+        alert('쪽지를 삭제했습니다..')
+        router.replace({ name: 'messageMain' })
+      })
+      .catch((reason) => alert(reason.response.data.result.failMessage))
   }
 }
 
@@ -184,19 +184,19 @@ const isReadMessage = function () {
     <ul>
       <li v-for="message in messages">
         <div @click="chooseMessage(message)">
-          <h3 v-if="!isSentMessage(message)">보낸사람 : {{message.sender}}</h3>
-          <h3 v-if="isSentMessage(message)">받은 사람 : {{message.receiver}}</h3>
-          <p>전송일자 : {{message.createDate}}</p>
-          <p>{{limitContent(message.content)}}</p>
+          <h3 v-if="!isSentMessage(message)">보낸사람 : {{ message.sender }}</h3>
+          <h3 v-if="isSentMessage(message)">받은 사람 : {{ message.receiver }}</h3>
+          <p>전송일자 : {{ message.createDate }}</p>
+          <p>{{ limitContent(message.content) }}</p>
         </div>
       </li>
     </ul>
   </div>
   <div id="messageView">
     <div id="messageContent">
-      <p>보낸 사람 : {{message.sender}}</p>
-      <p>받는 사람 : {{message.receiver}}</p>
-      <p>전송일자 : {{message.createDate}}</p>
+      <p>보낸 사람 : {{ message.sender }}</p>
+      <p>받는 사람 : {{ message.receiver }}</p>
+      <p>전송일자 : {{ message.createDate }}</p>
       <p v-html="message.content"></p>
     </div>
   </div>
@@ -207,13 +207,9 @@ const isReadMessage = function () {
   </div>
   <div id="messageSearchBox">
     <select v-model="searchMessageType" id="messageTypeSelector">
-      <option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"/>
+      <option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
     </select>
-    <input v-model="text" type="text" placeholder="검색어를 입력해주세요." id="messageText"/>
+    <input v-model="text" type="text" placeholder="검색어를 입력해주세요." id="messageText" />
     <button @click="startSearch" id="searchButton">검색</button>
   </div>
   <div id="messageButtons">
@@ -222,7 +218,6 @@ const isReadMessage = function () {
   </div>
 </template>
 <style>
-
 #typeBox {
   box-sizing: border-box;
   position: absolute;
@@ -236,7 +231,7 @@ const isReadMessage = function () {
   box-sizing: border-box;
   width: 33.3%;
   height: 100%;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 3px solid #000000;
   border-radius: 15px;
 }
@@ -248,7 +243,7 @@ const isReadMessage = function () {
   margin-top: 10%;
   width: 25%;
   height: 70%;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 3px solid #000000;
   border-radius: 15px;
 }
@@ -260,7 +255,7 @@ const isReadMessage = function () {
   margin-top: 10%;
   width: 69%;
   height: 70%;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 3px solid #000000;
   border-radius: 15px;
 }
@@ -285,28 +280,28 @@ const isReadMessage = function () {
 
 #pageButton {
   height: 100%;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 3px solid #000000;
   border-radius: 15px;
 }
 
 #messageTypeSelector {
   height: 100%;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 3px solid #000000;
   border-radius: 15px;
   width: 30%;
 }
 #messageText {
   width: 50%;
-  height:80%;
-  background: #FFFFFF;
+  height: 80%;
+  background: #ffffff;
   border: 3px solid #000000;
   border-radius: 15px;
 }
 
 #searchButton {
-  background: #FFFFFF;
+  background: #ffffff;
   position: absolute;
   border: 3px solid #000000;
   border-radius: 15px;
@@ -323,7 +318,7 @@ const isReadMessage = function () {
 }
 
 #writeMessage {
-  background: #FFFFFF;
+  background: #ffffff;
   position: absolute;
   border: 3px solid #000000;
   border-radius: 15px;
@@ -332,7 +327,7 @@ const isReadMessage = function () {
 }
 
 #deleteMessage {
-  background: #FFFFFF;
+  background: #ffffff;
   position: absolute;
   border: 3px solid #000000;
   border-radius: 15px;

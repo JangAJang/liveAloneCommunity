@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue'
 import Profile from '@/components/main/Profile.vue'
 import router from '@/router'
 import CommentOfPost from '@/components/comment/CommentOfPost.vue'
-import MyData from "@/components/main/MyData.vue";
+import MyData from '@/components/main/MyData.vue'
 
 const props = defineProps({
   postId: {
@@ -22,7 +22,7 @@ onMounted(() => {
   axios.get(`/lan/post?id=${props.postId}`).then((res) => {
     console.log(res.data.result.data)
     title.value = res.data.result.data.title
-    content.value = res.data.result.data.content.split('\n').join("<br/>");
+    content.value = res.data.result.data.content.split('\n').join('<br/>')
     writer.value = res.data.result.data.writer
     createdDate.value = res.data.result.data.createdDate
     category.value = res.data.result.data.categoryName
@@ -56,9 +56,8 @@ const deletePost = function () {
 </script>
 
 <template>
-  <MyData/>
-  <div>
-  </div>
+  <MyData />
+  <div></div>
   <div id="readPostBackground">
     <div id="postDataView">
       <div id="postGap">
@@ -70,7 +69,7 @@ const deletePost = function () {
         <p v-html="content"></p>
       </div>
     </div>
-    <CommentOfPost :post-id="props.postId"/>
+    <CommentOfPost :post-id="props.postId" />
   </div>
   <p @click="goToEdit" id="editPostLink">수정하기</p>
   <p @click="requestDelete" id="deletePostLink">삭제하기</p>
@@ -83,7 +82,7 @@ const deletePost = function () {
   position: absolute;
   width: 60%;
   margin-left: 20%;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 3px solid #000000;
   border-radius: 15px;
 }
@@ -93,7 +92,7 @@ const deletePost = function () {
   width: 98%;
   margin-top: 3%;
   margin-left: 1%;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 3px solid #000000;
 }
 

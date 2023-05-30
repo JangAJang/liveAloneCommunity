@@ -23,8 +23,8 @@ const join = function () {
         passwordCheck: passwordCheck.value
       })
       .then(() => {
-        alert("회원가입을 성공했습니다.")
-        router.push({name: 'logIn'})
+        alert('회원가입을 성공했습니다.')
+        router.push({ name: 'logIn' })
       })
       .catch((reason) => alert(reason.response.data.result.failMessage))
   } else alert('이메일 인증을 먼저 진행해주세요.')
@@ -64,33 +64,29 @@ const verifyEmail = function () {
     <div id="RegisterInput">
       <div>
         <p id="usernameInfo">아이디</p>
-        <input id="usernameInput" v-model="username" type="text"/>
+        <input id="usernameInput" v-model="username" type="text" />
       </div>
 
       <p id="passwordInfo">비밀번호</p>
-      <input id="passwordInput" v-model="password" type="password"/>
+      <input id="passwordInput" v-model="password" type="password" />
       <p id="passwordCheckInfo">비밀번호 확인</p>
-      <input id="passwordCheckInput" v-model="passwordCheck" type="password"/>
+      <input id="passwordCheckInput" v-model="passwordCheck" type="password" />
       <div>
         <p id="nicknameInfo">닉네임</p>
-        <input id="nicknameInput" v-model="nickname" type="text"/>
+        <input id="nicknameInput" v-model="nickname" type="text" />
       </div>
       <p id="emailInfo">이메일</p>
-      <input id="emailInput" v-model="email" type="text"/>
+      <input id="emailInput" v-model="email" type="text" />
       <p id="authNumInfo">인증번호</p>
-      <input id="authNumInput" v-model="authNum" type="text"/>
+      <input id="authNumInput" v-model="authNum" type="text" />
       <button id="sendEmail" @click="sendEmail">
-        <p id="sendEmailText">
-          인증번호
-        </p>
+        <p id="sendEmailText">인증번호</p>
       </button>
       <button id="checkAuth" @click="verifyEmail">
         <p id="checkAuthText">확인</p>
       </button>
       <button id="tryRegister" @click="join">
-        <p id="tryRegisterText">
-          회원가입
-        </p>
+        <p id="tryRegisterText">회원가입</p>
       </button>
     </div>
   </div>
@@ -104,7 +100,7 @@ const verifyEmail = function () {
   height: 85%;
   left: 15%;
   top: 15%;
-  background: #FEEFCA;
+  background: #feefca;
   border: 1px solid #000000;
   border-radius: 15px;
 }
@@ -130,7 +126,7 @@ const verifyEmail = function () {
 
 #usernameInput {
   position: absolute;
-  background: #FFFFFF;
+  background: #ffffff;
   margin-top: 4%;
 }
 
@@ -145,7 +141,7 @@ const verifyEmail = function () {
 
 #passwordInput {
   position: absolute;
-  background: #FFFFFF;
+  background: #ffffff;
   margin-top: 10%;
 }
 
@@ -160,10 +156,9 @@ const verifyEmail = function () {
 
 #passwordCheckInput {
   position: absolute;
-  background: #FFFFFF;
+  background: #ffffff;
   margin-top: 16%;
 }
-
 
 #nicknameInfo {
   position: absolute;
@@ -176,7 +171,7 @@ const verifyEmail = function () {
 
 #nicknameInput {
   position: absolute;
-  background: #FFFFFF;
+  background: #ffffff;
   margin-top: 22%;
 }
 
@@ -191,10 +186,9 @@ const verifyEmail = function () {
 
 #emailInput {
   position: absolute;
-  background: #FFFFFF;
+  background: #ffffff;
   margin-top: 28%;
 }
-
 
 #authNumInfo {
   position: absolute;
@@ -207,7 +201,7 @@ const verifyEmail = function () {
 
 #authNumInput {
   position: absolute;
-  background: #FFFFFF;
+  background: #ffffff;
   margin-top: 34%;
 }
 
@@ -222,7 +216,7 @@ const verifyEmail = function () {
   margin-left: 23%;
   margin-top: 28%;
   width: 15%;
-  background: #A4D9FF;
+  background: #a4d9ff;
   border-radius: 15px;
 }
 #sendEmailText {
@@ -246,7 +240,7 @@ const verifyEmail = function () {
   margin-left: 23%;
   margin-top: 34%;
   width: 15%;
-  background: #A4D9FF;
+  background: #a4d9ff;
   border-radius: 15px;
 }
 #checkAuthText {
@@ -272,10 +266,9 @@ const verifyEmail = function () {
   margin-top: 40%;
   width: 30%;
   height: 7.5%;
-  background: #FFEB35;
+  background: #ffeb35;
   border: 3px solid #000000;
   border-radius: 15px;
-
 }
 #tryRegisterText {
   position: absolute;
@@ -286,5 +279,4 @@ const verifyEmail = function () {
   line-height: 24px;
   color: #000000;
 }
-
 </style>

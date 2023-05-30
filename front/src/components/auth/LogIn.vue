@@ -25,7 +25,7 @@ const signIn = function () {
 const kakaoLogIn = function () {
   Kakao.init('229db5180010ffc0378044aa071a7a5c')
   Kakao.Auth.authorize({
-    redirectUri: 'http://localhost:5173/auth/kakao-login',
+    redirectUri: 'http://34.219.46.112/auth/kakao-login',
     prompts: 'login'
   })
 }
@@ -35,16 +35,15 @@ const kakaoLogIn = function () {
     <div>
       <div>
         <p id="username_text">아이디</p>
-        <input v-model="username" type="text" id="username_input"/>
+        <input v-model="username" type="text" id="username_input" />
       </div>
       <div>
         <p id="password_text">비밀번호</p>
-        <input v-model="password" type="password" id="password_input"/>
+        <input v-model="password" type="password" id="password_input" />
       </div>
       <button id="logIn_button" @click="signIn">
         <p id="logIn_text">로그인</p>
       </button>
-
     </div>
     <p id="kakao_text">카카오톡으로 로그인</p>
     <form id="kakao_img">
@@ -55,7 +54,6 @@ const kakaoLogIn = function () {
   </div>
 </template>
 <style>
-
 #logInBox {
   box-sizing: border-box;
   position: absolute;
@@ -63,7 +61,7 @@ const kakaoLogIn = function () {
   height: 60%;
   left: 10%;
   top: 20%;
-  background: #FEEFCA;
+  background: #feefca;
   border: 1px solid #000000;
   border-radius: 15px;
 }
@@ -92,7 +90,7 @@ const kakaoLogIn = function () {
   color: #000000;
 }
 
-#password_text{
+#password_text {
   position: absolute;
   margin-top: 20%;
   margin-left: 8%;
@@ -104,7 +102,7 @@ const kakaoLogIn = function () {
   color: #000000;
 }
 
-#password_input{
+#password_input {
   position: absolute;
   margin-top: 24%;
   margin-left: 8%;
@@ -128,12 +126,12 @@ const kakaoLogIn = function () {
   height: 14%;
   left: 40%;
   top: 70%;
-  background: #FFEB35;
+  background: #ffeb35;
   border: 3px solid #000000;
   border-radius: 15px;
 }
 
-#logIn_text{
+#logIn_text {
   font-family: 'Inter';
   font-style: normal;
   font-weight: 800;

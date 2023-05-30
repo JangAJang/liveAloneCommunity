@@ -1,31 +1,46 @@
 <script setup lang="ts">
-import {ref} from "vue";
-import axios from "axios";
-import router from "@/router";
+import { ref } from 'vue'
+import axios from 'axios'
+import router from '@/router'
 
 const currentPassword = ref('')
 const newPassword = ref('')
 const newPasswordCheck = ref('')
 const changePassword = function () {
   axios
-      .patch('/lan/member/changePassword', {
-        currentPassword: currentPassword.value,
-        newPassword: newPassword.value,
-        newPasswordCheck: newPasswordCheck.value
-      })
-      .then(() => {
-        alert('비밀번호 변경에 성공했습니다.')
-        router.push({ name: 'myPage' })
-      })
-      .catch((reason) => alert(reason.response.data.result.failMessage))
+    .patch('/lan/member/changePassword', {
+      currentPassword: currentPassword.value,
+      newPassword: newPassword.value,
+      newPasswordCheck: newPasswordCheck.value
+    })
+    .then(() => {
+      alert('비밀번호 변경에 성공했습니다.')
+      router.push({ name: 'myPage' })
+    })
+    .catch((reason) => alert(reason.response.data.result.failMessage))
 }
 </script>
 <template>
   <div id="editPasswordBackground">
     <div id="editPasswordPlace">
-      <input v-model="currentPassword" type="text" id="editCurrentPasswordInput" placeholder="기존 비밀번호를 입력해주세요."/>
-      <input v-model="newPassword" type="text" id="editNewPasswordInput" placeholder="새 비밀번호를 입력해주세요."/>
-      <input v-model="newPasswordCheck" type="text" id="editNewPasswordCheckInput" placeholder="새 비밀번호를 다시 입력해주세요."/>
+      <input
+        v-model="currentPassword"
+        type="text"
+        id="editCurrentPasswordInput"
+        placeholder="기존 비밀번호를 입력해주세요."
+      />
+      <input
+        v-model="newPassword"
+        type="text"
+        id="editNewPasswordInput"
+        placeholder="새 비밀번호를 입력해주세요."
+      />
+      <input
+        v-model="newPasswordCheck"
+        type="text"
+        id="editNewPasswordCheckInput"
+        placeholder="새 비밀번호를 다시 입력해주세요."
+      />
     </div>
     <button id="editPasswordButton" @click="changePassword">비밀번호 변경</button>
   </div>
@@ -37,19 +52,19 @@ const changePassword = function () {
   width: 60%;
   margin-left: 20%;
   height: 30%;
-  background: #FEEFCA;
+  background: #feefca;
   border-radius: 15px;
 }
 
-#editPasswordPlace{
+#editPasswordPlace {
   position: absolute;
   width: 90%;
   margin-left: 5%;
   margin-top: 3%;
   height: 80%;
-  background: #FFFFFF;
+  background: #ffffff;
 }
-#editCurrentPasswordInput{
+#editCurrentPasswordInput {
   position: absolute;
   margin-top: 1%;
   margin-left: 8%;
@@ -61,7 +76,7 @@ const changePassword = function () {
   line-height: 24px;
   color: #000000;
 }
-#editNewPasswordInput{
+#editNewPasswordInput {
   position: absolute;
   margin-top: 7%;
   margin-left: 8%;
@@ -73,7 +88,7 @@ const changePassword = function () {
   line-height: 24px;
   color: #000000;
 }
-#editNewPasswordCheckInput{
+#editNewPasswordCheckInput {
   position: absolute;
   margin-top: 13%;
   margin-left: 8%;
@@ -94,7 +109,7 @@ const changePassword = function () {
   box-sizing: border-box;
   justify-content: center;
   align-items: center;
-  background: #A4D9FF;
+  background: #a4d9ff;
   border: 1px solid #000000;
   border-radius: 15px;
 }

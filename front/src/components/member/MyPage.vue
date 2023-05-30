@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 import axios from 'axios'
 import Profile from '@/components/main/Profile.vue'
 import router from '@/router'
-import MyData from "@/components/main/MyData.vue";
+import MyData from '@/components/main/MyData.vue'
 
 const nickname = ref('')
 const username = ref('')
@@ -19,25 +19,31 @@ onMounted(() => {
 </script>
 
 <template>
-  <MyData/>
+  <MyData />
   <div id="myPageBackground">
     <div id="tag1">
       <p id="myPageTagTitle">내 정보</p>
       <div id="myPageMe">
-        <p>아이디 : {{username}}</p>
-        <p>이메일 : {{email}}</p>
-        <p>닉네임 : {{nickname}}</p>
+        <p>아이디 : {{ username }}</p>
+        <p>이메일 : {{ email }}</p>
+        <p>닉네임 : {{ nickname }}</p>
       </div>
-      <button @click="router.push({name: 'logOut'})" id="logOutButton">
+      <button @click="router.push({ name: 'logOut' })" id="logOutButton">
         <p id="logOutText">로그아웃</p>
       </button>
     </div>
     <div id="tag2">
       <p id="myPageTagTitle">계정</p>
       <div id="tag2List">
-        <RouterLink to="/member/edit/nickname" id="changeNickname" ><p id="tag2Component">닉네임 변경</p></RouterLink>
-        <RouterLink to="/member/edit/password" id="changePassword"><p id="tag2Component">비밀번호 변경</p></RouterLink>
-        <RouterLink to="/member/delete" id="deleteMember"><p id="tag2Component">회원탈퇴</p></RouterLink>
+        <RouterLink to="/member/edit/nickname" id="changeNickname"
+          ><p id="tag2Component">닉네임 변경</p></RouterLink
+        >
+        <RouterLink to="/member/edit/password" id="changePassword"
+          ><p id="tag2Component">비밀번호 변경</p></RouterLink
+        >
+        <RouterLink to="/member/delete" id="deleteMember"
+          ><p id="tag2Component">회원탈퇴</p></RouterLink
+        >
       </div>
     </div>
   </div>
@@ -50,26 +56,26 @@ onMounted(() => {
   width: 60%;
   margin-left: 20%;
   height: 70%;
-  background: #FEEFCA;
+  background: #feefca;
   border-radius: 15px;
 }
 
-#tag1{
+#tag1 {
   position: absolute;
   width: 90%;
   margin-left: 5%;
   margin-top: 3%;
   height: 40%;
-  background: #FFFFFF;
+  background: #ffffff;
 }
 
-#tag2{
+#tag2 {
   position: absolute;
   width: 90%;
   margin-left: 5%;
   margin-top: 33%;
   height: 40%;
-  background: #FFFFFF;
+  background: #ffffff;
 }
 
 #myPageTagTitle {
@@ -99,13 +105,13 @@ onMounted(() => {
   border-radius: 15px;
 }
 
-#tag2Component{
+#tag2Component {
   margin-top: 2%;
   margin-left: 1%;
 }
 
 #logOutText {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 #tag2List {

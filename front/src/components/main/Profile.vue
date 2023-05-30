@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import axios from 'axios'
-import router from "@/router";
+import router from '@/router'
 
 const username = ref('')
 const nickname = ref('')
@@ -25,16 +25,15 @@ onMounted(() =>
 
 <template>
   <div id="profile">
-    <div id="profileImage">
-    </div>
+    <div id="profileImage"></div>
     <br />
     <el-text id="text">{{ nickname }}</el-text>
-    <br/>
+    <br />
     <div class="mt-3">
-      <button @click="router.push({name:'myPage'})" id="myPageButton">
+      <button @click="router.push({ name: 'myPage' })" id="myPageButton">
         <p id="buttonText">마이페이지</p>
       </button>
-      <button id="myPageButton" @click="router.push({name:'logOut'})">
+      <button id="myPageButton" @click="router.push({ name: 'logOut' })">
         <p id="buttonText">로그아웃</p>
       </button>
     </div>
@@ -64,7 +63,7 @@ onMounted(() =>
   box-sizing: border-box;
   justify-content: center;
   align-items: center;
-  background: #A4D9FF;
+  background: #a4d9ff;
   border: 1px solid #000000;
   border-radius: 15px;
 }

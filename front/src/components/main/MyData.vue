@@ -9,23 +9,23 @@ const size = ref(5)
 
 onMounted(() => {
   axios
-      .get('/lan/post/of', {
-        params: { page: page.value, size: size.value }
-      })
-      .then((res) => {
-        postResult.value = res.data.result.data.result.content
-      })
+    .get('/lan/post/of', {
+      params: { page: page.value, size: size.value }
+    })
+    .then((res) => {
+      postResult.value = res.data.result.data.result.content
+    })
   axios
-      .get('/lan/comment/member', {
-        params: {
-          page: 0,
-          size: 5
-        }
-      })
-      .then((res) => {
-        console.log(res)
-        commentResult.value = res.data.result.data.readCommentResponseDto.content
-      })
+    .get('/lan/comment/member', {
+      params: {
+        page: 0,
+        size: 5
+      }
+    })
+    .then((res) => {
+      console.log(res)
+      commentResult.value = res.data.result.data.readCommentResponseDto.content
+    })
 })
 </script>
 
@@ -39,7 +39,7 @@ onMounted(() => {
       <ul>
         <li v-for="post in postResult" class="mt-1">
           <RouterLink :to="{ name: 'readPost', params: { postId: post.id } }">
-            {{post.title }}
+            {{ post.title }}
           </RouterLink>
           <br />
           <el-text>{{ post.createdDate }}</el-text>
@@ -67,14 +67,14 @@ onMounted(() => {
   position: absolute;
   margin-left: 2%;
   width: 15%;
-  background: #FEEFCA;
+  background: #feefca;
   border-radius: 15px;
 }
 
-#postBackground{
+#postBackground {
   width: 90%;
   margin-left: 5%;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 15px;
 }
 
@@ -102,14 +102,14 @@ onMounted(() => {
   position: absolute;
   margin-left: 2%;
   width: 15%;
-  background: #FEEFCA;
+  background: #feefca;
   border-radius: 15px;
 }
 
-#commentBackground{
+#commentBackground {
   width: 90%;
   margin-left: 5%;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 15px;
 }
 
