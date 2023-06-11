@@ -88,4 +88,8 @@ public class Member{
     public Point getPoint(){
         return point;
     }
+
+    public void changePoint(Point point) {
+        this.point = point;
+    }
 }

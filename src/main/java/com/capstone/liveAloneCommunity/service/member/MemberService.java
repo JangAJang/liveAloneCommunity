@@ -5,6 +5,9 @@ import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,21 @@ public class MemberService {
     public MemberSearchResultDto searchMember(SearchMemberDto searchMemberDto){
         Page<MemberResponseDto> result = memberRepository.searchMember(searchMemberDto);
         return new MemberSearchResultDto(result);
+    }
+
+    @Transactional
+    public void changeMemberLocation(ChangeLocationRequestDto changeLocationRequestDto, Member member) {
+        Point point = null;
+        try {
+            point = changeLocationRequestDto.getLatitude() != null
+                    && changeLocationRequestDto.getLongitude() != null ?
+                    (Point) new WKTReader().read(String.format("POINT(%s %s)", changeLocationRequestDto.getLatitude(),
+                            changeLocationRequestDto.getLongitude()))
+                    : null;
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        member.changePoint(point);
     }
 
     public MemberResponseDto editNickname(EditNicknameDto editNicknameDto, Member current){
