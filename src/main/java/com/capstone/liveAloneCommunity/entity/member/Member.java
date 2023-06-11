@@ -4,6 +4,8 @@ import com.capstone.liveAloneCommunity.domain.member.*;
 import com.capstone.liveAloneCommunity.dto.auth.RegisterRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.WKTReader;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
@@ -29,17 +31,22 @@ public class Member{
     private String providerId;
     @Column
     private String provider;
+    @Column
+    private Point point;
 
+    @SneakyThrows
     public Member(RegisterRequestDto registerRequestDto, PasswordEncoder passwordEncoder){
         this.username = new Username(registerRequestDto.getUsername());
         this.nickname = new Nickname(registerRequestDto.getNickname());
         this.email = new Email(registerRequestDto.getEmail());
         this.password = new Password(passwordEncoder.encode(registerRequestDto.getPassword()));
         this.role = Role.USER;
+        this.point = (Point) new WKTReader().read(String.format("POINT(%f %f)", 37.22214637050458, 127.18653080961145));
     }
 
+    @SneakyThrows
     @Builder
-    public Member(Username username, Nickname nickname, Email email, Password password, Role role, String provider, String providerId) {
+    public Member(Username username, Nickname nickname, Email email, Password password, Role role, String provider, String providerId){
         this.username = username;
         this.nickname = nickname;
         this.email = email;
@@ -47,6 +54,7 @@ public class Member{
         this.role = role;
         this.provider = provider;
         this.providerId = providerId;
+        this.point = (Point) new WKTReader().read(String.format("POINT(%f %f)", 37.22214637050458, 127.18653080961145));
     }
 
     public String getUsername(){
@@ -75,5 +83,9 @@ public class Member{
 
     public void changePassword(String newPassword, PasswordEncoder passwordEncoder) {
         this.password = new Password(passwordEncoder.encode(newPassword));
+    }
+
+    public Point getPoint(){
+        return point;
     }
 }
