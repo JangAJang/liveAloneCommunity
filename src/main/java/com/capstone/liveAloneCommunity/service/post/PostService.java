@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +44,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public MultiPostResponseDto searchPost(SearchPostRequestDto searchPostRequestDto){
         Page<PostResponseDto> searchResult = postRepository
-                .searchPost(searchPostRequestDto);
+                .searchPost(searchPostRequestDto, getCurrentMember());
         return new MultiPostResponseDto(searchResult);
     }
 
@@ -59,7 +60,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public MultiPostResponseDto getPostByCategory(PostByCategoryRequestDto postByCategoryRequestDto){
-        Page<PostResponseDto> postByCategory = postRepository.getPostByCategory(postByCategoryRequestDto);
+        Page<PostResponseDto> postByCategory = postRepository.getPostByCategory(postByCategoryRequestDto, getCurrentMember());
         return new MultiPostResponseDto(postByCategory);
     }
 
@@ -99,5 +100,10 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
         if(post.isWriter(member)) return;
         throw new NotMyPostException();
+    }
+
+    private Member getCurrentMember(){
+        return memberRepository.findByUsername_Username(SecurityContextHolder.getContext().getAuthentication().getName())
+                .orElseThrow(MemberNotFoundException::new);
     }
 }
