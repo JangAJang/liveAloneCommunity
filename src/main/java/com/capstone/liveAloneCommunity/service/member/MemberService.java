@@ -1,7 +1,9 @@
 package com.capstone.liveAloneCommunity.service.member;
 
+import com.capstone.liveAloneCommunity.domain.location.Location;
 import com.capstone.liveAloneCommunity.dto.member.*;
 import com.capstone.liveAloneCommunity.entity.member.Member;
+import com.capstone.liveAloneCommunity.exception.member.LocationNotValidException;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,17 +37,16 @@ public class MemberService {
 
     @Transactional
     public void changeMemberLocation(ChangeLocationRequestDto changeLocationRequestDto, Member member) {
-        Point point = null;
-        try {
-            point = changeLocationRequestDto.getLatitude() != null
-                    && changeLocationRequestDto.getLongitude() != null ?
-                    (Point) new WKTReader().read(String.format("POINT(%s %s)", changeLocationRequestDto.getLatitude(),
-                            changeLocationRequestDto.getLongitude()))
-                    : null;
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+        Double latitude = changeLocationRequestDto.getLatitude();
+        Double longitude = changeLocationRequestDto.getLongitude();
+
+        if(latitude == null || longitude == null) {
+            throw new LocationNotValidException();
         }
-        member.changePoint(point);
+
+        Location location = new Location(changeLocationRequestDto.getLatitude(),
+                changeLocationRequestDto.getLongitude());
+        member.changeLocation(location);
     }
 
     public MemberResponseDto editNickname(EditNicknameDto editNicknameDto, Member current){

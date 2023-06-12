@@ -1,5 +1,6 @@
 package com.capstone.liveAloneCommunity.entity.post;
 
+import com.capstone.liveAloneCommunity.domain.location.Location;
 import com.capstone.liveAloneCommunity.domain.post.Category;
 import com.capstone.liveAloneCommunity.domain.post.Content;
 import com.capstone.liveAloneCommunity.domain.post.Title;
@@ -34,8 +35,8 @@ public class Post extends BaseTimeEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
-    @Column
-    private Point point;
+    @Embedded
+    private Location location;
 
     @Builder
     @SneakyThrows
@@ -44,7 +45,7 @@ public class Post extends BaseTimeEntity {
         this.content = content;
         this.member = member;
         this.category = category;
-        this.point = member.getPoint();
+        this.location = member.getLocation();
     }
 
     public String getTitle(){
