@@ -1,5 +1,6 @@
 package com.capstone.liveAloneCommunity.controller.member;
 
+import com.capstone.liveAloneCommunity.dto.member.ChangeLocationRequestDto;
 import com.capstone.liveAloneCommunity.dto.member.ChangePasswordRequestDto;
 import com.capstone.liveAloneCommunity.dto.member.EditNicknameDto;
 import com.capstone.liveAloneCommunity.dto.member.SearchMemberDto;
@@ -43,6 +44,21 @@ public class MemberController {
     @ResponseStatus(HttpStatus.OK)
     public Response searchMember(@RequestBody @Valid SearchMemberDto searchMemberDto){
         return Response.success(memberService.searchMember(searchMemberDto));
+    }
+
+    @GetMapping("/myLocation")
+    @Operation(summary = "회원의 위치 조회", description = "회원의 현재 위치를 조회한다. ")
+    @ResponseStatus(HttpStatus.OK)
+    public Response findMembersLocation() {
+        return Response.success(memberService.findMemberLocation(getMember()));
+    }
+
+    @PatchMapping("/edit/location")
+    @Operation(summary = "회원의 위치 수정", description = "회원의 현재 위치를 초기화한다. ")
+    @ResponseStatus(HttpStatus.OK)
+    public Response changeMemberLocation(@RequestBody @Valid ChangeLocationRequestDto changeLocationRequestDto) {
+        memberService.changeMemberLocation(changeLocationRequestDto, getMember());
+        return Response.success();
     }
 
     @PatchMapping("/edit")

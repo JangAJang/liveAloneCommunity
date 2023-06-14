@@ -1,10 +1,15 @@
 package com.capstone.liveAloneCommunity.service.member;
 
+import com.capstone.liveAloneCommunity.domain.location.Location;
 import com.capstone.liveAloneCommunity.dto.member.*;
 import com.capstone.liveAloneCommunity.entity.member.Member;
+import com.capstone.liveAloneCommunity.exception.member.LocationNotValidException;
 import com.capstone.liveAloneCommunity.exception.member.MemberNotFoundException;
 import com.capstone.liveAloneCommunity.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,6 +33,25 @@ public class MemberService {
     public MemberSearchResultDto searchMember(SearchMemberDto searchMemberDto){
         Page<MemberResponseDto> result = memberRepository.searchMember(searchMemberDto);
         return new MemberSearchResultDto(result);
+    }
+
+    @Transactional
+    public void changeMemberLocation(ChangeLocationRequestDto changeLocationRequestDto, Member member) {
+        Double latitude = changeLocationRequestDto.getLatitude();
+        Double longitude = changeLocationRequestDto.getLongitude();
+
+        if(latitude == null || longitude == null) {
+            throw new LocationNotValidException();
+        }
+
+        Location location = new Location(changeLocationRequestDto.getLatitude(),
+                changeLocationRequestDto.getLongitude());
+        member.changeLocation(location);
+    }
+
+    @Transactional(readOnly = true)
+    public Location findMemberLocation(Member member) {
+        return member.getLocation();
     }
 
     public MemberResponseDto editNickname(EditNicknameDto editNicknameDto, Member current){
