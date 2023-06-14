@@ -49,6 +49,11 @@ public class MemberService {
         member.changeLocation(location);
     }
 
+    @Transactional(readOnly = true)
+    public Location findMemberLocation(Member member) {
+        return member.getLocation();
+    }
+
     public MemberResponseDto editNickname(EditNicknameDto editNicknameDto, Member current){
         memberValidator.validateNickname(editNicknameDto.getNickname());
         current.editNickname(editNicknameDto.getNickname());
