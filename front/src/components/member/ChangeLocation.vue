@@ -1,47 +1,85 @@
-<script>
-import {onMounted} from "vue";
-
-const latitude = ref()
-const longitude = ref()
-const map = null;
-
-onMounted( () => {
-  axios.get('/lan/member/getLocation')
-      .then(res => {
-        latitude.value = res.data.result.data.latitude
-        longitude.value = res.data.result.data.longitude
-      })
-  loadMap()
-  loadMarker()
-})
-
-const loadMap = function () {
-  const container = document.getElementById("map")
-  const option = {
-    center: new window.kakao.maps.LatLng(37.23369467112643, 127.18849753254402),
-    level: 3,
-  };
-  map.value = new window.kakao.maps.Map(container, option);
-}
-
-const loadMarker = function () {
-  const markerPosition = new window.kakao.maps.LatLng(37.23369467112643, 127.18849753254402);
-  const marker = new window.kakao.maps.Marker({
-    position: markerPosition
-  });
-  marker.setMap(this.map)
-}
-
-</script>
 <template>
   <div>
-    <h2>카카오 맵 보기</h2>
     <div id="map"></div>
+    <div class="button-group">
+      <button @click="saveLocation">
+        위치 저장하기
+      </button>
+    </div>
   </div>
 </template>
+
+<script>
+
+import {ref} from "vue";
+
+const msg = ref('')
+let latitude = 1.00
+let longitude = 1.00
+export default {
+  name: "KakaoMap",
+  data() {
+    return {
+      markers: [],
+      infowindow: null,
+    };
+  },
+  mounted() {
+    if (window.kakao && window.kakao.maps) {
+      this.initMap();
+    } else {
+      const script = document.createElement("script");
+      /* global kakao */
+      script.onload = () => kakao.maps.load(this.initMap);
+      script.src =
+          "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=915cffed372954b7b44804ed422b9cf0";
+      document.head.appendChild(script);
+    }
+  },
+  methods: {
+    initMap() {
+      const container = document.getElementById("map");
+      const options = {
+        center: new kakao.maps.LatLng(37.22214637050458, 127.18653080961145),
+        level: 5,
+      };
+      var map = new kakao.maps.Map(container, options);
+      var marker = new kakao.maps.Marker({
+        position: map.getCenter()
+      });
+      marker.setMap(map);
+      kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+        const latlng = mouseEvent.latLng;
+
+        // 마커 위치를 클릭한 위치로 옮깁니다
+        marker.setPosition(latlng);
+
+        let message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+        message += '경도는 ' + latlng.getLng() + ' 입니다';
+        latitude = latlng.getLat()
+        longitude = latlng.getLng()
+        msg.value = message;
+      })
+    },
+    saveLocation() {
+      console.log(latitude)
+      console.log(longitude)
+    }
+
+  },
+};
+</script>
 <style scoped>
 #map {
-  width: 80%;
+  width: 400px;
   height: 400px;
+}
+
+.button-group {
+  margin: 10px 0px;
+}
+
+button {
+  margin: 0 3px;
 }
 </style>
