@@ -1,25 +1,16 @@
-<template>
-  <div>
-    <div id="map"></div>
-    <div class="button-group">
-      <button @click="saveLocation">
-        위치 저장하기
-      </button>
-    </div>
-  </div>
-</template>
-
 <script>
-
 import {ref} from "vue";
 import router from "@/router";
 import axios from "axios";
+import Profile from "@/components/main/Profile.vue";
+import MyData from "@/components/main/MyData.vue";
 
 const msg = ref('')
 let latitude = 1.00
 let longitude = 1.00
 export default {
   name: "KakaoMap",
+  components: {MyData, Profile},
   data() {
     return {
       markers: [],
@@ -89,17 +80,44 @@ export default {
   },
 };
 </script>
+
+<template>
+  <MyData />
+  <div id="changeLocationBackground">
+    <div id="map"></div>
+    <button @click="saveLocation" id="saveLocationButton">
+      위치 저장하기
+    </button>
+  </div>
+  <Profile />
+</template>
+
 <style scoped>
+
+#changeLocationBackground {
+  position: absolute;
+  width: 60%;
+  margin-left: 20%;
+  height: 70%;
+  background: #feefca;
+  border-radius: 15px;
+}
+
 #map {
-  width: 400px;
-  height: 400px;
+  width: 90%;
+  margin-left: 5%;
+  height: 90%;
+  margin-top: 5%;
+  border-radius: 15px;
 }
 
-.button-group {
-  margin: 10px 0px;
-}
-
-button {
-  margin: 0 3px;
+#saveLocationButton {
+  background: #ffffff;
+  position: absolute;
+  border: 3px solid #000000;
+  border-radius: 15px;
+  width: 20%;
+  margin-top: 5%;
+  margin-left: 40%;
 }
 </style>
