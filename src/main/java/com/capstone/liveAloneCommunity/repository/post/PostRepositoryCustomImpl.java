@@ -1,6 +1,5 @@
 package com.capstone.liveAloneCommunity.repository.post;
 
-import com.capstone.liveAloneCommunity.domain.location.Location;
 import com.capstone.liveAloneCommunity.dto.post.*;
 import com.capstone.liveAloneCommunity.entity.member.Member;
 import com.querydsl.core.QueryResults;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 
 import static com.capstone.liveAloneCommunity.entity.member.QMember.member;
 import static com.capstone.liveAloneCommunity.entity.post.QPost.post;
-import static java.lang.Math.*;
 
 @RequiredArgsConstructor
 public class PostRepositoryCustomImpl implements PostRepositoryCustom{
@@ -29,7 +27,9 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
                         post.title.title, post.content.content, post.category, post.createdDate))
                 .from(post)
                 .leftJoin(post.member, member)
-                .where(makeConditionQuery(searchPostRequestDto.getText(), searchPostRequestDto.getSearchPostType()).and(makeConditionQueryWithLocation(currentMember.getLocation())))
+                .where(makeConditionQuery(searchPostRequestDto.getText(), searchPostRequestDto.getSearchPostType())
+                        , post.location.latitude.doubleValue().between(currentMember.getLocation().getLatitude() - 0.015, currentMember.getLocation().getLatitude() + 0.015)
+                , post.location.longitude.doubleValue().between(currentMember.getLocation().getLongitude() - 0.025, currentMember.getLocation().getLongitude() + 0.025))
                 .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -45,7 +45,8 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
                         post.title.title, post.content.content, post.category, post.createdDate))
                 .from(post)
                 .leftJoin(post.member, member)
-                .where(post.category.eq(postByCategoryRequestDto.getCategory()).and(makeConditionQueryWithLocation(currentMember.getLocation())))
+                .where(post.category.eq(postByCategoryRequestDto.getCategory()), post.location.latitude.doubleValue().between(currentMember.getLocation().getLatitude() - 0.015, currentMember.getLocation().getLatitude() + 0.015)
+                        , post.location.longitude.doubleValue().between(currentMember.getLocation().getLongitude() - 0.025, currentMember.getLocation().getLongitude() + 0.025))
                 .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -71,10 +72,5 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
         if(searchPostType.equals(SearchPostType.CONTENT))
             return post.content.content.contains(text);
         return post.title.title.contains(text).or(post.content.content.contains(text));
-    }
-
-    private BooleanExpression makeConditionQueryWithLocation(Location location) {
-        return post.location.latitude.between(location.getLatitude()-0.01, location.getLatitude()+0.01)
-                .and(post.location.longitude.between(location.getLongitude() - 0.02, location.getLongitude() + 0.02));
     }
 }

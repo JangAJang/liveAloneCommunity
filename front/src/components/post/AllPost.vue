@@ -7,7 +7,7 @@ import { RouterView } from 'vue-router'
 import MyData from '@/components/main/MyData.vue'
 
 const category = ref('HOBBY_SHARE')
-const page = ref(1)
+const page = ref(0)
 const size = ref(5)
 const maxPage = ref(1)
 let posts = ref([])
@@ -83,6 +83,8 @@ const getPosts = function () {
       }
     })
     .then((res) => {
+      console.log(category.value)
+      console.log(res)
       maxPage.value = res.data.result.data.result.totalPages
       posts.value = res.data.result.data.result.content
       console.log(res.data.result.data.result.content)
