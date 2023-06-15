@@ -41,6 +41,9 @@ onMounted(() => {
         <RouterLink to="/member/edit/password" id="changePassword"
           ><p id="tag2Component">비밀번호 변경</p></RouterLink
         >
+        <RouterLink to="/member/edit/location" id="changeLocation">
+          <p id="tag2Component">위치 정보 수정</p>
+        </RouterLink>
         <RouterLink to="/member/delete" id="deleteMember"
           ><p id="tag2Component">회원탈퇴</p></RouterLink
         >

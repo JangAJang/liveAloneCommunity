@@ -42,6 +42,11 @@ const router = createRouter({
       component: () => import('../components/member/EditNickname.vue')
     },
     {
+      path: '/member/edit/location',
+      name: 'editLocation',
+      component: () => import('../components/member/ChangeLocation.vue')
+    },
+    {
       path: '/member/edit/password',
       name: 'editPassword',
       component: () => import('../components/member/EditPassword.vue')

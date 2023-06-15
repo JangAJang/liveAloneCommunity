@@ -25,7 +25,7 @@ const signIn = function () {
 const kakaoLogIn = function () {
   Kakao.init('229db5180010ffc0378044aa071a7a5c')
   Kakao.Auth.authorize({
-    redirectUri: 'http://34.219.46.112/auth/kakao-login',
+    redirectUri: 'http://localhost:5173/auth/kakao-login',
     prompts: 'login'
   })
 }

@@ -80,4 +80,10 @@ public class MemberExceptionAdvice {
     public Response currentPasswordWrongException(){
         return Response.failure(400, "비밀번호를 다시 확인해주세요.");
     }
+
+    @ExceptionHandler(LocationNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Response locationNotValidException(){
+        return Response.failure(400, "위치 정보를 확인해주세요.");
+    }
 }
