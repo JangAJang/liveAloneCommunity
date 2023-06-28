@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface MemberRepositoryCustom {
 
-    Page<MemberResponseDto> searchMember(SearchMemberDto searchMemberDto);
+    Page<MemberResponseDto> searchMember(final SearchMemberDto searchMemberDto);
 }
