@@ -22,7 +22,7 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
     private final JPAQueryFactory query;
 
     @Override
-    public Page<MemberResponseDto> searchMember(SearchMemberDto searchMemberDto) {
+    public Page<MemberResponseDto> searchMember(final SearchMemberDto searchMemberDto) {
         Pageable pageable = PageRequest.of(searchMemberDto.getPage(), searchMemberDto.getSize());
         QueryResults<MemberResponseDto> result = query.select(new QMemberResponseDto(member.id,
                         member.username.username,
@@ -35,7 +35,7 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom{
         return new PageImpl<MemberResponseDto>(result.getResults(), pageable, result.getTotal());
     }
 
-    private static BooleanExpression getContains(SearchMemberDto searchMemberDto) {
+    private static BooleanExpression getContains(final SearchMemberDto searchMemberDto) {
         MemberSearchType searchType = searchMemberDto.getMemberSearchType();
         if(searchType.equals(MemberSearchType.USERNAME))
             return member.username.username.contains(searchMemberDto.getText());
