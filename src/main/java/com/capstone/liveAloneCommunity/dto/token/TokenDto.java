@@ -26,7 +26,7 @@ public class TokenDto {
     private String refreshToken;
     private Date accessTokenExpiresIn;
 
-    public TokenDto(Authentication authentication, Key secretKey){
+    public TokenDto(final Authentication authentication, final Key secretKey) {
         this.accessTokenExpiresIn = new Date((new Date()).getTime() + Long.parseLong(ACCESS_TOKEN_EXPIRE_TIME.getComponent()));
         this.grantType = BEARER_TYPE.getComponent();
         this.accessToken = generateAccessToken(authentication, secretKey);
@@ -34,14 +34,14 @@ public class TokenDto {
     }
 
     // 권한들 가져오기
-    private String getAuthorities(Authentication authentication){
+    private String getAuthorities(final Authentication authentication) {
         return authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
     }
 
     // Access Token 생성
-    private String generateAccessToken(Authentication authentication, Key key){
+    private String generateAccessToken(final Authentication authentication, final Key key) {
         return Jwts.builder()
                 .setSubject(authentication.getName())       // payload "sub": "name"
                 .claim(AUTHORITIES_KEY.getComponent(), getAuthorities(authentication))        // payload "auth": "ROLE_USER"
@@ -51,7 +51,7 @@ public class TokenDto {
     }
 
     // Refresh Token 생성
-    private String generateRefreshToken(Key key){
+    private String generateRefreshToken(final Key key) {
         return Jwts.builder()
                 .setExpiration(new Date((new Date()).getTime() + Long.parseLong(REFRESH_TOKEN_EXPIRE_TIME.getComponent())))
                 .signWith(key, SignatureAlgorithm.HS512)

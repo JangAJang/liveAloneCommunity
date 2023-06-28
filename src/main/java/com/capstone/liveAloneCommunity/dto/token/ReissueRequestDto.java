@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class ReissueRequestDto {
     private String accessToken;
 
-    public void deletePrefix(){
+    public void deletePrefix() {
         accessToken = accessToken.substring(7);
         System.out.println(accessToken);
     }

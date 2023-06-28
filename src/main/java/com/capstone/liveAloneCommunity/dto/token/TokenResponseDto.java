@@ -12,7 +12,7 @@ public class TokenResponseDto {
 
     private String accessToken;
 
-    public TokenResponseDto(TokenDto tokenDto){
+    public TokenResponseDto(final TokenDto tokenDto) {
         this.accessToken = BEARER_PREFIX + tokenDto.getAccessToken();
     }
 }

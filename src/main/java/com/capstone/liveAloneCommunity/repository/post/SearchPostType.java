@@ -10,12 +10,12 @@ public enum SearchPostType {
     CONTENT;
 
     @JsonValue
-    public String getName(){
+    public String getName() {
         return name();
     }
 
     @JsonCreator
-    public static SearchPostType fromJson(String name){
+    public static SearchPostType fromJson(final String name) {
         return valueOf(name);
     }
 }

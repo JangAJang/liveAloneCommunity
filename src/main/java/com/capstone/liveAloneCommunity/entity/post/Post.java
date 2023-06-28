@@ -37,34 +37,38 @@ public class Post extends BaseTimeEntity {
     private Member member;
 
     @Builder
-    public Post(Title title, Content content, Member member, Category category){
+    public Post(final Title title,
+                final Content content,
+                final Member member,
+                final Category category)
+    {
         this.title = title;
         this.content = content;
         this.member = member;
         this.category = category;
     }
 
-    public String getTitle(){
+    public String getTitle() {
         return title.getTitle();
     }
 
-    public String getContent(){
+    public String getContent() {
         return content.getContent();
     }
 
-    public void editTitle(Title title){
+    public void editTitle(final Title title) {
         this.title = title;
     }
 
-    public void editContent(Content content){
+    public void editContent(final Content content) {
         this.content = content;
     }
 
-    public boolean isWriter(Member member){
+    public boolean isWriter(final Member member) {
         return this.member.equals(member);
     }
 
-    public String getWritersName(){
+    public String getWritersName() {
         return member.getNickname();
     }
 }

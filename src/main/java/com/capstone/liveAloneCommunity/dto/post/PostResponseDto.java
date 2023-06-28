@@ -21,7 +21,12 @@ public class PostResponseDto {
 
     @Builder
     @QueryProjection
-    public PostResponseDto(Long id, String writer, String title, String content, Category category, LocalDateTime createdDate) {
+    public PostResponseDto(final Long id,
+                           final String writer,
+                           final String title,
+                           final String content,
+                           final Category category,
+                           final LocalDateTime createdDate) {
         this.id = id;
         this.writer = writer;
         this.title = title;
@@ -30,24 +35,24 @@ public class PostResponseDto {
         this.createdDate = getCreatedDateToString(createdDate);
     }
 
-    private String getCreatedDateToString(LocalDateTime createdDate){
+    private String getCreatedDateToString(final LocalDateTime createdDate) {
         return createdDate.getYear() + ". " +createdDate.getMonthValue() + ". " + createdDate.getDayOfMonth()
                 + ". " + createdDate.getHour() + ":" + createdDate.getMinute();
     }
 
-    private static String parseCreatedDate(LocalDateTime createdDate){
+    private static String parseCreatedDate(final LocalDateTime createdDate) {
         return createdDate.getYear() + ". " +createdDate.getMonthValue() + ". " + createdDate.getDayOfMonth()
                 + ". " + createdDate.getHour() + ":" + createdDate.getMinute();
     }
 
-    public static PostResponseDto toDto(Post post){
+    public static PostResponseDto from(final Post post) {
         return new PostResponseDto(post.getId(), post.getWritersName(),
                 post.getTitle(), post.getContent(),
                 post.getCategory().getDescription(),
                 parseCreatedDate(post.getCreatedDate()));
     }
 
-    public static PostResponseDto toDto(Post post, Member member){
+    public static PostResponseDto from(final Post post, final Member member) {
         return new PostResponseDto(post.getId(), member.getNickname(),
                 post.getTitle(), post.getContent(),
                 post.getCategory().getDescription(),
