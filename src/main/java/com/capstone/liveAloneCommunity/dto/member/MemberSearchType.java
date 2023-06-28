@@ -19,7 +19,7 @@ public enum MemberSearchType{
     }
 
     @JsonCreator
-    public static MemberSearchType fromJson(String name){
+    public static MemberSearchType fromJson(final String name) {
         return valueOf(name);
     }
 }

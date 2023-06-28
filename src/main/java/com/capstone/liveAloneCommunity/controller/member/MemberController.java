@@ -27,35 +27,35 @@ public class MemberController {
     @GetMapping("")
     @Operation(summary = "회원 조회", description = "회원의 DB의 번호, 아이디, 닉네임, 이메일을 조회한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response getMemberInfo(@RequestParam Long id){
+    public Response getMemberInfo(@RequestParam final Long id) {
         return Response.success(memberService.getMemberInfo(id));
     }
 
     @GetMapping("/me")
     @Operation(summary = "내 정보 조회", description = "내 정보를 조회한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response getMyInfo(){
+    public Response getMyInfo() {
         return Response.success(memberService.getMemberInfo(getMember().getId()));
     }
 
     @GetMapping("/search")
     @Operation(summary = "회원 검색", description = "회원의 DB의 번호, 아이디, 닉네임, 이메일을 검색한 값을 포함하는 페이지로 반환한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response searchMember(@RequestBody @Valid SearchMemberDto searchMemberDto){
+    public Response searchMember(@RequestBody @Valid final SearchMemberDto searchMemberDto) {
         return Response.success(memberService.searchMember(searchMemberDto));
     }
 
     @PatchMapping("/edit")
     @Operation(summary = "회원 정보 수정", description = "회원의 이메일, 닉네임을 수정한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response editMemberInfo(@RequestBody @Valid EditNicknameDto editNicknameDto){
+    public Response editMemberInfo(@RequestBody @Valid final EditNicknameDto editNicknameDto) {
         return Response.success(memberService.editNickname(editNicknameDto, getMember()));
     }
 
     @PatchMapping("/changePassword")
     @Operation(summary = "비밀번호 변경", description = "현재비밀번호, 새 비밀번호, 새 비밀번호 다시 입력을 입력하면 비밀번호를 수정한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response changePassword(@RequestBody @Valid ChangePasswordRequestDto changePasswordRequestDto){
+    public Response changePassword(@RequestBody @Valid final ChangePasswordRequestDto changePasswordRequestDto) {
         memberService.changePassword(getMember(), changePasswordRequestDto);
         return Response.success();
     }
@@ -68,7 +68,7 @@ public class MemberController {
         return Response.success();
     }
 
-    private Member getMember(){
+    private Member getMember() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return memberRepository.findByUsername_Username(authentication.getName())
                 .orElseThrow(MemberNotFoundException::new);

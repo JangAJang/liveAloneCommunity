@@ -10,7 +10,7 @@ public class MemberResponseDto {
 
     @Builder
     @QueryProjection
-    public MemberResponseDto(long id, String username, String nickname, String email) {
+    public MemberResponseDto(final long id, String username, final String nickname, final String email) {
         this.id = id;
         this.username = username;
         this.nickname = nickname;
@@ -22,7 +22,7 @@ public class MemberResponseDto {
     private String nickname;
     private String email;
 
-    public static MemberResponseDto toDto(Member member){
+    public static MemberResponseDto toDto(final Member member) {
         return MemberResponseDto.builder()
                 .id(member.getId())
                 .username(member.getUsername())
