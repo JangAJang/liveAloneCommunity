@@ -14,7 +14,5 @@ import lombok.NoArgsConstructor;
 public class EmailAuthRequestDto {
 
     @NotBlank(message = "이메일을 입력해주세요.")
-    @NotNull(message = "이메일을 입력해주세요.")
-    @NotEmpty(message = "이메일을 입력해주세요.")
     private String email;
 }
