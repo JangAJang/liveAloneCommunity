@@ -16,7 +16,7 @@ public class EmailConstructor {
 
     private final JavaMailSender mailSender;
 
-    public void sendEmail(String email, String authNum) {
+    public void sendEmail(final String email, final String authNum) {
         try{
             MimeMessage message = createEmailForm(email, authNum);
             mailSender.send(message);
@@ -26,7 +26,7 @@ public class EmailConstructor {
         }
     }
 
-    public MimeMessage createEmailForm(String email, String authNum) throws MessagingException {
+    public MimeMessage createEmailForm(final String email, final String authNum) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, email);
         message.setSubject(TITLE.getValue());
@@ -35,7 +35,7 @@ public class EmailConstructor {
         return message;
     }
 
-    private String createMessageText(String email, String authNum){
+    private String createMessageText(final String email, final String authNum){
         return "<div style='margin:100px;'>"
                 +"<h1> 자취생들을 위한 커뮤니티! Live Alone Network, L.A.N</h1>"
                 +"<h1 style='color:orange;'>인증번호 안내 메일입니다.</h1>"
