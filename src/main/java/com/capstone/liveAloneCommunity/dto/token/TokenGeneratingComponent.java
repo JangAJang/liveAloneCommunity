@@ -9,11 +9,11 @@ public enum TokenGeneratingComponent {
 
     private final String component;
 
-    private TokenGeneratingComponent(String component){
+    private TokenGeneratingComponent(final String component) {
         this.component = component;
     }
 
-    public String getComponent(){
+    public String getComponent() {
         return this.component;
     }
 }

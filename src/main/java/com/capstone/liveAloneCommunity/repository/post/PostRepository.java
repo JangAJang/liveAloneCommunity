@@ -11,8 +11,8 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long>, PostRepositoryCustom {
 
-    Optional<Post> findByTitle_Title(String title);
+    Optional<Post> findByTitle_Title(final String title);
 
-    Page<Post> findAllByCategoryOrderByCreatedDateDesc(Category category, Pageable pageable);
-    Page<Post> findAllByMemberOrderByCreatedDateDesc(Member member, Pageable pageable);
+    Page<Post> findAllByCategoryOrderByCreatedDateDesc(final Category category, final Pageable pageable);
+    Page<Post> findAllByMemberOrderByCreatedDateDesc(final Member member, final Pageable pageable);
 }

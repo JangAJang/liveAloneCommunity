@@ -14,12 +14,12 @@ import static com.capstone.liveAloneCommunity.entity.member.QMember.member;
 import static com.capstone.liveAloneCommunity.entity.post.QPost.post;
 
 @RequiredArgsConstructor
-public class PostRepositoryCustomImpl implements PostRepositoryCustom{
+public class PostRepositoryCustomImpl implements PostRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<PostResponseDto> searchPost(SearchPostRequestDto searchPostRequestDto) {
+    public Page<PostResponseDto> searchPost(final SearchPostRequestDto searchPostRequestDto) {
         Pageable pageable = PageRequest.of(searchPostRequestDto.getPage(), searchPostRequestDto.getSize());
         QueryResults<PostResponseDto> result = queryFactory
                 .select(new QPostResponseDto(post.id, member.nickname.nickname.as("writer"),
@@ -35,7 +35,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
     }
 
     @Override
-    public Page<PostResponseDto> getPostByCategory(PostByCategoryRequestDto postByCategoryRequestDto) {
+    public Page<PostResponseDto> getPostByCategory(final PostByCategoryRequestDto postByCategoryRequestDto) {
         Pageable pageable = PageRequest.of(postByCategoryRequestDto.getPage(), postByCategoryRequestDto.getSize());
         QueryResults<PostResponseDto> result = queryFactory
                 .select(new QPostResponseDto(post.id, member.nickname.nickname.as("writer"),
@@ -50,19 +50,19 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom{
         return new PageImpl<>(result.getResults(), pageable, result.getTotal());
     }
 
-    private BooleanExpression makeConditionQuery(String text, SearchPostType searchPostType){
+    private BooleanExpression makeConditionQuery(final String text, final SearchPostType searchPostType) {
         if(searchPostType.equals(SearchPostType.WRITER) || searchPostType.equals(SearchPostType.WRITER_AND_TITLE))
             return makeConditionQueryWithMember(text, searchPostType);
         return makeConditionQueryWithoutMember(text, searchPostType);
     }
 
-    private BooleanExpression makeConditionQueryWithMember(String text, SearchPostType searchPostType){
+    private BooleanExpression makeConditionQueryWithMember(final String text, final SearchPostType searchPostType) {
         if(searchPostType.equals(SearchPostType.WRITER))
             return member.nickname.nickname.contains(text);
         return member.nickname.nickname.contains(text).or(post.title.title.contains(text));
     }
 
-    private BooleanExpression makeConditionQueryWithoutMember(String text, SearchPostType searchPostType){
+    private BooleanExpression makeConditionQueryWithoutMember(final String text, final SearchPostType searchPostType) {
         if(searchPostType.equals(SearchPostType.TITLE))
             return post.title.title.contains(text);
         if(searchPostType.equals(SearchPostType.CONTENT))

@@ -26,17 +26,19 @@ public class PostController {
     private final PostService postService;
     private final MemberRepository memberRepository;
 
-    @GetMapping("")
+    @GetMapping
     @Operation(summary = "게시물 단건 조회", description = "게시물 단건을 조회한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response getPost(@RequestParam("id") Long id){
+    public Response getPost(@RequestParam("id") Long id) {
         return Response.success(postService.getPost(id));
     }
 
     @GetMapping("/category")
     @Operation(summary = "카테고리별 게시물 조회", description = "게시물을 카테고리별로 페이징처리해 조회한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response getPostOfCategory(@RequestParam Category category, @PageableDefault Pageable pageable){
+    public Response getPostOfCategory(@RequestParam final Category category,
+                                      @PageableDefault final Pageable pageable)
+    {
         PostByCategoryRequestDto postByCategoryRequestDto = PostByCategoryRequestDto.builder()
                 .category(category)
                 .page(pageable.getPageNumber())
@@ -48,7 +50,10 @@ public class PostController {
     @GetMapping("/search")
     @Operation(summary = "게시물 검색", description = "게시물을 검색해 페이징처리해 반환한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response searchPost(@RequestParam String text, @RequestParam SearchPostType searchPostType, @PageableDefault Pageable pageable){
+    public Response searchPost(@RequestParam final String text,
+                               @RequestParam final SearchPostType searchPostType,
+                               @PageableDefault final Pageable pageable)
+    {
         SearchPostRequestDto searchPostRequestDto = SearchPostRequestDto.builder()
                 .text(text)
                 .searchPostType(searchPostType)
@@ -60,7 +65,7 @@ public class PostController {
     @GetMapping("/of")
     @Operation(summary = "회원의 게시물 조회", description = "회원의 게시물을 이름의 역순으로 조회한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response getMembersPost(@PageableDefault Pageable pageable){
+    public Response getMembersPost(@PageableDefault final Pageable pageable) {
         MembersPostRequestDto membersPostRequestDto = MembersPostRequestDto.builder()
                 .id(getMember().getId())
                 .page(pageable.getPageNumber())
@@ -71,7 +76,7 @@ public class PostController {
     @PostMapping("/write")
     @Operation(summary = "게시글 작성", description = "게시글을 새로 작성한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response writePost(@RequestBody @Valid WritePostRequestDto writePostRequestDto){
+    public Response writePost(@RequestBody @Valid final WritePostRequestDto writePostRequestDto) {
         Member member = getMember();
         return Response.success(postService.writePost(member, writePostRequestDto));
     }
@@ -84,7 +89,7 @@ public class PostController {
     @PatchMapping("/edit")
     @Operation(summary = "게시글 수정", description = "존재하는 게시물을 수정한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response editPost(@RequestBody @Valid EditPostRequestDto editPostRequestDto){
+    public Response editPost(@RequestBody @Valid final EditPostRequestDto editPostRequestDto) {
         Member member = getMember();
         return Response.success(postService.editPost(editPostRequestDto, member));
     }
@@ -92,7 +97,7 @@ public class PostController {
     @DeleteMapping("/delete")
     @Operation(summary = "게시글 삭제", description = "게시글을 삭제한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response deletePost(@RequestParam("id") Long id){
+    public Response deletePost(@RequestParam("id") final Long id) {
         Member member = getMember();
         postService.deletePost(id, member);
         return Response.success();
@@ -101,7 +106,7 @@ public class PostController {
     @GetMapping("/mine")
     @Operation(summary = "내 게시글인지 확인", description = "내 게시글이면 문제가 없지만, 아니면 에러를 반환합니다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response isMyPost(@RequestParam("id") Long id){
+    public Response isMyPost(@RequestParam("id") final Long id) {
         Member member = getMember();
         postService.isMyPost(member, id);
         return Response.success();
