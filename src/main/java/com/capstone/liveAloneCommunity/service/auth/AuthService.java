@@ -31,33 +31,38 @@ public class AuthService {
     private final TokenValidator tokenValidator;
     private final MemberValidator memberValidator;
 
-    public void register(RegisterRequestDto registerRequestDto){
+    public void register(RegisterRequestDto registerRequestDto) {
         memberValidator.validateRegister(registerRequestDto);
         memberRepository.save(new Member(registerRequestDto, passwordEncoder));
     }
 
-    public TokenResponseDto logIn(LogInRequestDto logInRequestDto){
+    public TokenResponseDto logIn(LogInRequestDto logInRequestDto) {
         memberValidator.validateLogIn(logInRequestDto);
         return createTokenDtoByAuthentication(getAuthenticationToLogIn(logInRequestDto));
     }
 
-    public TokenResponseDto reissue(ReissueRequestDto reissueRequestDto){
+    public TokenResponseDto reissue(ReissueRequestDto reissueRequestDto) {
+
         reissueRequestDto.deletePrefix();
         RefreshToken refreshToken = refreshTokenRepository.findByKey(SecurityContextHolder.getContext().getAuthentication().getName())
                         .orElseThrow(NeedToLoginException::new);
+
         tokenValidator.validateRefreshToken(refreshToken);
+
         Authentication tokenAuthentication = tokenValidator.getAuthentication(reissueRequestDto);
+
         TokenDto tokenDto = tokenProvider.generateTokenDto(tokenAuthentication);
         refreshToken.updateValue(tokenDto.getRefreshToken());
+
         return new TokenResponseDto(tokenDto);
     }
 
-    private Authentication getAuthenticationToLogIn(LogInRequestDto logInRequestDto){
+    private Authentication getAuthenticationToLogIn(LogInRequestDto logInRequestDto) {
         UsernamePasswordAuthenticationToken authenticationToken = logInRequestDto.toAuthentication();
         return authenticationManagerBuilder.getObject().authenticate(authenticationToken);
     }
 
-    private TokenResponseDto createTokenDtoByAuthentication(Authentication authentication){
+    private TokenResponseDto createTokenDtoByAuthentication(Authentication authentication) {
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
         RefreshToken refreshToken = RefreshToken.builder()
                 .key(authentication.getName())

@@ -35,8 +35,10 @@ public class KakaoAuthService {
 
     public LogInRequestDto getLogInRequestByCode(String code){
         KakaoProfile kakaoProfile = getKakaoInfo(code);
+
         Member member = memberRepository.findByUsername_Username("KAKAO_" + kakaoProfile.getEmail())
                 .orElseGet(()-> createMemberByKakaoInfo(kakaoProfile));
+
         return LogInRequestDto.builder()
                 .username(member.getUsername())
                 .password("KAKAO_" + kakaoProfile.getId()).build();
@@ -50,14 +52,17 @@ public class KakaoAuthService {
                 .password(new Password(passwordEncoder.encode("KAKAO_" + kakaoProfile.getId())))
                 .role(Role.USER)
                 .build();
+
         memberRepository.save(member);
+
         return member;
     }
 
     private KakaoProfile getKakaoInfo(String code){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.readValue(getKakaoInfoByToken(getKakaoToken(code, objectMapper).getAccess_token()).getBody(), KakaoProfile.class);
+            return objectMapper.readValue(getKakaoInfoByToken(getKakaoToken(code, objectMapper)
+                    .getAccess_token()).getBody(), KakaoProfile.class);
         } catch (JsonProcessingException e) {
             throw new LogInAgainException();
         }

@@ -30,7 +30,7 @@ public class Member{
     @Column
     private String provider;
 
-    public Member(RegisterRequestDto registerRequestDto, PasswordEncoder passwordEncoder){
+    public Member(final RegisterRequestDto registerRequestDto, final PasswordEncoder passwordEncoder){
         this.username = new Username(registerRequestDto.getUsername());
         this.nickname = new Nickname(registerRequestDto.getNickname());
         this.email = new Email(registerRequestDto.getEmail());
@@ -39,7 +39,14 @@ public class Member{
     }
 
     @Builder
-    public Member(Username username, Nickname nickname, Email email, Password password, Role role, String provider, String providerId) {
+    public Member(final Username username,
+                  final Nickname nickname,
+                  final Email email,
+                  final Password password,
+                  final Role role,
+                  final String provider,
+                  final String providerId)
+    {
         this.username = username;
         this.nickname = nickname;
         this.email = email;
@@ -49,31 +56,31 @@ public class Member{
         this.providerId = providerId;
     }
 
-    public String getUsername(){
+    public String getUsername() {
         return this.username.getUsername();
     }
 
-    public boolean isRightPassword(String password, PasswordEncoder passwordEncoder){
+    public boolean isRightPassword(final String password, final PasswordEncoder passwordEncoder){
         return this.password.equals(password, passwordEncoder);
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return this.password.getPassword();
     }
 
-    public String getNickname(){
+    public String getNickname() {
         return nickname.getNickname();
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return email.getEmail();
     }
 
-    public void editNickname(String nickname) {
+    public void editNickname(final String nickname) {
         this.nickname = new Nickname(nickname);
     }
 
-    public void changePassword(String newPassword, PasswordEncoder passwordEncoder) {
+    public void changePassword(final String newPassword, final PasswordEncoder passwordEncoder) {
         this.password = new Password(passwordEncoder.encode(newPassword));
     }
 }
