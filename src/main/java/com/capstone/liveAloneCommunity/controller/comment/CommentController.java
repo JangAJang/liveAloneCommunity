@@ -22,12 +22,13 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
 
     private final CommentService commentService;
+
     private final MemberRepository memberRepository;
 
-    @PostMapping("")
+    @PostMapping
     @Operation(summary = "댓글 작성", description = "게시물의 댓글을 작성한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response writeComment(@Valid @RequestBody WriteCommentRequestDto writeCommentRequestDto) {
+    public Response writeComment(@Valid @RequestBody final WriteCommentRequestDto writeCommentRequestDto) {
         Member member = getMember();
         return Response.success(commentService.writeComment(writeCommentRequestDto, member));
     }
@@ -35,7 +36,7 @@ public class CommentController {
     @GetMapping("/member")
     @Operation(summary = "멤버로 댓글 조회", description = "멤버 id로 회원이 작성한 댓글을 조회한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response readCommentByMemberId(@PageableDefault Pageable pageable) {
+    public Response readCommentByMemberId(@PageableDefault final Pageable pageable) {
         Member member = getMember();
         CommentPageInfoRequestDto commentPageInfoRequestDto =
                 new CommentPageInfoRequestDto(pageable.getPageNumber(), pageable.getPageSize());
@@ -45,7 +46,7 @@ public class CommentController {
     @GetMapping("/post")
     @Operation(summary = "게시물로 댓글 조회", description = "게시물 id로 회원이 작성한 댓글을 조회한다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response readCommentByPostId(@RequestParam Long postId, @PageableDefault Pageable pageable) {
+    public Response readCommentByPostId(@RequestParam final Long postId, @PageableDefault final Pageable pageable) {
         ReadCommentByPostRequestDto readCommentByPostRequestDto =
                 new ReadCommentByPostRequestDto(postId, new CommentPageInfoRequestDto(pageable.getPageNumber(), pageable.getPageSize()));
         return Response.success(commentService.readCommentByPostId(readCommentByPostRequestDto));
@@ -54,7 +55,7 @@ public class CommentController {
     @PatchMapping("/edit")
     @Operation(summary = "댓글 수정", description = "댓글 작성자는 자신의 댓글을 삭제할 수 있다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response editComment(@Valid @RequestBody EditCommentRequestDto editCommentRequestDto) {
+    public Response editComment(@Valid @RequestBody final EditCommentRequestDto editCommentRequestDto) {
         Member member = getMember();
         return Response.success(commentService.editComment(member, editCommentRequestDto));
     }
@@ -62,7 +63,7 @@ public class CommentController {
     @DeleteMapping("")
     @Operation(summary = "댓글 삭제", description = "댓글 작성자는 자신의 댓글을 삭제할 수 있다.")
     @ResponseStatus(HttpStatus.OK)
-    public Response deleteComment(@RequestParam Long id) {
+    public Response deleteComment(@RequestParam final Long id) {
         Member member = getMember();
         commentService.deleteComment(member, new DeleteCommentRequestDto(id));
         return Response.success("삭제 완료");
