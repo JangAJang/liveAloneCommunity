@@ -28,59 +28,59 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
 
-    public CommentResponseDto writeComment(WriteCommentRequestDto writeCommentRequestDto, Member member) {
+    public CommentResponseDto writeComment(final WriteCommentRequestDto writeCommentRequestDto, final Member member) {
         Post post = getPost(writeCommentRequestDto);
         Comment comment = new Comment(writeCommentRequestDto.getContent(), post, member);
         commentRepository.save(comment);
-        return CommentResponseDto.toDto(comment);
+        return CommentResponseDto.from(comment);
     }
 
     @Transactional(readOnly = true)
-    public MultiReadCommentResponseDto readCommentByMemberId(Member member, CommentPageInfoRequestDto commentPageInfoRequestDto) {
+    public MultiReadCommentResponseDto readCommentByMemberId(final Member member, final CommentPageInfoRequestDto commentPageInfoRequestDto) {
         Page<Comment> commentByMember = commentRepository.findCommentByMemberId(member.getId(), getPageRequestComment(commentPageInfoRequestDto));
         return collectComment(commentByMember);
     }
 
     @Transactional(readOnly = true)
-    public MultiReadCommentResponseDto readCommentByPostId(ReadCommentByPostRequestDto readCommentByPostRequestDto) {
+    public MultiReadCommentResponseDto readCommentByPostId(final ReadCommentByPostRequestDto readCommentByPostRequestDto) {
         Page<Comment> commentByPostId = commentRepository.findCommentByPostId(readCommentByPostRequestDto.getPostId(),
                 getPageRequestComment(readCommentByPostRequestDto.getCommentPageInfoRequestDto()));
         return collectComment(commentByPostId);
     }
 
-    public CommentResponseDto editComment(Member member, EditCommentRequestDto editCommentRequestDto) {
+    public CommentResponseDto editComment(final Member member, final EditCommentRequestDto editCommentRequestDto) {
         Comment comment = getCommentById(editCommentRequestDto.getCommentId());
         validateCommentAuthority(member, comment);
         comment.editContent(new Content(editCommentRequestDto.getModifyContent()));
-        return CommentResponseDto.toDto(comment);
+        return CommentResponseDto.from(comment);
     }
 
-    public void deleteComment(Member member, DeleteCommentRequestDto deleteCommentRequestDto) {
+    public void deleteComment(final Member member, final DeleteCommentRequestDto deleteCommentRequestDto) {
         Comment comment = getCommentById(deleteCommentRequestDto.getCommentId());
         validateCommentAuthority(member, comment);
         commentRepository.delete(comment);
     }
 
-    private Post getPost(WriteCommentRequestDto writeCommentRequestDto) {
+    private Post getPost(final WriteCommentRequestDto writeCommentRequestDto) {
         return postRepository.findById(writeCommentRequestDto.getPostId())
                 .orElseThrow(PostNotFoundException::new);
     }
 
-    private MultiReadCommentResponseDto collectComment(Page<Comment> findComment) {
-        return new MultiReadCommentResponseDto(findComment.map(ReadCommentResponseDto::toDto));
+    private MultiReadCommentResponseDto collectComment(final Page<Comment> findComment) {
+        return MultiReadCommentResponseDto.from(findComment.map(ReadCommentResponseDto::toDto));
     }
 
-    private Pageable getPageRequestComment(CommentPageInfoRequestDto commentPageInfoRequestDto) {
+    private Pageable getPageRequestComment(final CommentPageInfoRequestDto commentPageInfoRequestDto) {
         return PageRequest.of(commentPageInfoRequestDto.getPage(), commentPageInfoRequestDto.getSize(),
                 Sort.by(DESC, "createdDate"));
     }
 
-    private Comment getCommentById(Long commentId) {
+    private Comment getCommentById(final Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(CommentNotFoundException::new);
     }
 
-    private void validateCommentAuthority(Member member, Comment comment) {
+    private void validateCommentAuthority(final Member member, final Comment comment) {
         if (!comment.isWriter(member)) {
             throw new NotMyCommentException();
         }

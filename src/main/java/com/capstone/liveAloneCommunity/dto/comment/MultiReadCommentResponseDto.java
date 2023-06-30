@@ -11,4 +11,8 @@ import java.util.List;
 public class MultiReadCommentResponseDto {
 
     private Page<ReadCommentResponseDto> readCommentResponseDto;
+
+    public static MultiReadCommentResponseDto from(final Page<ReadCommentResponseDto> readCommentResponseDto) {
+        return new MultiReadCommentResponseDto(readCommentResponseDto);
+    }
 }
