@@ -14,21 +14,25 @@ import org.hibernate.annotations.OnDeleteAction;
 @Getter
 @AllArgsConstructor
 public class Comment extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Embedded
     private Content content;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POST_ID")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Post post;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
-    public Comment(String content, Post post, Member member) {
+    public Comment(final String content, final Post post, final Member member) {
         this.content = new Content(content);
         this.post = post;
         this.member = member;
@@ -46,11 +50,11 @@ public class Comment extends BaseTimeEntity {
         return post.getTitle();
     }
 
-    public void editContent(Content modifyContent) {
+    public void editContent(final Content modifyContent) {
         this.content = modifyContent;
     }
 
-    public boolean isEqualsMember(Member member) {
+    public boolean isWriter(final Member member) {
         return this.member.equals(member);
     }
 }
