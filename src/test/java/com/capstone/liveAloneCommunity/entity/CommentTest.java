@@ -117,8 +117,8 @@ class CommentTest {
                 .build();
 
         //when
-        boolean result1 = comment.isEqualsMember(member);
-        boolean result2 = comment.isEqualsMember(member1);
+        boolean result1 = comment.isWriter(member);
+        boolean result2 = comment.isWriter(member1);
 
         //then
         assertThat(result1).isTrue();
