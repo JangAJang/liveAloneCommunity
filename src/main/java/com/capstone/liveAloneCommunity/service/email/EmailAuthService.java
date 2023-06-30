@@ -21,7 +21,6 @@ import static com.capstone.liveAloneCommunity.service.email.EmailAuthComponent.T
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class EmailAuthService {
 
     private final EmailAuthConstructor emailAuthConstructor;
@@ -29,14 +28,16 @@ public class EmailAuthService {
     private final MemberValidator memberValidator;
     private final EmailConstructor emailConstructor;
 
-    public void verifyEmailAuth(EmailAuthValidateRequestDto request){
+    @Transactional
+    public void verifyEmailAuth(final EmailAuthValidateRequestDto request) {
         memberValidator.validateEmail(request.getEmail());
         EmailAuth requested = getRequestedEmailAuth(request.getEmail());
         if(requested.isRightAuthNum(request.getAuthNum())) return;
         throw new EmailAuthNotEqualException();
     }
 
-    public EmailAuthResponseDto sendEmail(EmailAuthRequestDto toEmail){
+    @Transactional
+    public EmailAuthResponseDto sendEmail(final EmailAuthRequestDto toEmail) {
         String email = toEmail.getEmail();
         String authNum = emailAuthConstructor.getAuthNum();
         memberValidator.validateEmail(email);
@@ -45,11 +46,11 @@ public class EmailAuthService {
         return EmailAuthResponseDto.toDto(authNum);
     }
 
-    private EmailAuth getRequestedEmailAuth(String email){
+    private EmailAuth getRequestedEmailAuth(final String email) {
         return emailAuthRepository.findByEmail_Email(email).orElseThrow(EmailNotSentException::new);
     }
 
-    private void saveEmailAuth(String email, String authNum){
+    private void saveEmailAuth(final String email, final String authNum) {
         emailAuthRepository.findByEmail_Email(email)
                 .orElse(emailAuthRepository.save(new EmailAuth(email, authNum)))
                 .updateAuthNum(authNum);
