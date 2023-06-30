@@ -12,7 +12,7 @@ public class CommentRepositoryCustomImpl implements CommentRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Comment> searchCommentByPostId(Long postId) {
+    public List<Comment> searchCommentByPostId(final Long postId) {
         return jpaQueryFactory
                 .select(comment)
                 .from(comment)
