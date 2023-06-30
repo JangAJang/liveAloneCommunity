@@ -21,13 +21,13 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.springframework.data.domain.Sort.Direction.*;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class CommentService {
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
 
+    @Transactional
     public CommentResponseDto writeComment(final WriteCommentRequestDto writeCommentRequestDto, final Member member) {
         Post post = getPost(writeCommentRequestDto);
         Comment comment = new Comment(writeCommentRequestDto.getContent(), post, member);
@@ -48,6 +48,7 @@ public class CommentService {
         return collectComment(commentByPostId);
     }
 
+    @Transactional
     public CommentResponseDto editComment(final Member member, final EditCommentRequestDto editCommentRequestDto) {
         Comment comment = getCommentById(editCommentRequestDto.getCommentId());
         validateCommentAuthority(member, comment);
@@ -55,6 +56,7 @@ public class CommentService {
         return CommentResponseDto.from(comment);
     }
 
+    @Transactional
     public void deleteComment(final Member member, final DeleteCommentRequestDto deleteCommentRequestDto) {
         Comment comment = getCommentById(deleteCommentRequestDto.getCommentId());
         validateCommentAuthority(member, comment);
