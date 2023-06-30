@@ -14,7 +14,7 @@ public class ReadCommentResponseDto {
     private String nickname;
     private String content;
 
-    public static ReadCommentResponseDto toDto(Comment comment) {
+    public static ReadCommentResponseDto from(final Comment comment) {
         return ReadCommentResponseDto.builder()
                 .id(comment.getId())
                 .content(comment.getContent())

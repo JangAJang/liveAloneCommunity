@@ -13,7 +13,7 @@ public class CommentResponseDto {
     private String nickname;
     private LocalDateTime createTime;
 
-    public static CommentResponseDto from(Comment comment) {
+    public static CommentResponseDto from(final Comment comment) {
         return CommentResponseDto.builder()
                 .id(comment.getId())
                 .content(comment.getContent())

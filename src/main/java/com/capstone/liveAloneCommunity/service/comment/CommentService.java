@@ -69,7 +69,7 @@ public class CommentService {
     }
 
     private MultiReadCommentResponseDto collectComment(final Page<Comment> findComment) {
-        return MultiReadCommentResponseDto.from(findComment.map(ReadCommentResponseDto::toDto));
+        return MultiReadCommentResponseDto.from(findComment.map(ReadCommentResponseDto::from));
     }
 
     private Pageable getPageRequestComment(final CommentPageInfoRequestDto commentPageInfoRequestDto) {
